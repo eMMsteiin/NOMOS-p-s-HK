@@ -105,6 +105,7 @@ function LinhaDeBase({ c }: { c: ComparacaoLinhaDeBase }) {
       </dl>
       <p className="mt-3 font-medium">{veredito}</p>
       <p className="mt-1 text-xs text-muted">{t.track.baseAlso(num(c.baseTambemOferecia, L), num(c.janelas, L))}</p>
+      <p className="mt-1 text-xs text-muted">{t.track.basePerPlant(num(c.usinasModeloMaisPerto, L), num(c.usinas, L), num(c.usinas - c.usinasModeloMaisPerto, L))}</p>
       <p className="mt-1 text-xs text-muted">{t.track.baseCaveat(num(c.dias, L))}</p>
     </div>
   );
@@ -254,7 +255,7 @@ export function Placar({ d }: { d: DadosPlacar }) {
         <h2 className="text-lg font-semibold">{t.track.reproTitle}</h2>
         <p className="mt-1 text-sm text-muted">{t.track.reproLead}</p>
         <pre className="mt-3 overflow-x-auto rounded-lg bg-ink p-4 text-[11px] leading-relaxed text-white/85">{d.impressoes.join("\n")}</pre>
-        <p className="mt-3 text-sm italic">“{t.track.reproQuote}”</p>
+        <p className="mt-3 text-sm italic">{t.track.reproQuote}</p>
         <h3 className="mt-5 text-sm font-semibold">{t.track.params}</h3>
         <pre className="mt-2 overflow-x-auto rounded-lg bg-paper p-3 text-xs">{JSON.stringify(d.teste.parametros, null, 1)}</pre>
       </Cartao>

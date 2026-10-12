@@ -37,7 +37,7 @@ export function Cabecalho() {
               {l.rotulo}
               {l.selo && (
                 // No celular o selo fica sobre o canto da aba (não ocupa largura); a partir de "sm" fica ao lado do nome
-                <span className="absolute -right-1 -top-2 rounded bg-wait-soft px-1 py-0.5 text-[8px] font-semibold uppercase leading-none tracking-wide text-wait sm:static sm:ml-1.5 sm:align-middle sm:text-[9px]">
+                <span className="absolute -right-1 -top-2 rounded bg-wait-soft px-1 py-0.5 text-[9px] font-semibold uppercase leading-none tracking-wide text-wait sm:static sm:ml-1.5 sm:align-middle">
                   {l.selo}
                 </span>
               )}

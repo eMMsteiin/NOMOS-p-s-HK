@@ -1,17 +1,19 @@
 # Atlas (site do Vento Cortado)
 
-Site em Next.js 16 + TypeScript + Tailwind, em inglês (padrão) e português.
+Site em Next.js 16 + TypeScript + Tailwind. Abre em português quando o navegador está em português e em inglês nos demais casos, com um botão EN/PT.
 
 | Página | O que mostra |
 | --- | --- |
 | `/` | Manchete com o corte oficial do Nordeste, mapa das usinas de destaque, janelas previstas por dia e os padrões do corte |
-| `/plants/[id]` | Detalhe de cada usina: janelas previstas, mapa de calor mês × hora, histórico com o veredito do ONS e teste retroativo |
+| `/plants/[id]` | Detalhe de cada usina: a **calculadora de carga** (feita no navegador, com os dados já carregados), janelas previstas, mapa de calor mês × hora, histórico com o veredito do ONS e teste retroativo |
 | `/track-record` | Placar público: comparação de modelos, calibração e impressões digitais (SHA-256) |
 | `/method` | O que é real, estimado e simulado; definições; dados abertos para baixar; limitações |
+| `/lab` | **Laboratório (simulação)**: a demonstração de reserva (escolha de usina e janela; Reservar e Replay só existem aqui), um ciclo completo de exemplo e a lista do que é simulado. Não é o produto |
+| `/verify?tx=…` | Parte do Laboratório: a comprovação pública de uma reserva simulada, lida da Solana devnet. Sem transação, explica a si mesma |
 
 ## Dados
 
-O site não calcula nada: lê `src/data/atlas.json` e serve os arquivos de `public/data/`, ambos gerados por:
+O site não calcula nada no servidor (a calculadora de carga roda no navegador, com os dados já carregados): lê `src/data/atlas.json` e serve os arquivos de `public/data/`, ambos gerados por:
 
 ```bash
 python dados/scripts/atlas.py

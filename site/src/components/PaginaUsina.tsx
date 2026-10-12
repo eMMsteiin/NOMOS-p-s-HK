@@ -62,6 +62,9 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
         </div>
       </header>
 
+      {/* A calculadora é o coração da ferramenta de decisão: fica logo abaixo do cabeçalho da usina */}
+      <CalculadoraCarga u={u} pld={pld} />
+
       <Cartao className="overflow-x-auto p-0">
         <h2 className="px-5 pt-5 text-lg font-semibold">{t.plant.nextTitle}</h2>
         <table className="tabela-cartoes mt-3 w-full text-sm">
@@ -131,7 +134,6 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
         </div>
       </Cartao>
 
-      <CalculadoraCarga u={u} pld={pld} />
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Cartao className="overflow-x-auto p-0 lg:col-span-2">

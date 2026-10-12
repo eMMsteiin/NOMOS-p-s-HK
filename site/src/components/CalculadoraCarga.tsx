@@ -82,7 +82,7 @@ export function CalculadoraCarga({ u, pld }: { u: Usina; pld: PldRef }) {
         </label>
       </div>
       {r.acimaDaCapacidade && <p className="mt-2 text-xs text-muted">{c.capNote(`${num(u.capacidade_mw, L)} MW`)}</p>}
-      {melhor.inicio !== inicio && (
+      {melhor.inicio !== inicio && melhor.horasCorteMes > r.horasCorteMes * 1.03 && (
         <p className="mt-2 text-xs text-muted">
           {c.bestStart(hora(melhor.inicio), num(melhor.horasCorteMes, L))}{" "}
           <button type="button" onClick={() => setInicio(melhor.inicio)} className="font-medium text-ink underline">
@@ -103,6 +103,7 @@ export function CalculadoraCarga({ u, pld }: { u: Usina; pld: PldRef }) {
         />
       </div>
       <p className="mt-2 text-xs text-muted">{c.valueDisclaimer}</p>
+      <p className="mt-1 text-xs text-muted">{c.assumption}</p>
 
       <h3 className="mt-6 text-sm font-semibold">{c.reasonsTitle}</h3>
       <table className="mt-2 w-full text-sm">

@@ -237,7 +237,7 @@ export function Inicio({ d }: { d: DadosInicio }) {
         {d.pld.cruzamento && (
           <Cartao>
             <h3 className="font-medium">{t.home.floorTitle}</h3>
-            <p className="mt-1 text-sm text-muted">{t.home.floorChart(dataCurta((d.pld.periodo ?? "").slice(-10), L, true))}</p>
+            <p className="mt-1 text-sm text-muted">{t.home.floorChart(dataCurta(d.pld.cruzamento.periodo.slice(-10), L, true))}</p>
             <div className="mt-3">
               <GraficoPiso pct={d.pld.cruzamento.piso_por_hora_pct} />
             </div>

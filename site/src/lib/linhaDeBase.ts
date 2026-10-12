@@ -12,6 +12,9 @@ export type ComparacaoLinhaDeBase = {
   erroBase: number;
   /** Janelas em que a regra ingênua também teria oferecido a janela (chance média das horas >= 50%). */
   baseTambemOferecia: number;
+  /** Usinas com janelas avaliadas, e em quantas delas o modelo ficou mais perto que a regra ingênua. */
+  usinas: number;
+  usinasModeloMaisPerto: number;
 };
 
 /** Dias do período "AAAA-MM-DD a AAAA-MM-DD" (inclusive). */
@@ -44,11 +47,22 @@ export function compararComLinhaDeBase(janelas: JanelaViva[], calorPorUsina: Rec
   });
   if (!usadas.length) return null;
   const media = (f: (x: (typeof usadas)[number]) => number) => usadas.reduce((s, x) => s + f(x), 0) / usadas.length;
+  // Por usina: o empate no total pode esconder que cada uma foi melhor para um lado
+  const porUsina = new Map<string, { modelo: number; base: number; n: number }>();
+  for (const x of usadas) {
+    const acc = porUsina.get(x.j.id_ons) ?? { modelo: 0, base: 0, n: 0 };
+    acc.modelo += Math.abs(x.j.chance_prevista - (x.j.fracao_com_corte ?? 0));
+    acc.base += Math.abs(x.base - (x.j.fracao_com_corte ?? 0));
+    acc.n += 1;
+    porUsina.set(x.j.id_ons, acc);
+  }
   return {
     janelas: usadas.length,
     dias: new Set(usadas.map((x) => x.j.data)).size,
     erroModelo: media((x) => Math.abs(x.j.chance_prevista - (x.j.fracao_com_corte ?? 0))) * 100,
     erroBase: media((x) => Math.abs(x.base - (x.j.fracao_com_corte ?? 0))) * 100,
     baseTambemOferecia: usadas.filter((x) => x.base >= 0.5).length,
+    usinas: porUsina.size,
+    usinasModeloMaisPerto: [...porUsina.values()].filter((u) => u.modelo < u.base).length,
   };
 }

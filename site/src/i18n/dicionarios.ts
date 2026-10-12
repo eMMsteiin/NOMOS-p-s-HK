@@ -3,13 +3,17 @@
 const en = {
   locale: "en-US",
   nav: { atlas: "Atlas", track: "Track record", method: "Method", lab: "Lab", labBadge: "simulation", tagline: "To decide where to install next to a power plant." },
+  dataAge: (ate: string, dias: string) =>
+    `Data up to ${ate} (${dias} days ago). This test version does not update itself yet, so forecast windows for days that have passed are no longer forecasts.`,
+  notFound: { title: "Page not found", text: "This address does not exist in the Nomos atlas.", back: "Back to the Atlas" },
+  pageError: { title: "Something went wrong", text: "The page failed to load. Try again; if it keeps failing, reload the site.", retry: "Try again" },
   common: {
     wind: "Wind",
     solar: "Solar",
     approxLocation: "approximate location (municipality)",
     source: "Source",
     data: "Data",
-    capacity: "Capacity",
+    capacity: "Capacity (max. availability reported to the ONS)",
     operator: "Operator",
     chance: "Chance",
     expected: "Expected",
@@ -83,9 +87,9 @@ const en = {
     featured: "Featured plants",
     noWindow: "No window above 50% chance",
     valueNote: (pld: string) =>
-      `Reference value = expected curtailed energy × PLD (Brazil's spot price): a reference for negotiations between plant and operator, not what a buyer takes. During curtailment hours the Northeast PLD sits at its regulatory floor of ${pld}/MWh.`,
+      `Reference value = expected curtailed energy × PLD (Brazil's spot price): a reference for negotiations between a plant and a load next to it, not a price. During curtailment hours the Northeast PLD sits at its regulatory floor of ${pld}/MWh.`,
     valueNoteReal: (piso: string) =>
-      `Reference value = expected curtailed energy × the official hourly PLD (Brazil's spot price) for the Northeast, which CCEE publishes the day before: a reference for negotiations between plant and operator, not what a buyer takes. In most curtailment hours it sits at the regulatory floor of ${piso}/MWh.`,
+      `Reference value = expected curtailed energy × the official hourly PLD (Brazil's spot price) for the Northeast, which CCEE publishes the day before: a reference for negotiations between a plant and a load next to it, not a price. In most curtailment hours it sits at the regulatory floor of ${piso}/MWh.`,
     floorTitle: "The price hits the floor exactly when energy is curtailed",
     floorChart: (ate: string) =>
       `Share of hours with the Northeast PLD at its floor, by hour of day (Jan 1 to ${ate}). Shaded: peak curtailment hours (8:00–14:59).`,
@@ -145,6 +149,7 @@ const en = {
     valueNote: (pld: string) => `per month: the energy above × the average PLD of ${pld}/MWh (Northeast, hourly, weighted by curtailed energy, 2026).`,
     valueFloor: (piso: string, valor: string) => `At the regulatory floor (${piso}/MWh) it would be ${valor} per month.`,
     valueDisclaimer: "A starting point for talking to the plant, not a price, a profit or a guaranteed saving. The real value depends on the contract.",
+    assumption: "Assumption: the plant could have supplied your load during every curtailed hour. In practice that depends on the contract, the grid connection and the regulation.",
     reasonsTitle: "Why those hours were curtailed",
     reasonsHead: ["Reason", "Hours per month", "MWh per month"],
     reasonEne: "Energy surplus (ENE)",
@@ -155,7 +160,7 @@ const en = {
     elecWarn:
       "Electrical curtailment (grid reliability and lines or equipment out) is less predictable: it can start or stop abruptly, with little notice. Energy-surplus curtailment follows demand and the sun and wind patterns.",
     ruleTitle: "On regulation",
-    rule: "Aneel Normative Resolution 1.170/2026 (signed Oct 6, published in the Diário Oficial on Oct 9, 2026) sets criteria for curtailment. According to its text as published on Legisweb, for self-production whose consumption is at the same connection point, energy-surplus curtailment may only reach the amount above the local consumption. It applies only to energy-surplus (ENE) curtailment, not to electrical curtailment (CNF, REL), and its financial effects start only after a transition period. Nomos has not assessed whether any particular load is covered: a load that is not self-production should not assume protection.",
+    rule: "Aneel Normative Resolution 1.170/2026 (signed Oct 6, published in the Diário Oficial on Oct 9, 2026) sets criteria for curtailment. According to its text as published on Legisweb (art. 2, §9), for self-production whose consumption is at the same connection point, energy-surplus curtailment may only reach the amount above the local consumption at that moment, up to the limit that does not affect the industrial process. That clause sits in the article on energy-surplus curtailment (ENE); electrical curtailment (CNF, REL) is handled in another article (art. 3), which we have not assessed. Financial effects start only after a transition period. Nomos has not assessed whether any particular load is covered: a load that is not self-production should not assume protection.",
     methodTitle: "How we calculate",
     method: [
       "Curtailed hours per month = average over the 12 months of [days in the month × the sum, over the chosen hours, of the chance of curtailment for that month and hour (heat map, Jan 2025 to today)].",
@@ -178,7 +183,7 @@ const en = {
       `The ONS records the reason for every cut. ${ene} of the curtailed energy in 2026 was an energy surplus, the predictable part; the rest was electrical (grid reliability, lines or equipment out), which can start or stop abruptly.`,
     homeLink: "How our forecast handles each kind",
     lead: (ene: string, ate: string) =>
-      `The ONS records the reason for every curtailed half-hour. In the Northeast, from Jan 1 to ${ate}, ${ene} of the curtailed energy was an energy surplus: more clean power than the system needed. That is the predictable part. Reliability limits and lines or equipment out are electrical and can start or stop abruptly, like the night-time reliability cuts in Rio Grande do Norte that ended on Sep 28–29.`,
+      `The ONS records the reason for every curtailed half-hour. In the Northeast, from Jan 1 to ${ate}, ${ene} of the curtailed energy was an energy surplus: more clean power than the system needed. That is the predictable part. Reliability limits and lines or equipment out are electrical and can start or stop abruptly, like the night-time reliability cuts in Rio Grande do Norte that stopped on Sep 28–29 and came back around Oct 8.`,
     type: "Kind",
     code: "ONS code",
     share: "Share of curtailed energy (Northeast, 2026)",
@@ -188,10 +193,10 @@ const en = {
     yes: "Provided by law",
     no: "No",
     essNote: (fora: string) =>
-      `Law 15.269/2025 provides retroactive compensation to plants for cuts due to grid reliability (CNF) and external unavailability (REL). Energy-surplus cuts (ENE), ${fora} of the curtailed energy in 2026, are not compensated; on Oct 6, 2026, Aneel decided to share the losses from these cuts among generators. We have not checked how the compensation is being applied.`,
+      `Law 15.269/2025 provides compensation to plants for cuts due to grid reliability (CNF) and external unavailability (REL). According to the press, a ministry ordinance (Portaria MME 140/2026) covers past events (Sep 2023 to Nov 2025) for companies that adhere voluntarily. Energy-surplus cuts (ENE), ${fora} of the curtailed energy in 2026, are not compensated. Aneel Resolution 1.170/2026 (Oct 2026) says the CCEE shares the curtailed energy among the eligible plants. We have not checked how all this is being applied.`,
     dictionary: "ONS data dictionary (reason codes)",
     byMonth: "Mix by month (Northeast, 2026)",
-    monthNote: "The mix changes during the year: in January most curtailment was for grid reliability; from March on, energy surplus dominates.",
+    monthNote: "The mix changes during the year: in January the largest share of curtailment was for grid reliability; from February on, energy surplus dominates.",
     plantTitle: "Why this plant is curtailed (2026)",
     plantLead: (gwh: string, ene: string, rel: string) =>
       `${gwh} curtailed this year. ${ene} was energy surplus (the predictable part); ${rel} was a line or equipment out.`,
@@ -229,8 +234,8 @@ const en = {
     byType: "By plant type (production model, August)",
     reproTitle: "Reproducible by anyone",
     reproLead:
-      "Every number on this site comes from open ONS data and open-source code. Run it on any computer and you get byte-identical files with these SHA-256 fingerprints:",
-    reproQuote: "Phase 2 is a declared oracle v1 — but every stamp is reproducible from public data.",
+      "Every number on this site comes from open data (ONS and CCEE) and open-source code. Run it on any computer and you get byte-identical files with these SHA-256 fingerprints:",
+    reproQuote: "The only on-chain record in the atlas is the fingerprint (SHA-256) of each daily forecast. The platform writes it, as a declared oracle (the ONS signs nothing); anyone can recompute the files from public data and compare.",
     params: "Parameters fixed before the test",
     liveTitle: "Live since October 1",
     liveLead: (ate: string) =>
@@ -249,10 +254,11 @@ const en = {
     baseLose: (m: string, b: string) => `The naive rule was closer on average: ${b} pp vs. ${m} pp for our model. We show it as it is.`,
     baseTie: (m: string) => `A tie on average: ${m} pp for both.`,
     baseAlso: (k: string, n: string) => `The naive rule would also have offered ${k} of these ${n} windows.`,
+    basePerPlant: (k: string, n: string, resto: string) => `Plant by plant, the model was closer in ${k} of ${n} plants and the naive rule in the other ${resto}: an average tie can hide that.`,
     baseCaveat: (dias: string) => `With ${dias} days this is a first look, not a conclusion. The backtest comparison with naive rules for August and September is in the table below.`,
     liveNote: "Live results are shown as they come, misses included. The October 1–7 forecasts used only data up to Sep 30 but were published on Oct 7. From Oct 8 on, every forecast is public before the day starts (history on GitHub); from Oct 9 on, its fingerprint is also recorded on Solana.",
     liveWhyTitle: "Why early October is weaker",
-    liveWhy: "The misses concentrate in two Rio Grande do Norte plants. On Sep 28–29, their nighttime curtailment for grid reliability (CNF) stopped abruptly: from almost every night to almost none. The model only learns from past patterns, with a 7-day lag, so it kept offering those night windows. Bahia and Ceará plants stayed close to the test. Information on grid maintenance and operating changes would catch this, and is on our list.",
+    liveWhy: "The misses concentrate in two Rio Grande do Norte plants (Rio do Vento and Rio do Vento Expansão: 21 of the 30 misses from Oct 1 to 10). On Sep 28–29, their nighttime curtailment for grid reliability (CNF) stopped abruptly: from almost every night to almost none. The model only learns from past patterns, with a 7-day lag, so it kept offering those night windows. The night cuts came back around Oct 8, which shows how abruptly electrical curtailment can change. Most other plants stayed close to their backtest results; Sol do Sertão and Assu Sol were about 20 points lower, on only 10 windows each. Information on grid maintenance and operating changes would catch this, and is on our list.",
     liveByPlant: "Live, by plant",
     backtestCol: "Aug–Sep",
     liveCol: "Live",
@@ -308,11 +314,11 @@ const en = {
       "ONS data for recent months may still be revised.",
       "The model assumes the ONS publishes with a 7-day lag (fixed before the test). It actually publishes about a day later, so forecasts use older data than they could.",
       "The ONS reports groups of plants (conjuntos), not single plants.",
-      "We do not sell electricity: the energy never leaves the plant, the job travels over the internet. Selling electricity in Brazil is regulated, and we have not assessed it.",
-      "Phase 2 is a declared, centralized oracle (the platform). The ONS signs nothing: we record what it published. A production version could let anyone challenge a stamp with the ONS file.",
+      "Nomos does not sell electricity or any other service today: it is an information tool. If a load ever buys energy from a plant, that is regulated in Brazil and we have not assessed it.",
+      "The only on-chain record in the atlas is the fingerprint of each daily forecast. It is written by the platform, a declared and centralized oracle: the ONS signs nothing. A production version could let anyone challenge it with the ONS file.",
       "Reference values and the load calculator are estimates computed from past data. They are not a forecast, a price or a guarantee.",
-      "Nobody has validated yet who would pay for an hourly certificate of energy that would otherwise be lost; it is the hypothesis we are testing.",
-      "Most curtailment is systemic (energy surplus), so a load anywhere on the grid helps absorb it; per-plant receipts state only that a job ran during a window recorded by the ONS.",
+      "Nobody has validated yet who would pay for the atlas or the calculator, nor for an hourly certificate of energy that would otherwise be lost (the idea in the Lab). They are the hypotheses we are testing.",
+      "Most curtailment is systemic (energy surplus). A load next to a plant could only use that energy if the contract, the grid connection and the regulation allow it: the calculator shows what happened in the past, not what a contract would allow.",
     ],
     codeLink: "Source code on GitHub",
   },
@@ -474,13 +480,17 @@ export type Dicionario = typeof en;
 const pt: Dicionario = {
   locale: "pt-BR",
   nav: { atlas: "Atlas", track: "Placar", method: "Método", lab: "Laboratório", labBadge: "simulação", tagline: "Para decidir onde instalar ao lado de uma usina." },
+  dataAge: (ate: string, dias: string) =>
+    `Dados até ${ate} (há ${dias} dias). Esta versão de teste ainda não se atualiza sozinha, então as janelas previstas para dias que já passaram deixaram de ser previsões.`,
+  notFound: { title: "Página não encontrada", text: "Este endereço não existe no atlas do Nomos.", back: "Voltar ao Atlas" },
+  pageError: { title: "Algo deu errado", text: "A página não carregou. Tente de novo; se continuar falhando, recarregue o site.", retry: "Tentar de novo" },
   common: {
     wind: "Eólica",
     solar: "Solar",
     approxLocation: "localização aproximada (município)",
     source: "Fonte",
     data: "Data",
-    capacity: "Capacidade",
+    capacity: "Capacidade (disponibilidade máxima informada ao ONS)",
     operator: "Operador",
     chance: "Chance",
     expected: "Esperado",
@@ -554,9 +564,9 @@ const pt: Dicionario = {
     featured: "Usinas de destaque",
     noWindow: "Nenhuma janela acima de 50% de chance",
     valueNote: (pld: string) =>
-      `Valor de referência = energia cortada esperada × PLD (o preço de curto prazo): uma referência para a negociação entre usina e operador, não o que um comprador leva. Nas horas de corte, o PLD do Nordeste fica no piso regulatório de ${pld}/MWh.`,
+      `Valor de referência = energia cortada esperada × PLD (o preço de curto prazo): uma referência para a negociação entre uma usina e uma carga ao lado dela, não um preço. Nas horas de corte, o PLD do Nordeste fica no piso regulatório de ${pld}/MWh.`,
     valueNoteReal: (piso: string) =>
-      `Valor de referência = energia cortada esperada × o PLD horário oficial do Nordeste (preço de curto prazo), que a CCEE publica na véspera: uma referência para a negociação entre usina e operador, não o que um comprador leva. Na maioria das horas de corte, ele fica no piso regulatório de ${piso}/MWh.`,
+      `Valor de referência = energia cortada esperada × o PLD horário oficial do Nordeste (preço de curto prazo), que a CCEE publica na véspera: uma referência para a negociação entre uma usina e uma carga ao lado dela, não um preço. Na maioria das horas de corte, ele fica no piso regulatório de ${piso}/MWh.`,
     floorTitle: "O preço vai ao piso justamente quando a energia é cortada",
     floorChart: (ate: string) =>
       `Fração das horas com o PLD do Nordeste no piso, por hora do dia (1º/jan a ${ate}). Em destaque: horário de pico do corte (8h às 14h59).`,
@@ -616,6 +626,7 @@ const pt: Dicionario = {
     valueNote: (pld: string) => `por mês: a energia acima × o PLD médio de ${pld}/MWh (Nordeste, horário, ponderado pela energia cortada, 2026).`,
     valueFloor: (piso: string, valor: string) => `Ao piso regulatório (${piso}/MWh) seria ${valor} por mês.`,
     valueDisclaimer: "É um ponto de partida para conversar com a usina, não um preço, um lucro nem uma economia garantida. O valor real depende do contrato.",
+    assumption: "Premissa: a usina poderia ter alimentado a sua carga em todas as horas de corte. Na prática isso depende do contrato, da conexão à rede e da regulação.",
     reasonsTitle: "Por que essas horas foram cortadas",
     reasonsHead: ["Razão", "Horas por mês", "MWh por mês"],
     reasonEne: "Sobra de energia (ENE)",
@@ -626,7 +637,7 @@ const pt: Dicionario = {
     elecWarn:
       "O corte elétrico (confiabilidade da rede e linha ou equipamento fora) é menos previsível: pode começar ou parar de repente, com pouco aviso. O corte por sobra de energia segue a demanda e o padrão de sol e vento.",
     ruleTitle: "Sobre a regulação",
-    rule: "A Resolução Normativa Aneel 1.170/2026 (assinada em 06/10 e publicada no Diário Oficial em 09/10/2026) define critérios para o corte de geração. Segundo o texto publicado no Legisweb, para a autoprodução cujo consumo está no mesmo ponto de conexão, o corte por razão energética só pode atingir o que superar o consumo local. Vale só para corte por sobra de energia (ENE), não para o corte elétrico (CNF, REL), e os efeitos financeiros só começam depois de um período de transição. O Nomos não avaliou se uma carga específica é coberta: uma carga que não seja autoprodução não deve presumir proteção.",
+    rule: "A Resolução Normativa Aneel 1.170/2026 (assinada em 06/10 e publicada no Diário Oficial em 09/10/2026) define critérios para o corte de geração. Segundo o texto publicado no Legisweb (art. 2º, §9º), para a autoprodução cujo consumo está no mesmo ponto de conexão, o corte por razão energética só pode atingir o que superar o consumo local naquele instante, até o limite que não afete o consumo do processo industrial. Essa regra está no artigo sobre o corte por sobra de energia (ENE); o corte elétrico (CNF, REL) é tratado em outro artigo (art. 3º), que não avaliamos. Os efeitos financeiros só começam depois de um período de transição. O Nomos não avaliou se uma carga específica é coberta: uma carga que não seja autoprodução não deve presumir proteção.",
     methodTitle: "Como calculamos",
     method: [
       "Horas de corte por mês = média dos 12 meses de [dias do mês × soma, nas horas escolhidas, da chance de corte daquele mês e hora (mapa de calor, jan/2025 até hoje)].",
@@ -649,7 +660,7 @@ const pt: Dicionario = {
       `O ONS registra a razão de cada corte. ${ene} da energia cortada em 2026 foi sobra de energia, a parte previsível; o resto foi elétrico (confiabilidade da rede, linha ou equipamento fora), que começa ou para de repente.`,
     homeLink: "Como a nossa previsão lida com cada tipo",
     lead: (ene: string, ate: string) =>
-      `O ONS registra a razão de cada meia hora cortada. No Nordeste, de 1º/jan a ${ate}, ${ene} da energia cortada foi sobra de energia: mais energia limpa do que o sistema precisava. Essa é a parte previsível. Os limites de confiabilidade e as linhas ou equipamentos fora são elétricos e começam ou param de repente, como os cortes noturnos por confiabilidade no Rio Grande do Norte, que acabaram em 28–29/09.`,
+      `O ONS registra a razão de cada meia hora cortada. No Nordeste, de 1º/jan a ${ate}, ${ene} da energia cortada foi sobra de energia: mais energia limpa do que o sistema precisava. Essa é a parte previsível. Os limites de confiabilidade e as linhas ou equipamentos fora são elétricos e começam ou param de repente, como os cortes noturnos por confiabilidade no Rio Grande do Norte, que pararam em 28–29/09 e voltaram por volta de 8/10.`,
     type: "Tipo",
     code: "Código do ONS",
     share: "Parte da energia cortada (Nordeste, 2026)",
@@ -659,10 +670,10 @@ const pt: Dicionario = {
     yes: "Previsto em lei",
     no: "Não",
     essNote: (fora: string) =>
-      `A Lei 15.269/2025 prevê ressarcimento retroativo às usinas pelos cortes por confiabilidade da rede (CNF) e por indisponibilidade externa (REL). Os cortes por sobra de energia (ENE), ${fora} da energia cortada em 2026, não são ressarcidos; em 06/10/2026 a Aneel decidiu ratear os prejuízos desses cortes entre os geradores. Não conferimos como o ressarcimento está sendo aplicado.`,
+      `A Lei 15.269/2025 prevê ressarcimento às usinas pelos cortes por confiabilidade da rede (CNF) e por indisponibilidade externa (REL). Segundo a imprensa, uma portaria do ministério (Portaria MME 140/2026) cobre eventos passados (set/2023 a nov/2025) para as empresas que aderirem voluntariamente. Os cortes por sobra de energia (ENE), ${fora} da energia cortada em 2026, não são ressarcidos. A Resolução Aneel 1.170/2026 (outubro/2026) diz que a CCEE rateia a energia cortada entre as usinas elegíveis. Não conferimos como tudo isso está sendo aplicado.`,
     dictionary: "Dicionário de dados do ONS (códigos das razões)",
     byMonth: "Composição por mês (Nordeste, 2026)",
-    monthNote: "A composição muda ao longo do ano: em janeiro a maior parte do corte foi por confiabilidade da rede; de março em diante, domina a sobra de energia.",
+    monthNote: "A composição muda ao longo do ano: em janeiro a maior fatia do corte foi por confiabilidade da rede; de fevereiro em diante, domina a sobra de energia.",
     plantTitle: "Por que esta usina é cortada (2026)",
     plantLead: (gwh: string, ene: string, rel: string) =>
       `${gwh} cortados neste ano. ${ene} foi sobra de energia (a parte previsível); ${rel} foi linha ou equipamento fora.`,
@@ -700,8 +711,8 @@ const pt: Dicionario = {
     byType: "Por tipo de usina (modelo de produção, agosto)",
     reproTitle: "Qualquer pessoa pode reproduzir",
     reproLead:
-      "Todos os números deste site vêm de dados abertos do ONS e de código aberto. Rode em qualquer computador e você obtém arquivos idênticos, com estas impressões digitais SHA-256:",
-    reproQuote: "A fase 2 é um oráculo v1 declarado — mas cada carimbo pode ser refeito a partir de dados públicos.",
+      "Todos os números deste site vêm de dados abertos (ONS e CCEE) e de código aberto. Rode em qualquer computador e você obtém arquivos idênticos, com estas impressões digitais SHA-256:",
+    reproQuote: "O único registro na blockchain no atlas é a impressão digital (SHA-256) de cada previsão diária. A plataforma a grava, como oráculo declarado (o ONS não assina nada); qualquer pessoa pode refazer os arquivos a partir de dados públicos e comparar.",
     params: "Parâmetros fixados antes do teste",
     liveTitle: "Ao vivo desde 1º de outubro",
     liveLead: (ate: string) =>
@@ -720,10 +731,11 @@ const pt: Dicionario = {
     baseLose: (m: string, b: string) => `A regra ingênua ficou mais perto em média: ${b} p.p. contra ${m} p.p. do nosso modelo. Mostramos como é.`,
     baseTie: (m: string) => `Empate em média: ${m} p.p. nos dois.`,
     baseAlso: (k: string, n: string) => `A regra ingênua também teria oferecido ${k} destas ${n} janelas.`,
+    basePerPlant: (k: string, n: string, resto: string) => `Usina por usina, o modelo ficou mais perto em ${k} das ${n} usinas e a regra ingênua nas outras ${resto}: um empate na média pode esconder isso.`,
     baseCaveat: (dias: string) => `Com ${dias} dias, isto é uma primeira olhada, não uma conclusão. A comparação do teste retroativo com regras ingênuas, em agosto e setembro, está na tabela abaixo.`,
     liveNote: "O resultado ao vivo aparece como vier, erros incluídos. As previsões de 1º a 7/10 usaram só dados até 30/09, mas foram publicadas em 7/10. A partir de 8/10, toda previsão é pública antes de o dia começar (histórico no GitHub); a partir de 9/10, sua impressão digital também é gravada na Solana.",
     liveWhyTitle: "Por que o começo de outubro está mais fraco",
-    liveWhy: "Os erros se concentram em duas usinas do Rio Grande do Norte. Em 28–29/09, o corte noturno delas por confiabilidade da rede (CNF) parou de repente: de quase toda noite para quase nenhuma. O modelo só aprende com padrões do passado, com 7 dias de atraso, então continuou oferecendo essas janelas noturnas. As usinas da Bahia e do Ceará ficaram perto do teste. Informação sobre manutenção e mudanças na operação da rede pegaria isso, e está na nossa lista.",
+    liveWhy: "Os erros se concentram em duas usinas do Rio Grande do Norte (Rio do Vento e Rio do Vento Expansão: 21 dos 30 erros de 1º a 10/10). Em 28–29/09, o corte noturno delas por confiabilidade da rede (CNF) parou de repente: de quase toda noite para quase nenhuma. O modelo só aprende com padrões do passado, com 7 dias de atraso, então continuou oferecendo essas janelas noturnas. Os cortes noturnos voltaram por volta de 8/10, o que mostra como o corte elétrico pode mudar de repente. A maioria das outras usinas ficou perto do resultado do teste retroativo; Sol do Sertão e Assu Sol ficaram uns 20 pontos abaixo, com apenas 10 janelas cada. Informação sobre manutenção e mudanças na operação da rede pegaria isso, e está na nossa lista.",
     liveByPlant: "Ao vivo, por usina",
     backtestCol: "Ago–set",
     liveCol: "Ao vivo",
@@ -779,11 +791,11 @@ const pt: Dicionario = {
       "Os dados do ONS dos meses recentes ainda podem ser revisados.",
       "O modelo supõe que o ONS publica com 7 dias de atraso (fixado antes do teste). Na prática ele publica cerca de um dia depois, então a previsão usa dados mais velhos do que poderia.",
       "O ONS publica por conjunto de usinas, não por usina individual.",
-      "Não vendemos eletricidade: a energia não sai da usina, o trabalho viaja pela internet. Vender eletricidade no Brasil é regulado, e não avaliamos essa regra.",
-      "A fase 2 é um oráculo declarado e centralizado (a plataforma). O ONS não assina nada: nós registramos o que ele publicou. Uma versão de produção poderia deixar qualquer pessoa contestar um carimbo com o arquivo do ONS.",
+      "O Nomos não vende eletricidade nem qualquer outro serviço hoje: é uma ferramenta de informação. Se um dia uma carga comprar energia de uma usina, isso é regulado no Brasil e não avaliamos essa regra.",
+      "O único registro na blockchain no atlas é a impressão digital de cada previsão diária. Ela é gravada pela plataforma, um oráculo declarado e centralizado: o ONS não assina nada. Uma versão de produção poderia deixar qualquer pessoa contestá-la com o arquivo do ONS.",
       "Os valores de referência e a calculadora de carga são estimativas feitas com dados do passado. Não são previsão, preço nem garantia.",
-      "Ninguém validou ainda quem pagaria por um certificado por hora de energia que seria perdida; é a hipótese que estamos testando.",
-      "A maior parte do corte é sistêmica (sobra de energia), então uma carga em qualquer lugar da rede ajuda a absorvê-la; o recibo por usina afirma só que um trabalho rodou durante uma janela registrada pelo ONS.",
+      "Ninguém validou ainda quem pagaria pelo atlas ou pela calculadora, nem por um certificado por hora de energia que seria perdida (a ideia do Laboratório). São as hipóteses que estamos testando.",
+      "A maior parte do corte é sistêmica (sobra de energia). Uma carga ao lado de uma usina só poderia usar essa energia se o contrato, a conexão à rede e a regulação permitirem: a calculadora mostra o que aconteceu no passado, não o que um contrato permitiria.",
     ],
     codeLink: "Código-fonte no GitHub",
   },
