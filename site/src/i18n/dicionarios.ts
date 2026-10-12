@@ -131,7 +131,7 @@ const en = {
     elecWarn:
       "Electrical curtailment (grid reliability and lines or equipment out) is less predictable: it can start or stop abruptly, with little notice. Energy-surplus curtailment follows demand and the sun and wind patterns.",
     ruleTitle: "On regulation",
-    rule: "A rule approved by Aneel in October 2026 (according to the press, to be confirmed in the Diário Oficial) deals with self-production consumption at the same connection point, and only for energy-surplus curtailment. We do not treat the rule as already in force, and electrical curtailment (CNF, REL) is outside it.",
+    rule: "Aneel Normative Resolution 1.170/2026 (signed Oct 6, published in the Diário Oficial on Oct 9, 2026) sets criteria for curtailment. According to its text as published on Legisweb, for self-production whose consumption is at the same connection point, energy-surplus curtailment may only reach the amount above the local consumption. It applies only to energy-surplus (ENE) curtailment, not to electrical curtailment (CNF, REL), and its financial effects start only after a transition period. Nomos has not assessed whether any particular load is covered: a load that is not self-production should not assume protection.",
     methodTitle: "How we calculate",
     method: [
       "Curtailed hours per month = average over the 12 months of [days in the month × the sum, over the chosen hours, of the chance of curtailment for that month and hour (heat map, Jan 2025 to today)].",
@@ -534,7 +534,7 @@ const pt: Dicionario = {
     elecWarn:
       "O corte elétrico (confiabilidade da rede e linha ou equipamento fora) é menos previsível: pode começar ou parar de repente, com pouco aviso. O corte por sobra de energia segue a demanda e o padrão de sol e vento.",
     ruleTitle: "Sobre a regulação",
-    rule: "Uma regra da Aneel aprovada em outubro/2026 (segundo a imprensa, a confirmar no Diário Oficial) trata do consumo de autoprodução no mesmo ponto de conexão, e só para corte de razão energética. Não tratamos a regra como já em vigor, e o corte elétrico (CNF, REL) fica de fora dela.",
+    rule: "A Resolução Normativa Aneel 1.170/2026 (assinada em 06/10 e publicada no Diário Oficial em 09/10/2026) define critérios para o corte de geração. Segundo o texto publicado no Legisweb, para a autoprodução cujo consumo está no mesmo ponto de conexão, o corte por razão energética só pode atingir o que superar o consumo local. Vale só para corte por sobra de energia (ENE), não para o corte elétrico (CNF, REL), e os efeitos financeiros só começam depois de um período de transição. O Nomos não avaliou se uma carga específica é coberta: uma carga que não seja autoprodução não deve presumir proteção.",
     methodTitle: "Como calculamos",
     method: [
       "Horas de corte por mês = média dos 12 meses de [dias do mês × soma, nas horas escolhidas, da chance de corte daquele mês e hora (mapa de calor, jan/2025 até hoje)].",

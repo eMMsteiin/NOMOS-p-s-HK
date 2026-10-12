@@ -30,7 +30,7 @@ These come from primary sources, specialized press or our own calculation with o
 | Brazil curtailed at least 73.4 million MWh of wind and solar between Oct 2021 and Aug 2026. | Volt Robotics Curtailment Tracker, as reported by [Canal Solar](https://canalsolar.com.br/curtailment-soma-73-milhoes-mwh-desde-2021/) |
 | In 2026, about two thirds of the curtailment is energy surplus (`ENE`), and the Northeast concentrates about 83% of it. | [Cenário Energia, Sep 16, 2026](https://cenarioenergia.com.br/2026/09/16/curtailment-no-limite-brasil-acumula-51-dias-de-cortes-massivos-em-solar-e-eolica-ate-agosto/) (67% energy-surplus share through August, Brazil); the 83% Northeast share still needs a citation |
 | In the Northeast in 2026: `ENE` about 66%, `CNF` about 24%, `REL` about 10% of the curtailed energy. | Our calculation, ONS open data |
-| Law 15.269/2025 provides retroactive compensation for `CNF` and `REL` cuts. `ENE` cuts are not compensated; on Oct 6, 2026 Aneel decided to share their losses among generators. | [Cenário Energia, Jan 8, 2026](https://cenarioenergia.com.br/2026/01/08/mme-aciona-aneel-para-suspender-ressarcimentos-de-eolicas-e-solares-e-avaliar-impacto-da-lei-15-269-2025/) and [TAGD Law](https://tagdlaw.com.br/?p=15470) on the law; the official text on planalto.gov.br and the Oct 6 Aneel decision still need a citation (we found neither). The MME asked Aneel in Jan 2026 to suspend compensation payments until the model is regulated, so how it is applied is unsettled |
+| Law 15.269/2025 provides retroactive compensation for `CNF` and `REL` cuts. `ENE` cuts are not compensated; REN 1.170/2026 (Oct 2026) sets how their losses are shared among generators. | [Cenário Energia, Jan 8, 2026](https://cenarioenergia.com.br/2026/01/08/mme-aciona-aneel-para-suspender-ressarcimentos-de-eolicas-e-solares-e-avaliar-impacto-da-lei-15-269-2025/) and [TAGD Law](https://tagdlaw.com.br/?p=15470) on the law; the official text on planalto.gov.br still needs a citation (we did not find it). The MME asked Aneel in Jan 2026 to suspend compensation payments until the model is regulated, so how it is applied is unsettled |
 | Today, the main consumer of curtailed energy is bitcoin mining. AI data centers want firm, constant power. | Specialized press (exact citation to add) |
 | Energy is roughly 4–11% of the cost of a GPU-hour; GPU depreciation dominates. | Industry estimates (exact citation to add) |
 | The Redata regime (Law 15.504/2026) asks for renewable energy contracts, not hour-by-hour proof. | Law text |
@@ -42,7 +42,7 @@ These come from primary sources, specialized press or our own calculation with o
 - **Who would pay** for the atlas or the calculator. We have not asked for money from anyone and have no customer.
 - **Whether a buyer exists** for an hourly certificate that a load used energy that would otherwise be lost. Nobody has told us they would pay for it.
 - **Price and accuracy of commercial curtailment forecasts**: we do not know what the alternatives charge or how well they perform.
-- **Aneel rule REN 1.170/2026** (consumption of self-production at the same connection point, protected from energy-surplus curtailment): so far confirmed only by press. It must be checked in the Diário Oficial. If confirmed, it would apply only to self-production and only to `ENE` cuts. We never present it as in force.
+- **Aneel rule REN 1.170/2026.** Per its text on [Legisweb](https://www.legisweb.com.br/legislacao/?id=502740): signed Oct 6, published in the Diário Oficial on Oct 9, 2026, in force on publication, with financial effects only after a transition. For self-production whose consumption is at the same connection point, energy-surplus curtailment may only reach the amount above local consumption. Not yet checked against the official Diário Oficial text. It covers self-production and only `ENE` cuts; whether a given load would qualify is not assessed.
 - **Live forecast quality.** The live scoreboard has a sample of only 10 days (68 of 98 windows confirmed). On those same windows, our model's average error (29.9 percentage points) is a tie with a naive rule that repeats the plant's habits of the previous month. The model did better on some plants and worse on the two Rio Grande do Norte plants whose night-time cuts stopped abruptly. Ten days is not enough to conclude anything.
 
 ## 5. Who might use it (to be tested)
@@ -71,7 +71,7 @@ Possible ways to earn money, **none tested**: reports or consulting for loads ne
 
 ## 8. Next steps to validate
 
-1. Verify REN 1.170/2026 in the Diário Oficial and update the site accordingly.
+1. Read REN 1.170/2026 in the official Diário Oficial text (not only Legisweb) and ask a regulatory lawyer whether a flexible load could qualify.
 2. Talk to 10 or more plant owners, developers and flexible-load operators. Ask: how do you estimate curtailment today, what would you pay for, who decides? Record answers in writing, with permission, before citing anyone.
 3. Keep the live scoreboard running for weeks and publish the comparison with the naive rule as the sample grows, whatever it shows.
 4. Add data that would catch abrupt electrical cuts (grid maintenance and operating changes).
