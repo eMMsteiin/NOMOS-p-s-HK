@@ -14,7 +14,7 @@ const outfit = Outfit({ variable: "--font-outfit", subsets: ["latin"], weight: [
 export const metadata: Metadata = {
   title: "Nomos — Brazil's curtailed-energy atlas",
   description:
-    "An open atlas of the wind and solar power Brazil's grid throws away: where, why, what it is worth and when it will happen next, with a public forecast track record and hourly receipts on Solana.",
+    "An open atlas of the wind and solar power curtailed in Brazil's Northeast, with a calculator to decide where to install a load next to a plant. Estimates from past ONS data, not a guarantee.",
 };
 
 // Celular, tablet e computador: largura do aparelho, área do entalhe (notch) e cor da barra do navegador

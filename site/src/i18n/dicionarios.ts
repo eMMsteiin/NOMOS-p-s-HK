@@ -2,7 +2,7 @@
 
 const en = {
   locale: "en-US",
-  nav: { atlas: "Atlas", track: "Track record", method: "Method", lab: "Lab", labBadge: "simulation", tagline: "Curtailed clean energy, mapped and on the record." },
+  nav: { atlas: "Atlas", track: "Track record", method: "Method", lab: "Lab", labBadge: "simulation", tagline: "To decide where to install next to a power plant." },
   common: {
     wind: "Wind",
     solar: "Solar",
@@ -45,8 +45,8 @@ const en = {
       "The Reserve buttons demo an idea for later: reserve a window for a compute job, pay in USDC and get a public receipt on Solana. It runs on devnet with test wallets, the plant and the operator are simulated, the job runs on a laptop and absorbs no curtailed energy. Nobody has validated that a buyer would pay for this. What is real today: the data, the forecast, the scoreboard and the forecast fingerprint stamped on Solana before the day.",
     statCut: "average power curtailed in the Northeast, Jan–Aug 2026",
     statDay: "of clean energy wasted per day",
-    statValue: "per year, even at the minimum market price",
-    statValueReal: (ate: string) => `worth of clean energy curtailed in the Northeast from Jan 1 to ${ate}, at the actual hourly market price`,
+    statValue: "value per year of the curtailed energy, even at the minimum price (PLD floor): an estimate, not money anyone received",
+    statValueReal: (ate: string) => `value of the energy curtailed in the Northeast from Jan 1 to ${ate}, at the actual hourly PLD: an estimate, not money anyone received`,
     statCapture: "of the curtailed energy fell inside our forecast windows (Aug / Sep 2026)",
     forecastTitle: "Forecast windows",
     forecastLead: (ate: string) =>
@@ -242,21 +242,20 @@ const en = {
       "Live track record since Oct 1, 2026, updated as the ONS publishes each day.",
       "Forecasts and backtest computed from that data; parameters fixed before the test.",
       "Forecast windows for the coming days, awaiting the ONS verdict.",
-      "Hourly PLD for the Northeast submarket (CCEE open data, Jan 1–Oct 8, 2026).",
     ],
+    // O período vem dos dados do PLD (não é escrito à mão)
+    pldItem: (periodo: string) => (periodo ? `Hourly PLD for the Northeast submarket (CCEE open data, ${periodo}).` : "Hourly PLD for the Northeast submarket (CCEE open data)."),
     estTitle: "Estimated",
     est: [
       "Expected energy per window (±20% against the realized values of Aug–Sep).",
       "Window value spreads the expected energy evenly across the window's hours, priced at each hour's PLD.",
-      "GPU-hour equivalence (0.85 kW per H100 with cooling), illustrative only.",
     ],
-    simTitle: "Simulated in the MVP",
+    estGpu: "GPU-hour equivalence (0.85 kW per H100 with cooling), illustrative only.",
+    simTitle: "Future vision, simulated",
     sim: [
-      "The plant and the compute operator (test wallets on Solana devnet).",
-      "The demo job runs on a laptop: its receipt says “replay of a historical window, demonstration run”.",
-      "Fiat off-ramp (Pix) — in production, through an authorized provider.",
-      "The per-window reservation is a concept for when short-term contracts exist: today plants and operators sign long contracts (around 2 years), where curtailment works as a discount.",
+      "Window reservations, payment in test USDC and receipts on Solana are a future vision, simulated on devnet. They are not part of the Nomos product. They live in the Lab.",
     ],
+    simLink: "See the Lab (simulation) →",
     defTitle: "Definitions",
     defs: [
       ["Curtailment", "generation the ONS orders plants to cut because the grid cannot absorb it (constrained-off)."],
@@ -450,7 +449,7 @@ export type Dicionario = typeof en;
 
 const pt: Dicionario = {
   locale: "pt-BR",
-  nav: { atlas: "Atlas", track: "Placar", method: "Método", lab: "Laboratório", labBadge: "simulação", tagline: "Energia limpa cortada, mapeada e registrada." },
+  nav: { atlas: "Atlas", track: "Placar", method: "Método", lab: "Laboratório", labBadge: "simulação", tagline: "Para decidir onde instalar ao lado de uma usina." },
   common: {
     wind: "Eólica",
     solar: "Solar",
@@ -485,7 +484,7 @@ const pt: Dicionario = {
     title: "Se você colocar uma carga ao lado de uma usina eólica ou solar do Nordeste, quanta energia cortada ela poderia ter aproveitado?",
     context: (mw: string) => `Em 2026 o Nordeste teve ${mw} de energia eólica e solar cortados em média: a rede não conseguia absorver, então o operador mandou as usinas reduzirem a produção.`,
     lead:
-      "O Nomos é um atlas aberto desse corte: onde e quanto se corta, por quê (sobra de energia, confiabilidade da rede ou linha ou equipamento fora), quanto vale ao preço horário de curto prazo e o quanto a nossa previsão acerta. Cada página de usina tem uma calculadora: informe os MW que você instalaria e as horas por dia, e veja, pelo passado e não como promessa, quantas horas e quanta energia você teria aproveitado.",
+      "O Nomos é um atlas aberto desse corte: onde e quanto se corta, por quê (sobra de energia, confiabilidade da rede ou linha ou equipamento fora), quanto vale ao preço horário de curto prazo e quanto a nossa previsão acerta. Cada página de usina tem uma calculadora: informe os MW que você instalaria e as horas por dia, e veja, pelo passado e não como promessa, quantas horas e quanta energia você teria aproveitado.",
     calcCta: "Experimente a calculadora numa usina",
     calcCtaNote: "Estimativas com dados passados do ONS, não garantia. O contrato com a usina precisa ser negociado.",
     visionTitle: "Visão futura, simulada",
@@ -493,8 +492,8 @@ const pt: Dicionario = {
       "Os botões Reservar mostram uma ideia para depois: reservar uma janela para um trabalho de computação, pagar em USDC e receber um recibo público na Solana. Roda na devnet com carteiras de teste, usina e operador são simulados, o trabalho roda num notebook e não absorve energia cortada. Ninguém validou que um comprador pagaria por isso. O que é real hoje: os dados, a previsão, o placar e a impressão digital da previsão carimbada na Solana antes do dia.",
     statCut: "de potência média cortada no Nordeste, jan–ago/2026",
     statDay: "de energia limpa desperdiçada por dia",
-    statValue: "por ano, mesmo ao preço mínimo de mercado",
-    statValueReal: (ate: string) => `em energia limpa cortada no Nordeste de 1º/jan a ${ate}, ao preço real de mercado hora a hora`,
+    statValue: "valor por ano da energia cortada, mesmo ao preço mínimo (piso do PLD): estimativa, não é dinheiro que alguém recebeu",
+    statValueReal: (ate: string) => `valor da energia cortada no Nordeste de 1º/jan a ${ate}, ao PLD horário real: estimativa, não é dinheiro que alguém recebeu`,
     statCapture: "da energia cortada caiu nas nossas janelas previstas (ago / set 2026)",
     forecastTitle: "Janelas previstas",
     forecastLead: (ate: string) =>
@@ -690,21 +689,20 @@ const pt: Dicionario = {
       "Placar ao vivo desde 1º/10/2026, atualizado conforme o ONS publica cada dia.",
       "Previsões e teste retroativo calculados a partir desses dados; parâmetros fixados antes do teste.",
       "Janelas previstas para os próximos dias, aguardando o veredito do ONS.",
-      "PLD horário do submercado Nordeste (dados abertos da CCEE, 1º/jan a 8/out/2026).",
     ],
+    // O período vem dos dados do PLD (não é escrito à mão)
+    pldItem: (periodo: string) => (periodo ? `PLD horário do submercado Nordeste (dados abertos da CCEE, ${periodo}).` : "PLD horário do submercado Nordeste (dados abertos da CCEE)."),
     estTitle: "Estimado",
     est: [
       "Energia esperada por janela (±20% frente ao realizado em ago–set).",
       "O valor da janela distribui a energia esperada igualmente pelas horas da janela, a preço do PLD de cada hora.",
-      "Equivalência em horas de GPU (0,85 kW por H100 com refrigeração), apenas ilustrativa.",
     ],
-    simTitle: "Simulado no MVP",
+    estGpu: "Equivalência em horas de GPU (0,85 kW por H100 com refrigeração), apenas ilustrativa.",
+    simTitle: "Visão futura, simulada",
     sim: [
-      "A usina e o operador de computação (carteiras de teste na devnet da Solana).",
-      "O trabalho da demo roda num notebook: o recibo diz “replay de uma janela histórica, execução de demonstração”.",
-      "A saída em reais (Pix) — em produção, por um provedor autorizado.",
-      "A reserva por janela é um conceito para quando houver contratos de curto prazo: hoje usinas e operadores assinam contratos longos (cerca de 2 anos), em que o corte funciona como desconto.",
+      "A reserva de janelas, o pagamento em USDC de teste e os recibos na Solana são uma visão futura, simulada na devnet. Não fazem parte do produto Nomos. Ficam no Laboratório.",
     ],
+    simLink: "Ver o Laboratório (simulação) →",
     defTitle: "Definições",
     defs: [
       ["Corte (curtailment)", "geração que o ONS manda reduzir porque a rede não consegue absorvê-la (constrained-off)."],

@@ -1,16 +1,26 @@
 "use client";
 
+import Link from "next/link";
 import { useIdioma } from "@/i18n/idioma";
+import { dataCurta } from "@/lib/formato";
+import { MOSTRAR } from "@/lib/recursos";
 import { REPOSITORIO } from "@/lib/tipos";
 import { Cartao } from "./Selos";
 
-export function Metodo() {
+/** "2026-01-01 a 2026-10-11" vira "Jan 1, 2026 – Oct 11, 2026": o período vem dos dados, não de uma data escrita à mão. */
+function periodoLegivel(periodo: string, locale: string) {
+  const [de, ate] = periodo.split(" a ");
+  return de && ate ? `${dataCurta(de, locale, true)} – ${dataCurta(ate, locale, true)}` : "";
+}
+
+export function Metodo({ pldPeriodo }: { pldPeriodo: string }) {
   const { t } = useIdioma();
   const m = t.method;
-  const blocos = [
-    { titulo: m.realTitle, itens: m.real, cor: "border-ok" },
-    { titulo: m.estTitle, itens: m.est, cor: "border-sun" },
-    { titulo: m.simTitle, itens: m.sim, cor: "border-wait" },
+  const blocos: { titulo: string; itens: string[]; cor: string; link?: { href: string; rotulo: string } }[] = [
+    { titulo: m.realTitle, itens: [...m.real, m.pldItem(periodoLegivel(pldPeriodo, t.locale))], cor: "border-ok" },
+    { titulo: m.estTitle, itens: MOSTRAR.horasDeGpu ? [...m.est, m.estGpu] : m.est, cor: "border-sun" },
+    // A reserva simulada saiu daqui: o cartão só aponta para o Laboratório
+    { titulo: m.simTitle, itens: m.sim, cor: "border-wait", link: { href: "/lab", rotulo: m.simLink } },
   ];
 
   return (
@@ -29,6 +39,11 @@ export function Metodo() {
                 <li key={i}>{i}</li>
               ))}
             </ul>
+            {b.link && (
+              <Link href={b.link.href} className="mt-3 inline-block text-sm font-medium underline">
+                {b.link.rotulo}
+              </Link>
+            )}
           </Cartao>
         ))}
       </div>

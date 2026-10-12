@@ -172,4 +172,5 @@ export type PlacarVivo = { total: number; confirmadas: number; erradas: number; 
 /** Piso regulatório do PLD em 2026 (R$/MWh): usado quando a CCEE ainda não publicou o preço da hora. */
 export const PLD_PISO_2026 = 57.31;
 
+// Link do "GitHub" no rodapé e do "Código-fonte" no Método. Para apontar para o repositório oficial, troque só esta linha.
 export const REPOSITORIO = "https://github.com/AmorimGui/Hackaton-Project";
