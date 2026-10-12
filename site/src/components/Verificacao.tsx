@@ -1,10 +1,12 @@
 "use client";
 
 // Comprovação de uma compra: pagamento, recibo (fase 1) e carimbo do ONS (fase 2), lidos da Solana.
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useIdioma } from "@/i18n/idioma";
 import { dataCurta, num, pct } from "@/lib/formato";
+import { LINK_CICLO_0810 } from "@/lib/laboratorio";
 import type { RegistroCadeia, RespostaRecibo, ResultadoTrabalho } from "@/lib/tipos";
 import { Cartao } from "./Selos";
 
@@ -44,26 +46,45 @@ export function Verificacao({ nomes }: { nomes: Record<string, string> }) {
       <header className="max-w-3xl">
         <h1 className="text-3xl font-semibold tracking-tight">{v.title}</h1>
         <p className="mt-3 text-muted">{v.lead}</p>
+        <p className="mt-3 inline-block rounded-lg bg-wait-soft px-3 py-1.5 text-xs font-medium text-wait">{v.simNote}</p>
       </header>
 
-      <form
-        className="flex flex-col gap-2 sm:flex-row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          router.push(`/verify?tx=${campo.trim()}`);
-        }}
-      >
-        <input
-          value={campo}
-          onChange={(e) => setCampo(e.target.value)}
-          placeholder={v.placeholder}
-          aria-label={v.placeholder}
-          className="w-full rounded-lg border border-line bg-card px-3 py-2 font-mono text-sm"
-        />
-        <button type="submit" className="rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white">
-          {v.button}
-        </button>
-      </form>
+      {/* Sem endereço de transação: explica a página em vez de deixar só um campo vazio */}
+      {!tx && (
+        <Cartao>
+          <h2 className="font-semibold">{v.emptyTitle}</h2>
+          <p className="mt-1 max-w-3xl text-sm text-muted">{v.emptyLead}</p>
+          <div className="mt-3 flex flex-col gap-2 text-sm sm:flex-row sm:flex-wrap sm:gap-x-6">
+            <Link href={LINK_CICLO_0810} className="font-medium underline">
+              {v.emptyExample}
+            </Link>
+            <Link href="/lab" className="font-medium underline">
+              {v.emptyLab}
+            </Link>
+          </div>
+        </Cartao>
+      )}
+      <div className="space-y-2">
+        {!tx && <p className="text-sm text-muted">{v.haveTx}</p>}
+        <form
+          className="flex flex-col gap-2 sm:flex-row"
+          onSubmit={(e) => {
+            e.preventDefault();
+            router.push(`/verify?tx=${campo.trim()}`);
+          }}
+        >
+          <input
+            value={campo}
+            onChange={(e) => setCampo(e.target.value)}
+            placeholder={v.placeholder}
+            aria-label={v.placeholder}
+            className="w-full rounded-lg border border-line bg-card px-3 py-2 font-mono text-sm"
+          />
+          <button type="submit" className="rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white">
+            {v.button}
+          </button>
+        </form>
+      </div>
 
       {tx && !VALIDA.test(tx) && <p className="text-sm text-cut">{v.invalid}</p>}
       {carregando && <p className="text-sm text-muted">{v.loading}</p>}

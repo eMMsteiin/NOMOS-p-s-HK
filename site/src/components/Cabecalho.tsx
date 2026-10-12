@@ -10,10 +10,12 @@ export function Cabecalho() {
   const { t, idioma, trocar } = useIdioma();
   const rota = usePathname();
   const links = [
-    { href: "/", rotulo: t.nav.atlas, ativo: rota === "/" || rota.startsWith("/plants") },
-    { href: "/track-record", rotulo: t.nav.track, ativo: rota.startsWith("/track-record") },
-    { href: "/method", rotulo: t.nav.method, ativo: rota.startsWith("/method") },
-    ...(MOSTRAR.abaVerificar ? [{ href: "/verify", rotulo: t.verify.nav, ativo: rota.startsWith("/verify") }] : []),
+    { href: "/", rotulo: t.nav.atlas, ativo: rota === "/" || rota.startsWith("/plants"), selo: "" },
+    { href: "/track-record", rotulo: t.nav.track, ativo: rota.startsWith("/track-record"), selo: "" },
+    { href: "/method", rotulo: t.nav.method, ativo: rota.startsWith("/method"), selo: "" },
+    ...(MOSTRAR.abaVerificar ? [{ href: "/verify", rotulo: t.verify.nav, ativo: rota.startsWith("/verify"), selo: "" }] : []),
+    // O Laboratório (simulação) fica no lugar da antiga aba "Verificar"; /verify faz parte dele
+    { href: "/lab", rotulo: t.nav.lab, ativo: rota.startsWith("/lab") || (!MOSTRAR.abaVerificar && rota.startsWith("/verify")), selo: t.nav.labBadge },
   ];
 
   return (
@@ -30,9 +32,15 @@ export function Cabecalho() {
             <Link
               key={l.href}
               href={l.href}
-              className={`rounded-md px-2.5 py-2.5 sm:py-1.5 ${l.ativo ? "bg-ink text-white" : "text-muted hover:bg-line/60 hover:text-ink"}`}
+              className={`relative rounded-md px-2.5 py-2.5 sm:py-1.5 ${l.ativo ? "bg-ink text-white" : "text-muted hover:bg-line/60 hover:text-ink"}`}
             >
               {l.rotulo}
+              {l.selo && (
+                // No celular o selo fica sobre o canto da aba (não ocupa largura); a partir de "sm" fica ao lado do nome
+                <span className="absolute -right-1 -top-2 rounded bg-wait-soft px-1 py-0.5 text-[8px] font-semibold uppercase leading-none tracking-wide text-wait sm:static sm:ml-1.5 sm:align-middle sm:text-[9px]">
+                  {l.selo}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
