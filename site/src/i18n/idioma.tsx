@@ -9,15 +9,23 @@ const IdiomaContexto = createContext<Contexto>({ idioma: "en", t: dicionarios.en
 
 const CHAVE = "vento-cortado-idioma";
 const ouvintes = new Set<() => void>();
-let memoria: Idioma = "en"; // usado quando o navegador bloqueia o armazenamento
+let memoria: Idioma | null = null; // escolha feita nesta visita; vale quando o navegador bloqueia o armazenamento
+
+/** Sem escolha salva: português se o idioma principal do navegador for português (pt, pt-BR, pt-PT); senão, inglês. */
+function doNavegador(): Idioma {
+  const principal = (navigator.languages?.[0] ?? navigator.language ?? "").toLowerCase();
+  return /^pt(-|$)/.test(principal) ? "pt" : "en";
+}
 
 function ler(): Idioma {
+  let salvo: string | null = null;
   try {
-    const salvo = localStorage.getItem(CHAVE);
-    return salvo === "pt" || salvo === "en" ? salvo : memoria;
+    salvo = localStorage.getItem(CHAVE);
   } catch {
-    return memoria;
+    // sem armazenamento: vale a escolha desta visita, se houver
   }
+  if (salvo === "pt" || salvo === "en") return salvo;
+  return memoria ?? doNavegador();
 }
 
 function assinar(avisar: () => void) {
@@ -40,7 +48,8 @@ function trocar(novo: Idioma) {
 }
 
 export function ProvedorIdioma({ children }: { children: ReactNode }) {
-  // Inglês é o padrão (jurados e servidor); a escolha do visitante fica salva no navegador.
+  // O servidor sempre entrega inglês. No navegador vale a escolha salva do visitante; sem escolha salva,
+  // abre em português se o navegador estiver em português e em inglês nos demais casos.
   const idioma = useSyncExternalStore(assinar, ler, () => "en" as const);
 
   useEffect(() => {
