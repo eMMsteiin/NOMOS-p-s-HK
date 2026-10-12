@@ -27,10 +27,10 @@ These come from primary sources, specialized press or our own calculation with o
 
 | Fact | Source |
 | --- | --- |
-| Brazil curtailed at least 73.4 million MWh of wind and solar between Oct 2021 and Aug 2026. | Volt Robotics, published analysis (exact citation to add) |
-| In 2026, about two thirds of the curtailment is energy surplus (`ENE`), and the Northeast concentrates about 83% of it. | Specialized press and ONS data (exact citation to add) |
+| Brazil curtailed at least 73.4 million MWh of wind and solar between Oct 2021 and Aug 2026. | Volt Robotics Curtailment Tracker, as reported by [Canal Solar](https://canalsolar.com.br/curtailment-soma-73-milhoes-mwh-desde-2021/) |
+| In 2026, about two thirds of the curtailment is energy surplus (`ENE`), and the Northeast concentrates about 83% of it. | [Cenário Energia, Sep 16, 2026](https://cenarioenergia.com.br/2026/09/16/curtailment-no-limite-brasil-acumula-51-dias-de-cortes-massivos-em-solar-e-eolica-ate-agosto/) (67% energy-surplus share through August, Brazil); the 83% Northeast share still needs a citation |
 | In the Northeast in 2026: `ENE` about 66%, `CNF` about 24%, `REL` about 10% of the curtailed energy. | Our calculation, ONS open data |
-| Law 15.269/2025 provides retroactive compensation for `CNF` and `REL` cuts. `ENE` cuts are not compensated; on Oct 6, 2026 Aneel decided to share their losses among generators. | Law text and press (exact citation to add) |
+| Law 15.269/2025 provides retroactive compensation for `CNF` and `REL` cuts. `ENE` cuts are not compensated; on Oct 6, 2026 Aneel decided to share their losses among generators. | [Cenário Energia, Jan 8, 2026](https://cenarioenergia.com.br/2026/01/08/mme-aciona-aneel-para-suspender-ressarcimentos-de-eolicas-e-solares-e-avaliar-impacto-da-lei-15-269-2025/) and [TAGD Law](https://tagdlaw.com.br/?p=15470) on the law; the official text on planalto.gov.br and the Oct 6 Aneel decision still need a citation (we found neither). The MME asked Aneel in Jan 2026 to suspend compensation payments until the model is regulated, so how it is applied is unsettled |
 | Today, the main consumer of curtailed energy is bitcoin mining. AI data centers want firm, constant power. | Specialized press (exact citation to add) |
 | Energy is roughly 4–11% of the cost of a GPU-hour; GPU depreciation dominates. | Industry estimates (exact citation to add) |
 | The Redata regime (Law 15.504/2026) asks for renewable energy contracts, not hour-by-hour proof. | Law text |
