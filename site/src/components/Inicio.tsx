@@ -9,6 +9,7 @@ import { diasDoPeriodo } from "@/lib/linhaDeBase";
 import { MapaCarregado } from "./MapaCarregado";
 import { BarraChance, Cartao, Numero, SeloTipo } from "./Selos";
 import { BotaoComprar } from "./BotaoComprar";
+import { MOSTRAR } from "@/lib/recursos";
 import { SeloPrevisao } from "./SeloPrevisao";
 import { BarraRazoes, GraficoHoras, GraficoMensal, GraficoPiso } from "./Graficos";
 
@@ -150,9 +151,11 @@ export function Inicio({ d }: { d: DadosInicio }) {
                         </td>
                         <td data-label={t.common.expected} className="tabular whitespace-nowrap px-2 py-2.5 text-right">
                           ~{energia(j.energia_esperada_mwh, L)}
-                          <div className="text-xs text-muted">
-                            {compacto(j.gpu_horas_esperadas)} {t.common.gpuHours}
-                          </div>
+                          {MOSTRAR.horasDeGpu && (
+                            <div className="text-xs text-muted">
+                              {compacto(j.gpu_horas_esperadas)} {t.common.gpuHours}
+                            </div>
+                          )}
                         </td>
                         <td data-label={t.common.value} className="tabular whitespace-nowrap px-4 py-2.5 text-right">
                           {reais(j.valor_referencia_rs ?? 0, L, true)}
@@ -161,9 +164,11 @@ export function Inicio({ d }: { d: DadosInicio }) {
                               {t.common.pldEst}
                             </span>
                           )}
-                          <div className="mt-1">
-                            <BotaoComprar idUsina={u.id} nomeUsina={u.nome} janela={j} cambio={d.cambio} />
-                          </div>
+                          {MOSTRAR.reservaNoAtlas && (
+                            <div className="mt-1">
+                              <BotaoComprar idUsina={u.id} nomeUsina={u.nome} janela={j} cambio={d.cambio} />
+                            </div>
+                          )}
                         </td>
                       </>
                     ) : (
@@ -185,10 +190,12 @@ export function Inicio({ d }: { d: DadosInicio }) {
         <p className="text-xs text-muted">
           {d.pld.cruzamento ? t.home.valueNoteReal(piso) : t.home.valueNote(piso)}
         </p>
-        <div className="max-w-3xl rounded-lg border border-line bg-wait-soft/50 p-3 text-sm">
-          <div className="font-semibold text-wait">{t.home.visionTitle}</div>
-          <p className="mt-1 text-muted">{t.home.visionNote}</p>
-        </div>
+        {MOSTRAR.visaoFuturaNoInicio && (
+          <div className="max-w-3xl rounded-lg border border-line bg-wait-soft/50 p-3 text-sm">
+            <div className="font-semibold text-wait">{t.home.visionTitle}</div>
+            <p className="mt-1 text-muted">{t.home.visionNote}</p>
+          </div>
+        )}
       </section>
 
       {/* Por que acontece */}

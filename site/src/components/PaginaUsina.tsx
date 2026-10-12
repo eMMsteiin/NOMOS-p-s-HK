@@ -5,6 +5,7 @@ import { useIdioma } from "@/i18n/idioma";
 import type { Cambio, Usina } from "@/lib/tipos";
 import type { PldRef } from "@/lib/calculadora";
 import { BotaoComprar } from "./BotaoComprar";
+import { MOSTRAR } from "@/lib/recursos";
 import { dataCurta, energia, num, pct, reais } from "@/lib/formato";
 import { MapaCarregado } from "./MapaCarregado";
 import { BarraChance, Cartao, Numero, SeloResultado, SeloTipo } from "./Selos";
@@ -72,7 +73,7 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
               <th className="px-2 py-2 text-right font-medium">{t.common.expected}</th>
               <th className="px-2 py-2 text-right font-medium">{t.common.value}</th>
               <th className="px-2 py-2 text-right font-medium">ONS</th>
-              <th className="px-5 py-2" />
+              {MOSTRAR.reservaNoAtlas && <th className="px-5 py-2" />}
             </tr>
           </thead>
           <tbody>
@@ -97,9 +98,11 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
                 <td data-label="ONS" className="px-2 py-2 text-right">
                   <SeloResultado resultado={j.resultado_ons} />
                 </td>
-                <td className="px-5 py-2 text-right">
-                  <BotaoComprar idUsina={u.id} nomeUsina={u.nome} janela={j} cambio={cambio} />
-                </td>
+                {MOSTRAR.reservaNoAtlas && (
+                  <td className="px-5 py-2 text-right">
+                    <BotaoComprar idUsina={u.id} nomeUsina={u.nome} janela={j} cambio={cambio} />
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -145,7 +148,7 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
                 <th className="px-2 py-2 text-right font-medium">{t.plant.lost}</th>
                 <th className="px-2 py-2 font-medium">{t.plant.reasons}</th>
                 <th className="px-2 py-2 text-right font-medium">ONS</th>
-                <th className="px-5 py-2" />
+                {MOSTRAR.reservaNoAtlas && <th className="px-5 py-2" />}
               </tr>
             </thead>
             <tbody>
@@ -164,9 +167,11 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
                   <td data-label="ONS" className="px-2 py-2 text-right">
                     <SeloResultado resultado={j.resultado_ons} />
                   </td>
-                  <td className="px-5 py-2 text-right">
-                    <BotaoComprar idUsina={u.id} nomeUsina={u.nome} janela={j} cambio={cambio} replay />
-                  </td>
+                  {MOSTRAR.reservaNoAtlas && (
+                    <td className="px-5 py-2 text-right">
+                      <BotaoComprar idUsina={u.id} nomeUsina={u.nome} janela={j} cambio={cambio} replay />
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
