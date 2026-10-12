@@ -54,10 +54,24 @@ export function Inicio({ d }: { d: DadosInicio }) {
       {/* Manchete */}
       <section className="max-w-3xl">
         <p className="text-sm font-medium uppercase tracking-wide text-cut">{t.home.kicker}</p>
-        <h1 className="mt-2 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          {t.home.title(`${num(d.manchete.nordeste_mw_medios / 1000, L, 1)} GW`)}
-        </h1>
-        <p className="mt-4 text-lg leading-relaxed text-muted">{t.home.lead}</p>
+        <h1 className="mt-2 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{t.home.title}</h1>
+        <p className="mt-4 text-lg leading-relaxed">{t.home.context(`${num(d.manchete.nordeste_mw_medios / 1000, L, 1)} GW`)}</p>
+        <p className="mt-3 leading-relaxed text-muted">{t.home.lead}</p>
+        <div className="mt-5 rounded-xl border border-ink p-4">
+          <div className="font-semibold">{t.home.calcCta}</div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {d.usinas.map((u) => (
+              <Link
+                key={u.id}
+                href={`/plants/${u.id}#calculadora`}
+                className="rounded-md bg-ink px-3 py-1.5 text-sm font-medium text-white hover:bg-ink/90"
+              >
+                {u.nome.replace(/^Conj\. /, "")} →
+              </Link>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-muted">{t.home.calcCtaNote}</p>
+        </div>
       </section>
 
       <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -171,6 +185,10 @@ export function Inicio({ d }: { d: DadosInicio }) {
         <p className="text-xs text-muted">
           {d.pld.cruzamento ? t.home.valueNoteReal(piso) : t.home.valueNote(piso)}
         </p>
+        <div className="max-w-3xl rounded-lg border border-line bg-wait-soft/50 p-3 text-sm">
+          <div className="font-semibold text-wait">{t.home.visionTitle}</div>
+          <p className="mt-1 text-muted">{t.home.visionNote}</p>
+        </div>
       </section>
 
       {/* Por que acontece */}

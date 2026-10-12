@@ -32,8 +32,12 @@ export function BarraChance({ valor }: { valor: number }) {
   );
 }
 
-export function Cartao({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <section className={`rounded-xl border border-line bg-card p-5 ${className}`}>{children}</section>;
+export function Cartao({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
+  return (
+    <section id={id} className={`rounded-xl border border-line bg-card p-5 ${className}`}>
+      {children}
+    </section>
+  );
 }
 
 export function Numero({ valor, rotulo, destaque = false }: { valor: string; rotulo: string; destaque?: boolean }) {

@@ -34,9 +34,15 @@ const en = {
   },
   home: {
     kicker: "Northeast Brazil · official ONS data",
-    title: (mw: string) => `Brazil's Northeast threw away ${mw} of wind and solar power, on average, in 2026.`,
+    title: "If you put a load next to a wind or solar plant in Brazil's Northeast, how much curtailed energy could it have used?",
+    context: (mw: string) => `In 2026 the Northeast curtailed ${mw} of wind and solar power on average: the grid could not absorb it, so the operator ordered plants to cut output.`,
     lead:
-      "When the grid has more clean energy than it can absorb, the operator (ONS) orders wind and solar plants to cut output. Nomos is an open atlas of that curtailed energy: where and how much is cut, why, what it is worth, and how well we forecast it — a neutral reference for contracts between plants and the computers that could use that energy on site. Each window can also be reserved for a compute job, with a public hourly receipt on Solana: the seed of a certificate that a load used energy that would otherwise be lost.",
+      "Nomos is an open atlas of that curtailment: where and how much is cut, why (energy surplus, grid reliability or a line or equipment out), what it is worth at the hourly spot price, and how well we forecast it. Each plant page has a calculator: enter the MW you would install and the hours per day, and see, from the past and not as a promise, how many hours and how much energy you would have met.",
+    calcCta: "Try the calculator on a plant",
+    calcCtaNote: "Estimates from past ONS data, not a guarantee. The contract with the plant has to be negotiated.",
+    visionTitle: "Future vision, simulated",
+    visionNote:
+      "The Reserve buttons demo an idea for later: reserve a window for a compute job, pay in USDC and get a public receipt on Solana. It runs on devnet with test wallets, the plant and the operator are simulated, the job runs on a laptop and absorbs no curtailed energy. Nobody has validated that a buyer would pay for this. What is real today: the data, the forecast, the scoreboard and the forecast fingerprint stamped on Solana before the day.",
     statCut: "average power curtailed in the Northeast, Jan–Aug 2026",
     statDay: "of clean energy wasted per day",
     statValue: "per year, even at the minimum market price",
@@ -288,7 +294,7 @@ const en = {
     codeLink: "Source code on GitHub",
   },
   buy: {
-    button: "Reserve",
+    button: "Reserve (demo)",
     title: "Reserve a compute window",
     receive:
       "What you get: the operator next to the plant runs your job during this window, and you receive the result and a public receipt on Solana (start, end and the ONS verdict). You are not buying electricity: the energy never leaves the plant; the job travels over the internet.",
@@ -431,9 +437,15 @@ const pt: Dicionario = {
   },
   home: {
     kicker: "Nordeste do Brasil · dados oficiais do ONS",
-    title: (mw: string) => `O Nordeste jogou fora ${mw} de energia eólica e solar, em média, em 2026.`,
+    title: "Se você colocar uma carga ao lado de uma usina eólica ou solar do Nordeste, quanta energia cortada ela poderia ter aproveitado?",
+    context: (mw: string) => `Em 2026 o Nordeste teve ${mw} de energia eólica e solar cortados em média: a rede não conseguia absorver, então o operador mandou as usinas reduzirem a produção.`,
     lead:
-      "Quando a rede tem mais energia limpa do que consegue absorver, o operador (ONS) manda usinas eólicas e solares reduzirem a produção. O Nomos é um atlas aberto dessa energia cortada: onde e quanto se corta, por quê, quanto vale e o quanto a nossa previsão acerta — uma referência neutra para contratos entre usinas e os computadores que poderiam usar essa energia no local. Cada janela também pode ser reservada para um trabalho de computação, com recibo público por hora na Solana: a semente de um certificado de que uma carga usou energia que seria perdida.",
+      "O Nomos é um atlas aberto desse corte: onde e quanto se corta, por quê (sobra de energia, confiabilidade da rede ou linha ou equipamento fora), quanto vale ao preço horário de curto prazo e o quanto a nossa previsão acerta. Cada página de usina tem uma calculadora: informe os MW que você instalaria e as horas por dia, e veja, pelo passado e não como promessa, quantas horas e quanta energia você teria aproveitado.",
+    calcCta: "Experimente a calculadora numa usina",
+    calcCtaNote: "Estimativas com dados passados do ONS, não garantia. O contrato com a usina precisa ser negociado.",
+    visionTitle: "Visão futura, simulada",
+    visionNote:
+      "Os botões Reservar mostram uma ideia para depois: reservar uma janela para um trabalho de computação, pagar em USDC e receber um recibo público na Solana. Roda na devnet com carteiras de teste, usina e operador são simulados, o trabalho roda num notebook e não absorve energia cortada. Ninguém validou que um comprador pagaria por isso. O que é real hoje: os dados, a previsão, o placar e a impressão digital da previsão carimbada na Solana antes do dia.",
     statCut: "de potência média cortada no Nordeste, jan–ago/2026",
     statDay: "de energia limpa desperdiçada por dia",
     statValue: "por ano, mesmo ao preço mínimo de mercado",
@@ -685,7 +697,7 @@ const pt: Dicionario = {
     codeLink: "Código-fonte no GitHub",
   },
   buy: {
-    button: "Reservar",
+    button: "Reservar (demo)",
     title: "Reservar janela de computação",
     receive:
       "O que você recebe: o operador ao lado da usina roda o seu trabalho durante esta janela, e você recebe o resultado e um recibo público na Solana (início, fim e o veredito do ONS). Você não está comprando eletricidade: a energia não sai da usina; o trabalho viaja pela internet.",

@@ -30,7 +30,7 @@ export function CalculadoraCarga({ u, pld }: { u: Usina; pld: PldRef }) {
   ];
 
   return (
-    <Cartao>
+    <Cartao id="calculadora" className="scroll-mt-24">
       <h2 className="text-lg font-semibold">{c.title}</h2>
       <p className="mt-1 text-sm text-muted">{c.lead}</p>
       <p className="mt-3 rounded-lg border border-ink px-3 py-2 text-sm font-medium">{c.disclaimer}</p>
