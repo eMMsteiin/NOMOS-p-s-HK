@@ -259,6 +259,32 @@ export function Inicio({ d }: { d: DadosInicio }) {
         </Cartao>
       </section>
 
+      {/* Para quem é: hipótese, ainda não validada (por isso as bordas tracejadas) */}
+      <section className="space-y-4">
+        <div className="flex flex-wrap items-center gap-3">
+          <h2 className="text-2xl font-semibold tracking-tight">{t.home.audienceTitle}</h2>
+          <span className="rounded bg-wait-soft px-2 py-1 text-xs font-semibold uppercase tracking-wide text-wait">{t.home.audienceBadge}</span>
+        </div>
+        <p className="max-w-3xl text-muted">{t.home.audienceLead}</p>
+        <div className="grid gap-4 md:grid-cols-3">
+          {t.home.audienceWho.map((p) => (
+            <Cartao key={p.title} className="border-dashed">
+              <h3 className="font-medium">{p.title}</h3>
+              <p className="mt-2 text-sm text-muted">{p.text}</p>
+            </Cartao>
+          ))}
+        </div>
+        <Cartao className="border-dashed">
+          <h3 className="font-medium">{t.home.audienceFormatsTitle}</h3>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
+            {t.home.audienceFormats.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
+          </ul>
+          <p className="mt-3 text-xs text-muted">{t.home.audienceNote}</p>
+        </Cartao>
+      </section>
+
       <Link href="/track-record" className="block rounded-xl bg-ink p-6 text-white transition hover:bg-ink/90">
         <div className="text-xl font-semibold">{t.home.trackCta} →</div>
         <div className="mt-1 text-white/75">{t.home.trackCtaLead(num(d.placar.confirmadas, L), num(d.placar.total, L))}</div>
