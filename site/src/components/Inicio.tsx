@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useIdioma } from "@/i18n/idioma";
 import type { Atlas, Janela, Usina } from "@/lib/tipos";
 import { dataCurta, energia, num, pct, reais } from "@/lib/formato";
+import { diasDoPeriodo } from "@/lib/linhaDeBase";
 import { MapaCarregado } from "./MapaCarregado";
 import { BarraChance, Cartao, Numero, SeloTipo } from "./Selos";
 import { BotaoComprar } from "./BotaoComprar";
@@ -238,7 +239,7 @@ export function Inicio({ d }: { d: DadosInicio }) {
         <div className="mt-1 text-white/75">{t.home.trackCtaLead(num(d.placar.confirmadas, L), num(d.placar.total, L))}</div>
         {d.ao_vivo.total > 0 && (
           <div className="text-white/75">
-            {t.home.liveLine(num(d.ao_vivo.confirmadas, L), num(d.ao_vivo.total, L), pct(d.ao_vivo.fracao_confirmadas ?? 0, L))}
+            {t.home.liveLine(num(d.ao_vivo.confirmadas, L), num(d.ao_vivo.total, L), pct(d.ao_vivo.fracao_confirmadas ?? 0, L), num(diasDoPeriodo(d.ao_vivo.periodo), L))}
           </div>
         )}
       </Link>

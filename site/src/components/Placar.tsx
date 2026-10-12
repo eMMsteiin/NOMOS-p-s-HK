@@ -6,6 +6,7 @@ import type { Atlas, Usina } from "@/lib/tipos";
 import { dataCurta, num, pct } from "@/lib/formato";
 import { Cartao, SeloTipo } from "./Selos";
 import { BarraRazoes, GraficoCalibracao, GraficoRazoesMes } from "./Graficos";
+import type { ComparacaoLinhaDeBase } from "@/lib/linhaDeBase";
 
 const DICIONARIO_ONS =
   "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/restricao_coff_eolica_tm/DicionarioDados_RestricaoContrainedoff_UsiEolicas.pdf";
@@ -17,6 +18,8 @@ export type DadosPlacar = {
   ao_vivo: Atlas["ao_vivo"];
   razoes: Atlas["razoes"];
   dados_ate: string;
+  dias_ao_vivo: number;
+  linha_de_base: ComparacaoLinhaDeBase | null;
   usinas: Pick<Usina, "id" | "nome" | "uf" | "tipo" | "teste" | "placar" | "placar_ao_vivo">[];
 };
 
@@ -77,6 +80,36 @@ function TiposDeCorte({ r }: { r: Atlas["razoes"] }) {
   );
 }
 
+/** O modelo contra uma regra ingênua, nas mesmas janelas ao vivo. Mostra o resultado como ele é, inclusive se a regra ganhar. */
+function LinhaDeBase({ c }: { c: ComparacaoLinhaDeBase }) {
+  const { t } = useIdioma();
+  const L = t.locale;
+  const [m, b] = [Math.round(c.erroModelo * 10) / 10, Math.round(c.erroBase * 10) / 10];
+  const veredito = m < b ? t.track.baseWin(num(m, L, 1), num(b, L, 1)) : m > b ? t.track.baseLose(num(m, L, 1), num(b, L, 1)) : t.track.baseTie(num(m, L, 1));
+  return (
+    <div className="mt-4 max-w-3xl rounded-lg border border-line p-3 text-sm">
+      <div className="font-semibold">{t.track.baseTitle}</div>
+      <p className="mt-1 text-muted">{t.track.baseLead(num(c.janelas, L), num(c.dias, L))}</p>
+      <dl className="mt-3 grid grid-cols-2 gap-2 text-center">
+        {[
+          [t.track.baseModel, m],
+          [t.track.baseNaive, b],
+        ].map(([rotulo, v]) => (
+          <div key={rotulo as string} className="rounded-lg bg-paper p-2">
+            <dd className="tabular text-lg font-semibold">
+              {num(v as number, L, 1)} {t.track.basePp}
+            </dd>
+            <dt className="text-[11px] leading-tight text-muted">{rotulo}</dt>
+          </div>
+        ))}
+      </dl>
+      <p className="mt-3 font-medium">{veredito}</p>
+      <p className="mt-1 text-xs text-muted">{t.track.baseAlso(num(c.baseTambemOferecia, L), num(c.janelas, L))}</p>
+      <p className="mt-1 text-xs text-muted">{t.track.baseCaveat(num(c.dias, L))}</p>
+    </div>
+  );
+}
+
 export function Placar({ d }: { d: DadosPlacar }) {
   const { t } = useIdioma();
   const L = t.locale;
@@ -105,6 +138,7 @@ export function Placar({ d }: { d: DadosPlacar }) {
         <p className="mt-3 text-2xl font-semibold">
           {t.track.liveScore(num(d.ao_vivo.confirmadas, L), num(d.ao_vivo.total, L), pct(d.ao_vivo.fracao_confirmadas ?? 0, L))}
         </p>
+        <p className="mt-1 text-sm font-medium text-wait">{t.track.liveSample(num(d.dias_ao_vivo, L), num(d.ao_vivo.total, L))}</p>
         <p className="mt-1 text-sm">
           {d.ao_vivo.publicadas_antes.total
             ? t.track.liveBefore(num(d.ao_vivo.publicadas_antes.confirmadas, L), num(d.ao_vivo.publicadas_antes.total, L))
@@ -114,6 +148,7 @@ export function Placar({ d }: { d: DadosPlacar }) {
           <div className="font-semibold">{t.track.liveWhyTitle}</div>
           <p className="mt-1 leading-relaxed">{t.track.liveWhy}</p>
         </div>
+        {d.linha_de_base && <LinhaDeBase c={d.linha_de_base} />}
         <p className="mt-3 max-w-3xl text-xs text-muted">{t.track.liveNote}</p>
       </Cartao>
 
