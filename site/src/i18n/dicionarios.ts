@@ -95,6 +95,46 @@ const en = {
     scoreboardLive: (c: string, t: string) => `Live since Oct 1: ${c} of ${t} confirmed`,
     months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   },
+  calc: {
+    title: "Load-next-to-the-plant calculator",
+    lead: "How much of this plant's past curtailment would a load installed beside it have met? Enter the load and the hours it would run. Everything below is an estimate computed from the past: not a forecast and not an offer.",
+    disclaimer: "Historical, not a guarantee. Calculated from ONS data; the contract with the plant has to be negotiated.",
+    loadLabel: "Load beside the plant (computers, factory…)",
+    hoursLabel: "Operating hours per day",
+    startLabel: "Starts at",
+    capNote: (cap: string) => `Above the plant's capacity (${cap}): the calculation uses the capacity at most.`,
+    bestStart: (hora: string, horas: string) =>
+      `In this history, the best start time for that schedule is ${hora}: about ${horas} curtailed hours per month.`,
+    useBest: "Use this start time",
+    hoursTitle: "Curtailed hours per month, inside your schedule",
+    hoursNote: (de: string, p: string) => `out of ${de} operating hours per month (${p}), on average over the year`,
+    energyTitle: "Energy your load could have used",
+    energyNote: (mw: string) =>
+      `per month, on average. Limited by the load, the plant's capacity and the energy actually curtailed: during curtailment this plant shed about ${mw} MW on average, so a larger load would not have found more energy.`,
+    valueTitle: "Reference value for negotiation",
+    valueNote: (pld: string) => `per month: the energy above × the average PLD of ${pld}/MWh (Northeast, hourly, weighted by curtailed energy, 2026).`,
+    valueFloor: (piso: string, valor: string) => `At the regulatory floor (${piso}/MWh) it would be ${valor} per month.`,
+    valueDisclaimer: "A starting point for talking to the plant, not a price, a profit or a guaranteed saving. The real value depends on the contract.",
+    reasonsTitle: "Why those hours were curtailed",
+    reasonsHead: ["Reason", "Hours per month", "MWh per month"],
+    reasonEne: "Energy surplus (ENE)",
+    reasonElec: "Electrical (CNF + REL)",
+    reasonOther: "Other / no reason given",
+    reasonsNote: (ene: string, ele: string) =>
+      `The split uses this plant's 2026 share of curtailed energy by reason (${ene} ENE, ${ele} electrical), applied to your hours. It is an approximation: the data gives the share by energy, not by hour.`,
+    elecWarn:
+      "Electrical curtailment (grid reliability and lines or equipment out) is less predictable: it can start or stop abruptly, with little notice. Energy-surplus curtailment follows demand and the sun and wind patterns.",
+    ruleTitle: "On regulation",
+    rule: "A rule approved by Aneel in October 2026 (according to the press, to be confirmed in the Diário Oficial) deals with self-production consumption at the same connection point, and only for energy-surplus curtailment. We do not treat the rule as already in force, and electrical curtailment (CNF, REL) is outside it.",
+    methodTitle: "How we calculate",
+    method: [
+      "Curtailed hours per month = average over the 12 months of [days in the month × the sum, over the chosen hours, of the chance of curtailment for that month and hour (heat map, Jan 2025 to today)].",
+      "Average curtailed power = energy lost in Jan–Jul 2026 ÷ hours with curtailment in that period (share of curtailed half-hours × 5,088 h).",
+      "Usable energy per month = curtailed hours per month × the smallest of your load, the plant's capacity and the average curtailed power.",
+      "Reference value = usable energy × the Northeast average PLD weighted by curtailed energy. The regulatory floor is shown as the lowest scenario.",
+      "Limits: we use average power, but real curtailment varies hour by hour; and nothing guarantees the past pattern will repeat.",
+    ],
+  },
   reasons: {
     names: {
       ENE: "Energy surplus",
@@ -438,6 +478,46 @@ const pt: Dicionario = {
     scoreboard: (c: string, t: string) => `${c} de ${t} janelas confirmadas (ago–set/2026)`,
     scoreboardLive: (c: string, t: string) => `Ao vivo desde 1º/10: ${c} de ${t} confirmadas`,
     months: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+  },
+  calc: {
+    title: "Calculadora de carga junto à usina",
+    lead: "Quanto do corte passado desta usina uma carga instalada ao lado dela teria encontrado? Informe a carga e as horas de operação. Tudo abaixo é estimativa calculada a partir do passado: não é previsão nem oferta.",
+    disclaimer: "Histórico, não garantia. Cálculo com dados do ONS; o contrato com a usina precisa ser negociado.",
+    loadLabel: "Carga ao lado da usina (computadores, fábrica…)",
+    hoursLabel: "Horas de operação por dia",
+    startLabel: "Começa às",
+    capNote: (cap: string) => `Acima da capacidade da usina (${cap}): o cálculo usa no máximo a capacidade.`,
+    bestStart: (hora: string, horas: string) =>
+      `Neste histórico, o melhor horário de início para essa jornada é ${hora}: cerca de ${horas} horas de corte por mês.`,
+    useBest: "Usar esse horário",
+    hoursTitle: "Horas de corte por mês, dentro do seu horário",
+    hoursNote: (de: string, p: string) => `de ${de} horas de operação por mês (${p}), em média ao longo do ano`,
+    energyTitle: "Energia que a sua carga teria podido usar",
+    energyNote: (mw: string) =>
+      `por mês, em média. Limitada pela carga, pela capacidade da usina e pela energia efetivamente cortada: nas horas de corte, esta usina deixou de gerar cerca de ${mw} MW em média, então uma carga maior não teria encontrado mais energia.`,
+    valueTitle: "Valor de referência para negociação",
+    valueNote: (pld: string) => `por mês: a energia acima × o PLD médio de ${pld}/MWh (Nordeste, horário, ponderado pela energia cortada, 2026).`,
+    valueFloor: (piso: string, valor: string) => `Ao piso regulatório (${piso}/MWh) seria ${valor} por mês.`,
+    valueDisclaimer: "É um ponto de partida para conversar com a usina, não um preço, um lucro nem uma economia garantida. O valor real depende do contrato.",
+    reasonsTitle: "Por que essas horas foram cortadas",
+    reasonsHead: ["Razão", "Horas por mês", "MWh por mês"],
+    reasonEne: "Sobra de energia (ENE)",
+    reasonElec: "Elétrica (CNF + REL)",
+    reasonOther: "Outras / sem razão informada",
+    reasonsNote: (ene: string, ele: string) =>
+      `A divisão usa a parte da energia cortada por razão nesta usina em 2026 (${ene} ENE, ${ele} elétrica), aplicada às suas horas. É uma aproximação: o dado dá a parte por energia, não por hora.`,
+    elecWarn:
+      "O corte elétrico (confiabilidade da rede e linha ou equipamento fora) é menos previsível: pode começar ou parar de repente, com pouco aviso. O corte por sobra de energia segue a demanda e o padrão de sol e vento.",
+    ruleTitle: "Sobre a regulação",
+    rule: "Uma regra da Aneel aprovada em outubro/2026 (segundo a imprensa, a confirmar no Diário Oficial) trata do consumo de autoprodução no mesmo ponto de conexão, e só para corte de razão energética. Não tratamos a regra como já em vigor, e o corte elétrico (CNF, REL) fica de fora dela.",
+    methodTitle: "Como calculamos",
+    method: [
+      "Horas de corte por mês = média dos 12 meses de [dias do mês × soma, nas horas escolhidas, da chance de corte daquele mês e hora (mapa de calor, jan/2025 até hoje)].",
+      "Potência média cortada = energia perdida em jan–jul/2026 ÷ horas com corte no período (fração de meias-horas cortadas × 5.088 h).",
+      "Energia usável por mês = horas de corte por mês × o menor entre a sua carga, a capacidade da usina e a potência média cortada.",
+      "Valor de referência = energia usável × PLD médio do Nordeste ponderado pela energia cortada. O piso regulatório é mostrado como cenário mais baixo.",
+      "Limites: usamos a potência média, mas o corte real varia a cada hora; e ninguém garante que o padrão do passado se repita.",
+    ],
   },
   reasons: {
     names: {

@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { useIdioma } from "@/i18n/idioma";
 import type { Cambio, Usina } from "@/lib/tipos";
+import type { PldRef } from "@/lib/calculadora";
 import { BotaoComprar } from "./BotaoComprar";
 import { dataCurta, energia, num, pct, reais } from "@/lib/formato";
 import { MapaCarregado } from "./MapaCarregado";
 import { BarraChance, Cartao, Numero, SeloResultado, SeloTipo } from "./Selos";
 import { BarraRazoes, MapaCalor } from "./Graficos";
+import { CalculadoraCarga } from "./CalculadoraCarga";
 
 const INICIO_AO_VIVO = "2026-10-01"; // depois do teste de agosto e setembro
 
-export function PaginaUsina({ u, cambio, dadosAte }: { u: Usina; cambio: Cambio | null; dadosAte: string }) {
+export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Cambio | null; dadosAte: string; pld: PldRef }) {
   const { t } = useIdioma();
   const L = t.locale;
   const ponto = {
@@ -125,6 +127,8 @@ export function PaginaUsina({ u, cambio, dadosAte }: { u: Usina; cambio: Cambio 
           <MapaCalor calor={u.calor} />
         </div>
       </Cartao>
+
+      <CalculadoraCarga u={u} pld={pld} />
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Cartao className="overflow-x-auto p-0 lg:col-span-2">
