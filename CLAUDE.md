@@ -13,6 +13,7 @@
 - O repositório do Guilherme é a entrega oficial. Esta cópia é para testar melhorias; o que ficar bom será levado para lá (pull request ou cópia de arquivos).
 
 ## O que é o Nomos hoje (enquadramento decidido)
+- **O Nomos NÃO vende nada: é uma ferramenta de informação para decidir onde instalar ou expandir uma unidade ao lado de uma usina; o modelo de negócio é hipótese (acesso à plataforma, relatórios, alertas), não validada.**
 - Nomos é um atlas aberto da energia eólica e solar que o ONS manda cortar no Nordeste: quanto, por quê (ENE sobra de energia, CNF confiabilidade, REL linha ou equipamento fora), previsão por usina para 8 dias e um placar público de acertos, com cada previsão carimbada na Solana antes do dia.
 - Mudança de rumo: sair de "previsão do tempo" (a Volt Robotics, a ePowerBay e o painel do ONS já fazem algo parecido) para ferramenta de DECISÃO: "se eu instalar X MW de carga ao lado desta usina, quanto corte eu teria aproveitado?" Essa é a Calculadora de carga junto à usina, na página de cada usina.
 - O único uso honesto de blockchain: carimbar a previsão antes do dia para o placar não poder ser reescrito. Recibo de execução e split em USDC são VISÃO FUTURA, simulada na devnet. O comprador do certificado hora a hora NÃO está validado.
@@ -29,6 +30,9 @@ Hipótese ou não verificado (nunca afirmar como fato):
 - REN Aneel 1.170/2026 (consumo de autoprodução no mesmo ponto de conexão protegido de corte por razão energética): só confirmado por imprensa; falta conferir no Diário Oficial. Vale só para autoprodução e só para corte energético. Diga "segundo a imprensa, a confirmar".
 - Quem pagaria pelo atlas ou pela calculadora. Se existe comprador para o certificado horário. Preço e acurácia de previsões comerciais de curtailment.
 - O placar ao vivo tem poucos dias de amostra (67% em ~11 dias); o teste retroativo (90–95%) é retroativo.
+
+## Aprendizados
+- O modelo hoje empata com a regra ingênua; o valor está no histórico, na calculadora e na transparência. (Medido em 12/10/2026, em 10 dias de placar ao vivo: erro médio de 29,9 pontos percentuais nos dois. O modelo ficou melhor em algumas usinas e pior nas duas do RN em que o corte noturno parou de repente.)
 
 ## Regras de honestidade (valem para site, README, pitch e qualquer texto)
 - Nunca escrever: "IA barata", "energia grátis", "energia cortada vale zero", "mercado de energia cortada", "provamos que a energia foi usada", "parceria" com qualquer empresa, "1–2% do custo da GPU", "só REL entra no ressarcimento".
