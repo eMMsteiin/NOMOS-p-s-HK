@@ -63,7 +63,7 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
 
       <Cartao className="overflow-x-auto p-0">
         <h2 className="px-5 pt-5 text-lg font-semibold">{t.plant.nextTitle}</h2>
-        <table className="mt-3 w-full text-sm">
+        <table className="tabela-cartoes mt-3 w-full text-sm">
           <thead className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
             <tr>
               <th className="px-5 py-2 font-medium">{t.common.data}</th>
@@ -79,14 +79,14 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
             {u.proximas.map((j) => (
               <tr key={`${j.data}-${j.inicio}`} className="border-b border-line/70 last:border-0">
                 <td className="whitespace-nowrap px-5 py-2">{dataCurta(j.data, L)}</td>
-                <td className="tabular whitespace-nowrap px-2 py-2">
+                <td data-label={t.common.window} className="tabular whitespace-nowrap px-2 py-2">
                   {j.inicio}–{j.fim}
                 </td>
-                <td className="px-2 py-2">
+                <td data-label={t.common.chance} className="px-2 py-2">
                   <BarraChance valor={j.chance_prevista} />
                 </td>
-                <td className="tabular whitespace-nowrap px-2 py-2 text-right">~{energia(j.energia_esperada_mwh, L)}</td>
-                <td className="tabular whitespace-nowrap px-2 py-2 text-right">
+                <td data-label={t.common.expected} className="tabular whitespace-nowrap px-2 py-2 text-right">~{energia(j.energia_esperada_mwh, L)}</td>
+                <td data-label={t.common.value} className="tabular whitespace-nowrap px-2 py-2 text-right">
                   {reais(j.valor_referencia_rs ?? 0, L, true)}
                   {j.pld_estimado && (
                     <span title={t.common.pldEstTitle} className="ml-1 cursor-help text-[10px] text-muted underline decoration-dotted">
@@ -94,7 +94,7 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
                     </span>
                   )}
                 </td>
-                <td className="px-2 py-2 text-right">
+                <td data-label="ONS" className="px-2 py-2 text-right">
                   <SeloResultado resultado={j.resultado_ons} />
                 </td>
                 <td className="px-5 py-2 text-right">
@@ -136,7 +136,7 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
             <h2 className="text-lg font-semibold">{t.plant.recentTitle}</h2>
             <p className="mt-1 text-sm text-muted">{t.plant.recentNote}</p>
           </div>
-          <table className="mt-3 w-full text-sm">
+          <table className="tabela-cartoes mt-3 w-full text-sm">
             <thead className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
               <tr>
                 <th className="px-5 py-2 font-medium">{t.common.data}</th>
@@ -155,13 +155,13 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
                     {dataCurta(j.data, L)}
                     {j.data >= INICIO_AO_VIVO && <span className="ml-1.5 text-[10px] font-medium uppercase text-ok">{t.common.live}</span>}
                   </td>
-                  <td className="tabular whitespace-nowrap px-2 py-2">
+                  <td data-label={t.common.window} className="tabular whitespace-nowrap px-2 py-2">
                     {j.inicio}–{j.fim}
                   </td>
-                  <td className="tabular px-2 py-2">{pct(j.chance_prevista, L)}</td>
-                  <td className="tabular whitespace-nowrap px-2 py-2 text-right">{energia(j.energia_cortada_mwh ?? 0, L)}</td>
-                  <td className="px-2 py-2 text-xs text-muted">{Object.keys(j.razoes_do_corte).join(", ") || "—"}</td>
-                  <td className="px-2 py-2 text-right">
+                  <td data-label={t.common.chance} className="tabular px-2 py-2">{pct(j.chance_prevista, L)}</td>
+                  <td data-label={t.plant.lost} className="tabular whitespace-nowrap px-2 py-2 text-right">{energia(j.energia_cortada_mwh ?? 0, L)}</td>
+                  <td data-label={t.plant.reasons} className="px-2 py-2 text-xs text-muted">{Object.keys(j.razoes_do_corte).join(", ") || "—"}</td>
+                  <td data-label="ONS" className="px-2 py-2 text-right">
                     <SeloResultado resultado={j.resultado_ons} />
                   </td>
                   <td className="px-5 py-2 text-right">

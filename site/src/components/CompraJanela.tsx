@@ -143,7 +143,7 @@ export default function CompraJanela({ idUsina, nomeUsina, janela, cambio, repla
         aria-modal="true"
         aria-labelledby="titulo-compra"
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-2xl bg-card p-5 shadow-xl sm:rounded-2xl"
+        className="max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-2xl bg-card p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-xl sm:rounded-2xl"
       >
         <div className="flex items-start justify-between gap-3">
           <div>

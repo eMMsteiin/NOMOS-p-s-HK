@@ -21,15 +21,15 @@ export function Cabecalho() {
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 sm:flex-nowrap sm:px-6">
         <Link href="/" className="flex items-center gap-3 whitespace-nowrap">
           <LogotipoNomos className="text-[1.75rem]" />
-          <span aria-hidden className="hidden h-5 w-px bg-line md:block" />
-          <span className="hidden text-sm text-muted md:inline">{t.nav.tagline}</span>
+          <span aria-hidden className="hidden h-5 w-px bg-line lg:block" />
+          <span className="hidden text-sm text-muted lg:inline">{t.nav.tagline}</span>
         </Link>
         <nav className="order-last flex w-full items-center gap-1 text-sm sm:order-none sm:ml-auto sm:w-auto">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className={`rounded-md px-2.5 py-1.5 ${l.ativo ? "bg-ink text-white" : "text-muted hover:bg-line/60 hover:text-ink"}`}
+              className={`rounded-md px-2.5 py-2.5 sm:py-1.5 ${l.ativo ? "bg-ink text-white" : "text-muted hover:bg-line/60 hover:text-ink"}`}
             >
               {l.rotulo}
             </Link>
@@ -42,7 +42,7 @@ export function Cabecalho() {
               type="button"
               onClick={() => trocar(i)}
               aria-pressed={idioma === i}
-              className={`px-2 py-1.5 uppercase ${idioma === i ? "bg-ink text-white" : "bg-card text-muted hover:text-ink"}`}
+              className={`px-3 py-2.5 uppercase sm:px-2 sm:py-1.5 ${idioma === i ? "bg-ink text-white" : "bg-card text-muted hover:text-ink"}`}
             >
               {i}
             </button>

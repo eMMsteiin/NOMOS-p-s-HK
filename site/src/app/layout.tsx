@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
@@ -15,6 +15,14 @@ export const metadata: Metadata = {
   title: "Nomos — Brazil's curtailed-energy atlas",
   description:
     "An open atlas of the wind and solar power Brazil's grid throws away: where, why, what it is worth and when it will happen next, with a public forecast track record and hourly receipts on Solana.",
+};
+
+// Celular, tablet e computador: largura do aparelho, área do entalhe (notch) e cor da barra do navegador
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#f6f7f4",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -104,7 +104,7 @@ export function Inicio({ d }: { d: DadosInicio }) {
               role="tab"
               aria-selected={x === dia}
               onClick={() => setDia(x)}
-              className={`rounded-md border px-2.5 py-1.5 text-sm ${x === dia ? "border-ink bg-ink text-white" : "border-line bg-card text-muted hover:text-ink"}`}
+              className={`rounded-md border px-3 py-2.5 text-sm sm:px-2.5 sm:py-1.5 ${x === dia ? "border-ink bg-ink text-white" : "border-line bg-card text-muted hover:text-ink"}`}
             >
               {dataCurta(x, L)}
             </button>
@@ -116,7 +116,7 @@ export function Inicio({ d }: { d: DadosInicio }) {
             <MapaCarregado pontos={pontos} />
           </div>
           <Cartao className="overflow-x-auto p-0 lg:col-span-3">
-            <table className="w-full text-sm">
+            <table className="tabela-cartoes w-full text-sm">
               <thead className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
                 <tr>
                   <th className="px-4 py-3 font-medium">{t.home.featured}</th>
@@ -142,19 +142,19 @@ export function Inicio({ d }: { d: DadosInicio }) {
                     </td>
                     {j ? (
                       <>
-                        <td className="tabular whitespace-nowrap px-2 py-2.5">
+                        <td data-label={t.common.window} className="tabular whitespace-nowrap px-2 py-2.5">
                           {j.inicio}–{j.fim}
                         </td>
-                        <td className="px-2 py-2.5">
+                        <td data-label={t.common.chance} className="px-2 py-2.5">
                           <BarraChance valor={j.chance_prevista} />
                         </td>
-                        <td className="tabular whitespace-nowrap px-2 py-2.5 text-right">
+                        <td data-label={t.common.expected} className="tabular whitespace-nowrap px-2 py-2.5 text-right">
                           ~{energia(j.energia_esperada_mwh, L)}
                           <div className="text-xs text-muted">
                             {compacto(j.gpu_horas_esperadas)} {t.common.gpuHours}
                           </div>
                         </td>
-                        <td className="tabular whitespace-nowrap px-4 py-2.5 text-right">
+                        <td data-label={t.common.value} className="tabular whitespace-nowrap px-4 py-2.5 text-right">
                           {reais(j.valor_referencia_rs ?? 0, L, true)}
                           {j.pld_estimado && (
                             <span title={t.common.pldEstTitle} className="ml-1 cursor-help text-[10px] text-muted underline decoration-dotted">

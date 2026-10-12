@@ -41,7 +41,7 @@ function TiposDeCorte({ r }: { r: Atlas["razoes"] }) {
       <div className="mt-4 max-w-3xl">
         <BarraRazoes fracao={ne.fracao} />
       </div>
-      <table className="mt-5 w-full text-sm">
+      <table className="tabela-cartoes mt-5 w-full text-sm">
         <thead className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
           <tr>
             <th className="py-2 pr-3 font-medium">{t.reasons.type}</th>
@@ -56,11 +56,11 @@ function TiposDeCorte({ r }: { r: Atlas["razoes"] }) {
           {tipos.map((k) => (
             <tr key={k} className="border-b border-line/70 last:border-0">
               <td className="py-2 pr-3">{t.reasons.names[k]}</td>
-              <td className="px-2 py-2 font-mono text-xs">{k}</td>
-              <td className="tabular px-2 py-2 text-right font-semibold">{pct(ne.fracao[k], L)}</td>
-              <td className="tabular px-2 py-2 text-right">{cap("teste_ago_set", k)}</td>
-              <td className="tabular px-2 py-2 text-right">{cap("ao_vivo", k)}</td>
-              <td className={`py-2 pl-2 text-right ${k !== "ENE" ? "font-semibold text-ok" : "text-muted"}`}>{k !== "ENE" ? t.reasons.yes : t.reasons.no}</td>
+              <td data-label={t.reasons.code} className="px-2 py-2 font-mono text-xs">{k}</td>
+              <td data-label={t.reasons.share} className="tabular px-2 py-2 text-right font-semibold">{pct(ne.fracao[k], L)}</td>
+              <td data-label={t.reasons.capTest} className="tabular px-2 py-2 text-right">{cap("teste_ago_set", k)}</td>
+              <td data-label={t.reasons.capLive} className="tabular px-2 py-2 text-right">{cap("ao_vivo", k)}</td>
+              <td data-label={t.reasons.ess} className={`py-2 pl-2 text-right ${k !== "ENE" ? "font-semibold text-ok" : "text-muted"}`}>{k !== "ENE" ? t.reasons.yes : t.reasons.no}</td>
             </tr>
           ))}
         </tbody>
@@ -159,7 +159,7 @@ export function Placar({ d }: { d: DadosPlacar }) {
         <p className="px-5 text-sm text-muted">
           {t.plant.precision} · {t.plant.coverage} · {t.plant.energyCaptured}
         </p>
-        <table className="mt-3 w-full text-sm">
+        <table className="tabela-cartoes mt-3 w-full text-sm">
           <thead className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
             <tr>
               <th className="px-5 py-2 font-medium">{t.track.model}</th>
@@ -175,9 +175,9 @@ export function Placar({ d }: { d: DadosPlacar }) {
               return (
                 <tr key={m} className={`border-b border-line/70 last:border-0 ${prod ? "bg-wind-soft/50 font-semibold" : ""}`}>
                   <td className="px-5 py-2.5">{t.track.models[m]}</td>
-                  <td className="tabular whitespace-nowrap px-2 py-2.5">{tripla(a)}</td>
-                  <td className="tabular whitespace-nowrap px-2 py-2.5">{tripla(s)}</td>
-                  <td className="tabular whitespace-nowrap px-5 py-2.5 text-right">
+                  <td data-label={`${t.plant.months[7]} 2026`} className="tabular whitespace-nowrap px-2 py-2.5">{tripla(a)}</td>
+                  <td data-label={`${t.plant.months[8]} 2026`} className="tabular whitespace-nowrap px-2 py-2.5">{tripla(s)}</td>
+                  <td data-label={t.track.skill} className="tabular whitespace-nowrap px-5 py-2.5 text-right">
                     {m === "taxa_media" ? "—" : `${pct(a.ganho_sobre_taxa_media, L)} / ${pct(s.ganho_sobre_taxa_media, L)}`}
                   </td>
                 </tr>
