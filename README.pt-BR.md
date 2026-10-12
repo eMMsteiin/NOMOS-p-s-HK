@@ -2,7 +2,7 @@
 
 > English version: [README.md](README.md). Esta é a versão em português, para o time.
 
-Mercado de flexibilidade para o excesso de energia renovável do Nordeste brasileiro: previsão aberta das janelas em que o ONS manda cortar usinas eólicas e solares, liquidação em USDC na Solana e recibo verificável em duas fases.
+Atlas aberto da energia eólica e solar que o ONS manda cortar no Nordeste brasileiro: previsão das janelas de corte, calculadora de carga junto à usina e placar público de acertos, com cada previsão carimbada na Solana. Pagamento em USDC e recibo em duas fases são uma visão futura, simulada na devnet (usina e operador de teste; o comprador do certificado não foi validado).
 
 Projeto de Emmanuel Stein e Guilherme Amorim (Nomos) para o Colosseum Crypto World's Fair 2026.
 
@@ -33,7 +33,7 @@ Cada janela prevista tem um botão **Comprar**: o comprador escolhe os MWh, o pr
 
 Depois do pagamento, o site grava dois registros na Solana, cada um citando a transação da compra:
 
-1. **Recibo (fase 1):** a usina e o operador assinam um memo reconhecendo a venda (a plataforma paga a taxa).
+1. **Recibo (fase 1):** a usina e o operador assinam um memo reconhecendo a reserva (simulada, na devnet; a plataforma paga a taxa).
 2. **Carimbo do ONS (fase 2):** quando o ONS publica o dado da janela (cerca de uma semana depois), a plataforma, como oráculo declarado (v1), grava o veredito, *confirmado* ou *errado*, com o arquivo oficial do ONS e seu SHA-256.
 
 A página [`/verify`](https://nomos-energy.vercel.app/verify) lê tudo direto da blockchain e ensina a conferir sem confiar no site. O site guarda uma cópia exata de cada arquivo do ONS citado num carimbo (`site/public/ons/<sha256>/`), porque o ONS às vezes republica um mês: em 08/10/2026 ele renomeou usinas nos arquivos de setembro. Os números não mudaram, mas o SHA-256 mudou.

@@ -28,7 +28,7 @@ function TiposDeCorte({ r }: { r: Atlas["razoes"] }) {
   const L = t.locale;
   const ne = r.nordeste_2026;
   const tipos = ["ENE", "CNF", "REL"].filter((k) => ne.fracao[k]);
-  const fora = tipos.filter((k) => k !== "REL").reduce((s, k) => s + ne.fracao[k], 0);
+  const semRessarcimento = ne.fracao.ENE ?? 0;
   const ate = dataCurta(ne.periodo.slice(-10), L, true);
   const cap = (periodo: "teste_ago_set" | "ao_vivo", k: string) => (r.captura[periodo][k] ? pct(r.captura[periodo][k].capturado, L) : "—");
   return (
@@ -57,13 +57,13 @@ function TiposDeCorte({ r }: { r: Atlas["razoes"] }) {
               <td className="tabular px-2 py-2 text-right font-semibold">{pct(ne.fracao[k], L)}</td>
               <td className="tabular px-2 py-2 text-right">{cap("teste_ago_set", k)}</td>
               <td className="tabular px-2 py-2 text-right">{cap("ao_vivo", k)}</td>
-              <td className={`py-2 pl-2 text-right ${k === "REL" ? "font-semibold text-ok" : "text-muted"}`}>{k === "REL" ? t.reasons.yes : t.reasons.no}</td>
+              <td className={`py-2 pl-2 text-right ${k !== "ENE" ? "font-semibold text-ok" : "text-muted"}`}>{k !== "ENE" ? t.reasons.yes : t.reasons.no}</td>
             </tr>
           ))}
         </tbody>
       </table>
       <p className="mt-3 max-w-3xl text-xs text-muted">
-        {t.reasons.essNote(pct(fora, L))}{" "}
+        {t.reasons.essNote(pct(semRessarcimento, L))}{" "}
         <a href={DICIONARIO_ONS} className="underline">
           {t.reasons.dictionary} ↗
         </a>

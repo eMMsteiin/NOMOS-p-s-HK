@@ -7,7 +7,7 @@
 
 # Nomos
 
-**An open atlas of the wind and solar power that Brazil's grid operator throws away, with a public forecast track record and hourly on-chain receipts on Solana.**
+**An open atlas of the wind and solar power that Brazil's grid operator orders plants to cut, with a load calculator for sites next to a plant and a public forecast track record stamped on Solana.**
 
 Built by Emmanuel Stein and Guilherme Amorim, university students in Brazil, for the Colosseum Crypto World's Fair 2026.
 
@@ -19,13 +19,14 @@ In 2026, the Northeast of Brazil curtailed **3.4 GW of wind and solar power on a
 
 - From January 1 to October 9, the curtailed energy was worth **R$ 2.6 billion** at the actual hourly spot price (PLD). Two thirds of it was cut while the price was already at its legal floor.
 - **66%** of it was an *energy surplus* (ONS reason `ENE`), the predictable part. The rest was electrical: grid reliability limits (`CNF`, 24%) and lines or equipment out (`REL`, 10%).
-- According to the ONS data dictionary, only `REL` cuts enter the calculation of compensation to plants (ESS). The other 90% of the curtailed energy does not.
+- Law 15.269/2025 provides retroactive compensation to plants for `CNF` and `REL` cuts. `ENE` cuts are not compensated; on October 6, 2026, Aneel decided to share the losses from them among generators.
 
 ## What Nomos does
 
-**Today (the product): an open atlas and a neutral reference for contracts.** Loads that want to sit next to wind and solar plants, such as miners, data centers and other flexible compute, sign long contracts (around 2 years), and curtailment works as a discount in them. To price it, they need to know how much each plant loses, of which kind, at which hours, and how predictable it is. Plants have that history and paid intelligence; the other side has less. The atlas gives it for free, per plant:
+**Today (the product): an open atlas and a neutral reference for contracts.** Loads that want to sit next to wind and solar plants, such as miners, data centers and other flexible compute, sign long contracts (around 2 years), and curtailment works as a discount in them. To price it, they need to know how much each plant loses, of which kind, at which hours, and how predictable it is. Plants have that history and paid intelligence; the other side has less. The atlas gives it openly, per plant:
 
 - curtailed energy, the reason mix and a month × hour heat map;
+- a **load calculator** on each plant page: "if I install X MW next to this plant and run Y hours a day, how much curtailment would I have met?" It is an estimate from past data, not a forecast or a guarantee;
 - a daily forecast of curtailment windows for the next 8 days, with a reference value at the hourly PLD;
 - a public track record: a frozen backtest plus a live scoreboard that shows every miss.
 
@@ -63,7 +64,7 @@ Hour-by-hour clean-energy claims are where large buyers are heading: Google's 24
 | Precision / coverage of the production model | 89.5% / 82.4% (Aug), 84.8% / 90.2% (Sep) |
 | Error reduction vs. the plant's average rate (Brier skill) | 54% (Aug), 56% (Sep) |
 | Windows confirmed by the ONS, 8 featured plants | 564 of 614 (Aug–Sep) |
-| Live since Oct 1 | 60 of 89 confirmed (Oct 1–9); 20 of 20 for forecasts published before the day |
+| Live since Oct 1 | 60 of 89 confirmed (Oct 1–9), a sample of only nine days; 20 of 20 for forecasts published before the day |
 | Captured by reason, backtest | energy surplus 95%, reliability 89%, line or equipment out 81% |
 
 The forecast parameters were fixed before the test. Early October was weaker: in two Rio Grande do Norte plants, the night-time reliability cuts stopped abruptly on Sep 28–29, and a model that only learns from past patterns kept offering those windows. This is exactly the kind of change an operator told us to expect from electrical curtailment.
@@ -80,7 +81,8 @@ Everything is reproducible. The pipeline writes byte-identical outputs on any ma
 | AI job | Real but small: a multilingual embedding model on a laptop CPU, which runs in seconds |
 | Plant and compute operator | Simulated (test wallets); we have no partner plant or operator yet |
 | Absorbing curtailed energy | Does not happen in the demo: the laptop is not at the plant |
-| Phase 2 oracle | Centralized and declared (the platform); a production version could let anyone challenge a stamp with the ONS file |
+| Phase 2 oracle | Centralized and declared (the platform); the ONS signs nothing. A production version could let anyone challenge a stamp with the ONS file |
+| Certificate buyer | Not validated: nobody has told us they would pay for an hourly certificate |
 | Selling electricity | We do not sell electricity: the energy never leaves the plant, the job travels over the internet |
 
 ## How it is built
