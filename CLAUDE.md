@@ -23,16 +23,16 @@
 Comprovado (fonte primária ou imprensa especializada):
 - Brasil cortou ao menos 73,4 milhões de MWh de eólica e solar entre out/2021 e ago/2026 (Volt Robotics). Em 2026, cerca de dois terços dos cortes são por sobra de energia (ENE), e o Nordeste concentra cerca de 83%.
 - ENE ~66%, CNF ~24%, REL ~10% no Nordeste em 2026 (cálculo do time com dados do ONS).
-- Lei 15.269/2025 prevê ressarcimento retroativo para cortes por confiabilidade (CNF) e indisponibilidade externa (REL), e não só REL. Cortes energéticos (ENE) não são ressarcidos; em 06/10/2026 a Aneel decidiu ratear os prejuízos desses cortes entre os geradores.
+- Lei 15.269/2025 prevê ressarcimento retroativo para cortes por confiabilidade (CNF) e indisponibilidade externa (REL), e não só REL. Cortes energéticos (ENE) não são ressarcidos. A REN Aneel 1.170/2026 (assinada em 06/10/2026, publicada no DOU em 09/10/2026) manda a CCEE ratear a energia cortada entre as usinas elegíveis (art. 2º, §6º; conferido no texto do Legisweb).
 - Hoje quem consome energia cortada é sobretudo a mineração de bitcoin. Data center de IA quer energia firme e constante. A energia é uns 4–11% do custo da GPU-hora (e não 1–2%). A depreciação da GPU domina o custo.
 - Redata (Lei 15.504/2026) exige contratos de energia renovável, não prova hora a hora.
 Hipótese ou não verificado (nunca afirmar como fato):
-- REN Aneel 1.170/2026 (consumo de autoprodução no mesmo ponto de conexão protegido de corte por razão energética): só confirmado por imprensa; falta conferir no Diário Oficial. Vale só para autoprodução e só para corte energético. Diga "segundo a imprensa, a confirmar".
+- REN Aneel 1.170/2026, art. 2º, §9º: a autoprodução com consumo no mesmo ponto de conexão só pode ser cortada, por razão energética, no que superar o consumo local naquele instante, até o limite que não afete o processo industrial. Lido no texto do Legisweb (publicação no DOU em 09/10/2026); falta conferir no próprio Diário Oficial. A cláusula está no artigo do corte energético; o corte elétrico (CNF, REL) está no art. 3º, que não avaliamos. Vale para autoprodução: se uma carga que só compra energia da usina seria coberta, ninguém avaliou (precisa de advogado regulatório). Diga "segundo o texto publicado no Legisweb".
 - Quem pagaria pelo atlas ou pela calculadora. Se existe comprador para o certificado horário. Preço e acurácia de previsões comerciais de curtailment.
 - O placar ao vivo tem poucos dias de amostra (67% em ~11 dias); o teste retroativo (90–95%) é retroativo.
 
 ## Aprendizados
-- O modelo hoje empata com a regra ingênua; o valor está no histórico, na calculadora e na transparência. (Medido em 12/10/2026, em 10 dias de placar ao vivo: erro médio de 29,9 pontos percentuais nos dois. O modelo ficou melhor em algumas usinas e pior nas duas do RN em que o corte noturno parou de repente.)
+- O modelo hoje empata com a regra ingênua; o valor está no histórico, na calculadora e na transparência. (Medido em 12/10/2026, em 10 dias de placar ao vivo: erro médio de 29,9 pontos percentuais nos dois. Usina por usina, o modelo ficou mais perto em 2 das 8 e a regra ingênua nas outras 6. As duas usinas do RN em que o corte noturno parou em 28–29/09 concentram 21 dos 30 erros; esse corte voltou por volta de 8/10.)
 
 ## Regras de honestidade (valem para site, README, pitch e qualquer texto)
 - Nunca escrever: "IA barata", "energia grátis", "energia cortada vale zero", "mercado de energia cortada", "provamos que a energia foi usada", "parceria" com qualquer empresa, "1–2% do custo da GPU", "só REL entra no ressarcimento".
@@ -41,8 +41,11 @@ Hipótese ou não verificado (nunca afirmar como fato):
 - Nunca inventar números, fontes ou resultados. Se um número não existe nos dados, diga que não existe.
 
 ## Backlog em ordem de prioridade
-1. Calculadora de carga junto à usina (feita; falta eu conferir o visual e fazer commit).
-2. Correção de textos no site (dicionarios.ts, Início, Método, Placar, páginas de usina) e nos READMEs, conforme as regras de honestidade acima.
-3. Placar: mostrar ao lado dos acertos uma linha de base ingênua (ex.: prever corte sempre nos horários mais comuns daquela usina naquele mês) calculada sobre as mesmas janelas ao vivo, e mostrar o tamanho da amostra em dias. Se o modelo não ganhar da linha de base, mostrar isso honestamente.
-4. Página inicial: abrir com a pergunta de decisão e o link para a calculadora; recibo e USDC como "visão futura".
-5. docs/business-plan.md em inglês, curto, separando "validado" de "hipótese", sem números inventados.
+Feitos (até 12/10/2026): 1. calculadora de carga junto à usina; 2. correção de textos e READMEs pelas regras de honestidade; 3. placar com linha de base ingênua e tamanho da amostra em dias (resultado: empate); 4. página inicial com a pergunta de decisão, reserva/USDC movidos para o Laboratório (`/lab`); 5. docs/business-plan.md.
+
+Abertos, em ordem de prioridade:
+1. Validar com quem poderia usar (operadores de carga flexível, geradoras, investidores): a calculadora responde à pergunta deles? O que falta? Pagariam por quê? Registrar por escrito e só citar nomes com autorização.
+2. Atualização diária dos dados desta cópia: o workflow `.github/workflows/atualizacao-diaria.yml` aponta para o site do Guilherme (`SITE: https://nomos-energy.vercel.app`); hoje os dados deste site ficam parados em 10/10 e o site mostra um aviso quando têm 3 dias ou mais. Mexer no workflow exige autorização do Stein.
+3. Cobertura: só 8 usinas de destaque têm calculadora, de 166 conjuntos modelados.
+4. Conferir a REN Aneel 1.170/2026 no Diário Oficial e consultar um advogado regulatório sobre cargas que não são autoprodução.
+5. Produto: relatório exportável, cenários salvos, alertas, contas (só depois da validação do item 1).

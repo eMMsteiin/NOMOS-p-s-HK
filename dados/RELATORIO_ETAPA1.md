@@ -1,5 +1,7 @@
 # Etapa 1 – Dados reais e teste retroativo
 
+> **Nota de 12/10/2026:** este é o relatório histórico da Etapa 1 (07/10/2026), anterior ao reenquadramento do projeto como ferramenta de decisão. Os resultados do teste retroativo continuam válidos: os 614 vereditos de agosto e setembro foram recalculados de novo a partir dos arquivos originais do ONS e bateram todos. As partes sobre recibo, demonstração e "O que falta para a Etapa 2" são históricas.
+
 Vento Cortado · 07/10/2026 · dados do ONS de jan/2025 a set/2026
 
 ## Resultado em uma frase

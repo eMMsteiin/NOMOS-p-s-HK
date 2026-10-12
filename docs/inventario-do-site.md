@@ -1,12 +1,10 @@
 # Inventário completo do site Nomos: cada página, seção, botão e função
 
-> **Atenção:** este inventário descreve o site **antes** da versão `so-decisao` (12/10/2026). Nessa versão, os itens marcados com ❌ (botões Reservar e Replay, "horas de GPU", bloco roxo "Visão futura" do Início e a aba Verificar) deixaram de aparecer no caminho principal e foram para o Laboratório (`/lab`). Os textos e a abertura em PT também mudaram.
+Versão de **12/10/2026, depois da revisão geral** (branch `revisao-geral`). Escrito lendo o código do site (`site/src`). Cada item diz **o que é**, **o que acontece quando você usa**, **de onde vem a informação** e se **combina com a premissa**.
 
-Escrito em 12/10/2026, lendo o código do site (`site/src`). Cada item diz **o que é**, **o que acontece quando você usa**, **de onde vem a informação** e se **combina com a premissa**.
+**A premissa de referência** (a "Ideia A"): o Nomos é uma **ferramenta de informação para decidir** onde instalar ou expandir uma unidade ao lado de uma usina eólica ou solar. Ele **não vende nada**. O modelo de negócio é hipótese, não validada.
 
-**A premissa de referência** (a "Ideia A"): o Nomos é uma **ferramenta de informação para decidir** onde instalar ou expandir uma unidade ao lado de uma usina eólica ou solar. Ele **não vende nada**.
-
-**Legenda de status** (de onde vem o dado ou o que a função é):
+**Legenda de status:**
 - **REAL**: dado oficial ou cálculo direto dele.
 - **ESTIMATIVA**: cálculo a partir do passado, que não é garantia.
 - **SIMULADO**: demonstração em rede de teste, com carteiras falsas.
@@ -14,43 +12,52 @@ Escrito em 12/10/2026, lendo o código do site (`site/src`). Cada item diz **o q
 **Legenda de coerência** com a premissa:
 - ✅ **Alinha**: é o coração da ferramenta de decisão.
 - ⚪ **Apoio**: sustenta a credibilidade, sem confundir.
-- ⚠️ **Revisar**: pode confundir ou está desatualizado.
-- ❌ **Não combina**: contradiz a premissa de "não vende nada".
+- ⚠️ **Revisar**: ainda pede uma decisão ou um ajuste.
+
+> **O que mudou em relação à versão anterior deste documento:** a reserva (botões Reservar e Replay), as "horas de GPU", o bloco roxo "Visão futura" do Início e a aba "Verificar" saíram do caminho principal e foram para o **Laboratório** (`/lab`). A calculadora subiu para o topo da página da usina. Há aviso de dados antigos, páginas 404 e de erro próprias, e o site abre em português quando o navegador está em português.
 
 ---
 
 ## Parte 0. O site em números
 
-- **5 páginas** (rotas): Início `/`, Usina `/plants/<id>` (8 páginas, uma por usina), Placar `/track-record`, Método `/method`, Verificar `/verify`.
+- **6 páginas** (rotas): Início `/`, Usina `/plants/<id>` (8 páginas, uma por usina), Placar `/track-record`, Método `/method`, **Laboratório `/lab`** e Verificar `/verify` (que faz parte do Laboratório). Mais a página 404 e uma página de erro.
 - **8 usinas de destaque** têm página própria e calculadora, de **166 conjuntos** modelados (RN, BA e CE).
-- **2 idiomas** (PT e EN). O site abre em **inglês**. A escolha fica salva no navegador do visitante (`localStorage`).
+- **2 idiomas** (PT e EN). Sem escolha salva, o site abre em **português se o idioma principal do navegador for português** (pt, pt-BR, pt-PT) e em inglês nos demais casos. A escolha pelo botão EN/PT fica salva no navegador (`localStorage`).
 - **Sem login, sem conta, sem cookies de rastreio, sem analytics.** Nada do visitante é guardado, exceto o idioma.
-- **Cálculos** da calculadora: todos no navegador, com os dados já carregados.
+- **Cálculos** da calculadora e da comparação com a regra ingênua: feitos com os dados já carregados (a calculadora, no navegador).
+- **Funciona em celular, tablet e computador.** Em telas estreitas (menos de 640 px) as tabelas largas viram cartões.
 - **Tudo é público**: qualquer pessoa com o link vê tudo.
 
 ---
 
 ## Parte 1. Elementos que aparecem em TODAS as páginas
 
-### 1.1 Cabeçalho (fixo no topo, acompanha a rolagem)
+### 1.1 Cabeçalho (fixo no topo)
 
 | # | Elemento | O que faz | Coerência |
 | --- | --- | --- | --- |
 | 1 | **Logotipo "nomos"** | Clique leva ao Início. | ⚪ |
-| 2 | **Frase ao lado do logotipo** ("Energia limpa cortada, mapeada e registrada.") | Só aparece em tela larga (a partir de 1024 px). | ⚠️ "registrada" lembra a ideia de blockchain; para uma ferramenta de decisão, pode ser trocada por algo como "para decidir onde instalar". |
-| 3 | **Botão/aba "Atlas"** | Vai ao Início. Fica destacado em `/` e em qualquer página de usina. | ✅ |
-| 4 | **"Placar"** (EN: "Track record") | Vai a `/track-record`. | ⚪ |
-| 5 | **"Método"** | Vai a `/method`. | ⚪ |
-| 6 | **"Verificar"** | Vai a `/verify`. | ❌ Só serve para a reserva simulada. |
+| 2 | **Frase ao lado do logotipo**: "Para decidir onde instalar ao lado de uma usina." (EN: "To decide where to install next to a power plant.") | Só aparece em tela larga (a partir de 1024 px). | ✅ |
+| 3 | **Atlas** | Vai ao Início. Fica destacado em `/` e em qualquer página de usina. | ✅ |
+| 4 | **Placar** (EN: "Track record") | Vai a `/track-record`. | ⚪ |
+| 5 | **Método** | Vai a `/method`. | ⚪ |
+| 6 | **Laboratório** com o selo **"simulação"** (EN: "Lab", "simulation") | Vai a `/lab`. Fica destacado também em `/verify`. No celular o selo fica sobre o canto da aba. | ✅ separa a simulação do produto |
 | 7 | **Seletor EN / PT** | Troca todo o texto do site na hora e guarda a escolha. | ✅ |
 
 No celular o menu desce para uma segunda linha.
 
-### 1.2 Rodapé
-- Texto: "Dados: ONS, dados abertos (CC-BY). Preços: CCEE, dados abertos (PLD horário)." (REAL, ⚪).
-- Texto: "Feito pelo time Nomos para o Colosseum Crypto World's Fair 2026" + link **GitHub**. ⚠️ O link aponta para o repositório do **Guilherme** (`AmorimGui/Hackaton-Project`), não para o seu. A menção ao hackathon pode não ser o que você quer mostrar a uma empresa.
+### 1.2 Aviso de dados antigos (novo)
+Faixa laranja logo abaixo do cabeçalho. **Só aparece quando os dados têm 3 dias ou mais** (contados em dias de Brasília): "Dados até 10 de out. de 2026 (há N dias). Esta versão de teste ainda não se atualiza sozinha, então as janelas previstas para dias que já passaram deixaram de ser previsões." Some sozinha quando os dados forem atualizados. ✅ (evita mostrar "previsão" de um dia que já passou)
 
-### 1.3 Ao instalar no celular
+### 1.3 Rodapé
+- "Dados: ONS, dados abertos (CC-BY). Preços: CCEE, dados abertos (PLD horário)." (REAL, ⚪).
+- "Feito pelo time Nomos para o Colosseum Crypto World's Fair 2026" + link **GitHub**. ⚠️ O link aponta para o repositório do **Guilherme** (`AmorimGui/Hackaton-Project`). Para trocar, edite **uma linha**: a constante `REPOSITORIO` em `site/src/lib/tipos.ts` (ela também alimenta o "Código-fonte" do Método). A menção ao hackathon é uma escolha do time.
+
+### 1.4 Outras páginas de sistema
+- **Página 404** própria (em PT/EN, com botão "Voltar ao Atlas"), no estilo do site. A padrão do Next ficava preta no modo escuro.
+- **Página de erro**: se alguma página falhar, mostra "Algo deu errado" com o botão "Tentar de novo".
+
+### 1.5 Ao instalar no celular
 O site tem um manifesto: no celular dá para "Adicionar à tela inicial" e abrir como app. ⚪
 
 ---
@@ -59,7 +66,7 @@ O site tem um manifesto: no celular dá para "Adicionar à tela inicial" e abrir
 
 Pergunta que a página responde: "Quanta energia cortada existe e como uso isso na minha decisão?".
 
-### 2.1 Bloco de abertura (topo)
+### 2.1 Bloco de abertura
 
 | # | Elemento | O que mostra ou faz | Dado | Coerência |
 | --- | --- | --- | --- | --- |
@@ -67,45 +74,45 @@ Pergunta que a página responde: "Quanta energia cortada existe e como uso isso 
 | 2 | **Título**: "Se você colocar uma carga ao lado de uma usina eólica ou solar do Nordeste, quanta energia cortada ela poderia ter aproveitado?" | A pergunta de decisão. | texto fixo | ✅ |
 | 3 | Frase: "Em 2026 o Nordeste teve 3,4 GW de energia eólica e solar cortados em média…" | O tamanho do problema. | atlas.json (REAL) | ✅ |
 | 4 | Parágrafo: "O Nomos é um atlas aberto desse corte… Cada página de usina tem uma calculadora…" | Explica o produto. | texto fixo | ✅ |
-| 5 | **Caixa "Experimente a calculadora numa usina"** com **8 botões pretos** (um por usina, ex. "Serra do Assuruá →") | Cada botão leva à página da usina, já descendo até a calculadora. | atlas.json | ✅ |
+| 5 | **Caixa "Experimente a calculadora numa usina"** com **8 botões pretos** (um por usina) | Cada botão leva à página da usina, já descendo até a calculadora. | atlas.json | ✅ |
 | 6 | Nota "Estimativas com dados passados do ONS, não garantia. O contrato com a usina precisa ser negociado." | Aviso de honestidade. | texto fixo | ✅ |
 
-### 2.2 Os 4 números de destaque (cartões)
+### 2.2 Os 4 números de destaque
 
 | Cartão | Valor atual | O que significa | Status |
 | --- | --- | --- | --- |
 | Potência cortada | **3.415 MW** médios | Média de potência cortada no Nordeste em jan–ago/2026. | REAL |
 | Energia por dia | **82 GWh** | O mesmo corte em energia por dia. | REAL |
-| Valor | **R$ 2,6 bi** | Valor da energia cortada de 1º/jan a 10/out, ao preço horário real (PLD). | ESTIMATIVA ⚠️ "valor de energia desperdiçada" não é dinheiro que ninguém recebeu; vale lembrar isso. |
-| Energia capturada | **90% / 95%** | Quanto da energia cortada caiu dentro das nossas janelas previstas (ago / set). | REAL (backtest) |
+| Valor | **R$ 2,6 bi** | "Valor da energia cortada no Nordeste de 1º/jan a 10/out, ao PLD horário real: **estimativa, não é dinheiro que alguém recebeu**". | ESTIMATIVA ✅ |
+| Energia capturada | **90% / 95%** | Quanto da energia cortada caiu dentro das nossas janelas previstas (ago / set). | REAL (teste retroativo) |
 
 ### 2.3 Seção "Janelas previstas"
 
 | # | Elemento | O que faz | Dado | Coerência |
 | --- | --- | --- | --- | --- |
 | 1 | Título e frase "Previsões reais, feitas só com dados do ONS publicados até 10/10…" | Explica o que são. | texto | ✅ |
-| 2 | **Selo da previsão** ("✓ A impressão digital desta previsão foi gravada na Solana em …") com links **Solana Explorer ↗**, **arquivo da previsão** e o início do **sha256** | Mostra que a previsão do dia está carimbada na blockchain. Só aparece se existe o registro. Lê a blockchain na hora (`/api/previsao`). | REAL (devnet) | ⚪ É o único uso defendido de blockchain; mas pode confundir quem não conhece. |
+| 2 | **Selo da previsão** ("✓ A impressão digital desta previsão foi gravada na Solana em …") com links **Solana Explorer ↗**, **arquivo da previsão** e o início do **sha256** | Mostra que a previsão do dia está carimbada na blockchain. Só aparece se existe o registro. Lê a blockchain na hora (`/api/previsao`). | REAL (devnet) | ⚪ é o único uso defendido de blockchain |
 | 3 | **Abas de dia** (8 botões, de "dom., 11 de out." a "dom., 18 de out.") | Troca o dia mostrado no mapa, na tabela e na frase de totais. | atlas.json | ✅ |
-| 4 | **Mapa** (OpenStreetMap + Leaflet) | Um círculo por usina. Cor: verde-água = eólica, laranja = solar. Tamanho = capacidade. Opacidade = maior chance de corte prevista no dia. **Passar o mouse/tocar**: mostra nome e janela, chance e energia. **Clicar** abre a página da usina. Tem botões de zoom (+/−); a rolagem do mouse não dá zoom. | atlas.json | ✅ |
-| 5 | **Tabela das 8 usinas** | Uma linha por usina: nome (link para a página), selo eólica/solar, município e UF, **janela** (ex. 07:00–17:30), **chance** (barra e %), **esperado** (ex. ~2,4 GWh e, embaixo, "horas de GPU"), **valor de referência** (ex. R$ 136,5 mil, com "est." quando o PLD da hora ainda não saiu). No celular vira lista de cartões. | atlas.json | ✅ |
-| 6 | Dentro da tabela: **"horas de GPU"** (ex. "2,8 mi horas de GPU") | Quantas horas de uma GPU H100 (0,85 kW) caberiam na energia esperada. | ESTIMATIVA | ❌ Vem da ideia de computação/IA. Não ajuda a decidir sobre fábricas e confunde. |
-| 7 | Dentro da tabela: **botão "Reservar (demo)"** em cada linha | Abre a janela de reserva (ver Parte 7). | SIMULADO | ❌ |
-| 8 | Linha de totais ("Neste dia, 8 das usinas modeladas têm janela: N janelas e X GWh…") | Soma do dia (todas as usinas modeladas, não só as 8). | atlas.json | ✅ |
-| 9 | Nota do valor ("Valor de referência = energia cortada esperada × PLD…") | Explica a conta e diz que não é preço. | texto | ✅ |
-| 10 | **Bloco roxo "Visão futura, simulada"** | Explica que "Reservar" é uma ideia futura, na devnet, sem comprador validado. | texto | ⚠️ Está lá para proteger, mas só existe por causa do botão. Se o botão sair, o bloco perde a razão. |
+| 4 | **Mapa** (OpenStreetMap + Leaflet) | Um círculo por usina. Cor: verde-água = eólica, laranja = solar. Tamanho = capacidade. Opacidade = maior chance prevista no dia. Passar o mouse/tocar mostra nome, janela, chance e energia. **Clicar** abre a página da usina. Botões de zoom (+/−); a rolagem do mouse não dá zoom. | atlas.json | ✅ |
+| 5 | **Tabela das 8 usinas** | Uma linha por usina: nome (link), selo eólica/solar, município e UF, **janela**, **chance** (barra e %), **esperado** (ex. ~2,4 GWh) e **valor de referência** (com "est." quando o PLD da hora ainda não saiu). No celular vira lista de cartões. **Não há mais "horas de GPU" nem botão de reserva.** | atlas.json | ✅ |
+| 6 | Linha de totais ("Neste dia, 8 das usinas modeladas têm janela: N janelas e X GWh…") | Soma do dia (todas as usinas modeladas). | atlas.json | ✅ |
+| 7 | Nota do valor | "Valor de referência = energia cortada esperada × PLD…: uma referência para a negociação entre uma usina e uma carga ao lado dela, **não um preço**." | texto | ✅ |
 
-### 2.4 Seção "Por que isso acontece" (5 cartões)
+### 2.4 Seção "Por que acontece" (5 cartões)
 
 | # | Cartão | O que mostra | Interação | Status |
 | --- | --- | --- | --- | --- |
-| 1 | **Energia cortada por hora do dia (jan–jul/2026)** | Gráfico de barras: eólica × solar, 24 horas. Frase fixa: "61% da energia eólica perdida cai entre 8h e 14h59". | Passar o mouse numa barra mostra o % daquela hora. | REAL ✅ |
-| 2 | **Chance de corte**: dia útil × fim de semana e feriado | Dois números grandes (30% × 38%). Explica que o corte sobe quando a demanda cai. | nenhuma | REAL ✅ |
-| 3 | **Três tipos de corte** | Barra com ENE (sobra de energia), CNF (confiabilidade) e REL (linha ou equipamento fora). Texto: a parte previsível é a de sobra de energia. Link **"Como nossa previsão trata cada tipo →"** vai ao Placar. | link | REAL ✅ |
-| 4 | **O preço bate no piso exatamente quando há corte** | Gráfico por hora: % das horas com PLD no piso. Texto: em tantos % das horas entre 9h e 13h o preço está no piso. | passar o mouse | REAL ✅ |
+| 1 | **Energia cortada por hora do dia (jan–jul/2026)** | Barras eólica × solar, 24 horas. "61% da perda eólica fica entre 8h e 14h59" (conferido: 60,6%). | passar o mouse mostra o % | REAL ✅ |
+| 2 | **Chance de corte**: dia útil × fim de semana e feriado | 30% × 38%. O corte sobe quando a demanda cai. | nenhuma | REAL ✅ |
+| 3 | **Três tipos de corte** | Barra ENE/CNF/REL. Link "Como a nossa previsão lida com cada tipo →" vai ao Placar. | link | REAL ✅ |
+| 4 | **O preço vai ao piso justamente quando a energia é cortada** | % das horas com PLD no piso, por hora. Usa o mesmo período dos números ao lado (até 10/10). | passar o mouse | REAL ✅ |
 | 5 | **Potência cortada média no Nordeste, por mês** | Barras mensais, eólica + solar. | passar o mouse | REAL ✅ |
 
-### 2.5 Faixa preta final
-**"Veja como a previsão se saiu →"**: leva ao Placar. Mostra "X de Y janelas oferecidas em ago–set confirmadas" e "Ao vivo desde 1º/10: 68 de 98 (69%), amostra de apenas 10 dias". ⚪
+### 2.5 Seção "Para quem é e como seria o acesso" (nova)
+Título, selo **"Hipótese, ainda não validada"**, uma frase dizendo que nada ali é plano, preço nem promessa, **3 cartões** de borda tracejada (operadores de carga flexível, geradoras, investidores) e um cartão com **3 formatos de acesso a testar** (mais usinas com calculadora; relatórios exportáveis; alertas), terminando em "Sem preços, sem prazo e sem promessa". ✅ (deixa claro que o modelo de negócio é hipótese)
+
+### 2.6 Faixa preta final
+**"Veja como a previsão se saiu →"**: leva ao Placar. Mostra "564 das 614 janelas oferecidas em ago–set foram confirmadas" e "Ao vivo desde 1º/10: 68 de 98 (69%), amostra de apenas 10 dias". ⚪
 
 ---
 
@@ -116,36 +123,36 @@ Usinas: Serra do Assuruá (BA), Rio do Vento (RN), Rio do Vento Expansão (RN), 
 | Ordem | Seção | O que mostra ou faz | Status | Coerência |
 | --- | --- | --- | --- | --- |
 | 1 | **Link "← Voltar ao Atlas"** | Volta ao Início. | | ⚪ |
-| 2 | **Cabeçalho da usina** | Selo eólica/solar, código do ONS (ex. CJU_BASAR), nome, município e UF ("localização aproximada"), **operador** (ex. ENGIE), **capacidade** (MW), **ponto de conexão**. | REAL | ✅ |
-| 3 | Dois cartões: **energia perdida jan–jul/2026** (ex. 337 GWh) e **meias-horas cortadas** (ex. 35%) | Tamanho do corte da usina. | REAL | ✅ |
-| 4 | **Mapa** só dessa usina | Um círculo, zoom no local. Clicar no círculo recarrega a página. | | ⚪ |
-| 5 | **Tabela "Janelas previstas (aguardando o ONS)"** | Colunas: data, janela, chance (barra), esperado, valor de referência (com "est."), situação do ONS (selo "aguardando ONS"), botão **Reservar (demo)**. | ESTIMATIVA / SIMULADO | ✅ a tabela; ❌ o botão |
-| 6 | **"Por que esta usina é cortada (2026)"** | Texto com GWh cortados e a barra ENE/CNF/REL da usina. | REAL | ✅ |
-| 7 | **Mapa de calor "Chance de corte por mês e hora"** | Tabela 12 meses × 24 horas, tom mais escuro = mais corte. Passar o mouse mostra "mês hora: %". Escala 0–100% embaixo. Dados de jan/2025 até a data atual. | REAL | ✅ |
-| 8 | **Calculadora de carga junto à usina** (ver Parte 3.1) | O coração da ferramenta. | ESTIMATIVA | ✅ |
-| 9 | **Tabela "Janelas recentes e o veredito do ONS"** | Últimos ~14 dias: data (marcada **ao vivo** a partir de 1º/10), janela, chance prevista, energia cortada, razões do corte, situação (**confirmada** / **errada**), botão **Replay**. | REAL | ✅ a tabela; ❌ o botão Replay |
-| 10 | **Cartão "Teste retroativo desta usina"** | "59 de 61 janelas confirmadas (ago–set)"; se houver, "Ao vivo desde 1º/10: X de Y"; para agosto e setembro: **precisão**, **cobertura** e **energia capturada**. | REAL | ⚪ |
+| 2 | **Cabeçalho da usina** | Selo eólica/solar, código do ONS, nome, município e UF ("localização aproximada"), **operador**, **capacidade** (agora rotulada "disponibilidade máxima informada ao ONS", que é o que o dado realmente é), **ponto de conexão**. | REAL | ✅ |
+| 3 | Dois cartões: **energia perdida jan–jul/2026** e **meias-horas cortadas** | Tamanho do corte da usina. | REAL | ✅ |
+| 4 | **Mapa** só dessa usina | Um círculo, zoom no local. | | ⚪ |
+| 5 | **Calculadora de carga junto à usina** (agora **logo abaixo do cabeçalho**; ver 3.1) | O coração da ferramenta. | ESTIMATIVA | ✅ |
+| 6 | **Tabela "Janelas previstas (aguardando o ONS)"** | Data, janela, chance, esperado, valor de referência e situação do ONS. **Sem botão de reserva.** | ESTIMATIVA | ✅ |
+| 7 | **"Por que esta usina é cortada (2026)"** | GWh cortados e a barra ENE/CNF/REL da usina. | REAL | ✅ |
+| 8 | **Mapa de calor "Chance de corte por mês e hora"** | 12 meses × 24 horas; passar o mouse mostra "mês hora: %". Dados de jan/2025 até a data atual. | REAL | ✅ |
+| 9 | **Tabela "Janelas recentes e o veredito do ONS"** | Últimos ~14 dias: data (marcada **ao vivo** desde 1º/10), janela, chance prevista, energia cortada, razões, situação (**confirmada** / **errada**). **Sem botão Replay.** | REAL | ✅ |
+| 10 | **Cartão "Teste retroativo desta usina"** | "59 de 61 janelas confirmadas (ago–set)", ao vivo, e precisão, cobertura e energia capturada de agosto e setembro. | REAL | ⚪ |
 
-### 3.1 A calculadora de carga (detalhe de cada controle)
+### 3.1 A calculadora de carga (cada controle)
 
 | # | Controle | Como funciona |
 | --- | --- | --- |
 | 1 | **Título e parágrafo** | Explica que tudo é estimativa a partir do passado, sem previsão nem oferta. |
 | 2 | **Caixa de aviso (borda preta)** | "Histórico, não garantia. Cálculo com dados do ONS; o contrato com a usina precisa ser negociado." Sempre visível. |
-| 3 | **Campo "Carga ao lado da usina (computadores, fábrica…)" em MW** | Padrão 10. Aceita decimais. Se passar da capacidade, aparece o aviso de que o cálculo usa no máximo a capacidade. |
+| 3 | **Campo "Carga ao lado da usina (computadores, fábrica…)" em MW** | Padrão 10. Aceita decimais (vírgula ou ponto). Acima da capacidade, aparece um aviso e o cálculo usa a capacidade. |
 | 4 | **Controle deslizante "Horas de operação por dia"** | De 1 a 24, padrão 8. |
 | 5 | **Menu "Começa às"** | De 00:00 a 23:00, padrão 08:00. |
-| 6 | **Aviso do melhor horário** (só aparece quando existe horário melhor) | "O melhor horário de início para essa jornada é 06:00: cerca de 221 horas de corte por mês." com botão **"Usar esse horário"**, que muda o menu. |
+| 6 | **Aviso do melhor horário** | Só aparece quando existe um horário de início que dá **pelo menos 3% a mais** de horas de corte (antes aparecia por diferenças mínimas). Botão **"Usar esse horário"**. |
 | 7 | **Cartão "Horas de corte por mês, dentro do seu horário"** | Ex.: 179,3 h de 243 horas de operação (74%). |
 | 8 | **Cartão "Energia que a sua carga teria podido usar"** | Ex.: 1.793 MWh por mês, limitada pela carga, pela capacidade e pela potência média cortada da usina (ex. 187 MW). |
-| 9 | **Cartão "Valor de referência para negociação"** | Ex.: R$ 186.700 por mês ao PLD médio (R$ 104,15/MWh) e, no texto, o valor ao piso (R$ 57,31/MWh). |
-| 10 | Frase "É um ponto de partida para conversar com a usina, não um preço, um lucro nem uma economia garantida." | Aviso de honestidade. |
-| 11 | **Tabela "Por que essas horas foram cortadas"** | Linhas: Sobra de energia (ENE), Elétrica (CNF + REL) e, quando relevante, Outras. Colunas: horas por mês e MWh por mês. |
-| 12 | Notas | Explica que a divisão é uma aproximação, e que o corte elétrico é menos previsível. |
-| 13 | **Caixa "Sobre a regulação"** | Resolução Aneel 1.170/2026 (publicada em 09/10/2026): autoprodução no mesmo ponto de conexão, só corte por sobra de energia, efeitos financeiros depois de transição; diz que o Nomos não avaliou se uma carga específica é coberta. |
+| 9 | **Cartão "Valor de referência para negociação"** | Ex.: R$ 186.700 por mês ao PLD médio (R$ 104,15/MWh); o texto traz também o valor ao piso (R$ 57,31/MWh). |
+| 10 | Duas frases abaixo dos cartões | (a) "É um ponto de partida para conversar com a usina, não um preço, um lucro nem uma economia garantida." (b) **Nova premissa:** "a usina poderia ter alimentado a sua carga em todas as horas de corte; na prática isso depende do contrato, da conexão à rede e da regulação." |
+| 11 | **Tabela "Por que essas horas foram cortadas"** | Sobra de energia (ENE), Elétrica (CNF + REL) e, quando relevante, Outras: horas e MWh por mês. |
+| 12 | Notas | A divisão é uma aproximação; o corte elétrico é menos previsível. |
+| 13 | **Caixa "Sobre a regulação"** | Resolução Aneel 1.170/2026 (publicada em 09/10/2026), descrita **pelo texto**: art. 2º, §9º (autoprodução no mesmo ponto de conexão, corte por razão energética só no que superar o consumo local, até o limite que não afete o processo industrial). Diz que o corte elétrico está em outro artigo (art. 3º), que **não avaliamos**, e que o Nomos não avaliou se uma carga específica é coberta. |
 | 14 | **Seção recolhível "Como calculamos"** | As fórmulas e os limites. |
 
-Tudo recalcula na hora, enquanto você muda os controles. Nada é enviado a nenhum servidor.
+Tudo recalcula na hora, no navegador. Nada é enviado a nenhum servidor.
 
 ---
 
@@ -155,17 +162,16 @@ Pergunta que a página responde: "Posso confiar na previsão?".
 
 | Ordem | Seção | O que mostra | Status | Coerência |
 | --- | --- | --- | --- | --- |
-| 1 | **Título e abertura** | "Prevemos cada meia hora de agosto e setembro de 2026 para 154 usinas…", destaque "Nossas janelas capturaram 90% da energia cortada em agosto e 95% em setembro", e "564 de 614 janelas confirmadas". | REAL (retroativo) | ⚪ |
-| 2 | **Cartão "Ao vivo desde 1º de outubro"** (borda verde) | "68 de 98 janelas confirmadas (69%)"; **"Amostra: 98 janelas em apenas 10 dias…"**; "Previsões publicadas antes do dia começar (a partir de 8/10): 28 de 29". | REAL | ✅ |
-| 3 | Dentro dele: **"Por que o início de outubro está mais fraco"** (caixa laranja) | Os erros se concentram em duas usinas do RN, cujo corte noturno por confiabilidade parou de repente em 28–29/09. | REAL | ✅ |
-| 4 | Dentro dele: **"O modelo ganha de uma regra ingênua?"** | Dois números lado a lado: erro médio do modelo e da regra ingênua (hoje 29,9 p.p. nos dois), frase de veredito (hoje "empate"), quantas das janelas a regra ingênua também ofereceria (78 de 98) e aviso de que 10 dias é "uma primeira olhada". | REAL | ✅ |
-| 5 | Dentro dele: nota "O resultado ao vivo aparece como vier, erros incluídos…" | Explica quando cada previsão foi publicada e carimbada. | | ⚪ |
-| 6 | **Cartão "Três tipos de corte"** | Barra ENE/CNF/REL (Nordeste, 2026) e tabela: tipo, código, parte da energia, % dentro das nossas janelas (ago–set e ao vivo), **ressarcimento à usina** ("Previsto em lei" para CNF e REL, "Não" para ENE). Nota sobre a Lei 15.269/2025 e a decisão da Aneel. Link **Dicionário de dados do ONS ↗**. Gráfico de **composição por mês** (colunas de 100%). | REAL | ✅ |
-| 7 | **Tabela "Comparação de modelos (todas as usinas)"** | 6 modelos (taxa média, regra fixa 8h–15h, mesmo mês de 2025, perfil de 8 semanas, combinado e o de produção em destaque). Para ago e set: precisão · cobertura · energia capturada, e o "ganho sobre a média". Abaixo, as definições. | REAL | ⚪ |
-| 8 | **Caixa laranja "Leia isto antes de citar a precisão"** | Explica que mesmo um modelo que ignora a hora acerta 89%, pois essas usinas são cortadas em 47% das meias-horas. | REAL | ✅ |
-| 9 | **"Calibração (agosto)"** | Gráfico de pontos: chance prevista × observada. Passar o mouse dá os números. | REAL | ⚪ |
-| 10 | **"Por tipo de usina"** + lista de usinas | Resultado por eólica e solar, e a lista das 8 usinas (links) com "confirmadas/janelas" no teste e ao vivo. | REAL | ⚪ |
-| 11 | **"Reproduzível por qualquer pessoa"** | Caixa preta com as impressões digitais (SHA-256) de cada arquivo de saída, a frase sobre o oráculo declarado e os parâmetros fixados antes do teste. | REAL | ⚪ |
+| 1 | **Título e abertura** | "Prevemos cada meia hora de agosto e setembro para 154 usinas…", "capturaram 90% (ago) e 95% (set)", "564 de 614 janelas confirmadas". | REAL (retroativo) | ⚪ |
+| 2 | **Cartão "Ao vivo desde 1º de outubro"** | "68 de 98 janelas confirmadas (69%)"; **"Amostra: 98 janelas em apenas 10 dias"**; "Previsões publicadas antes do dia (desde 8/10): 28 de 29". | REAL | ✅ |
+| 3 | **"Por que o começo de outubro está mais fraco"** | Os erros se concentram em duas usinas do RN (21 dos 30 erros). O corte noturno por confiabilidade delas parou em 28–29/09 e **voltou por volta de 8/10**. A maioria das outras usinas ficou perto do teste; Sol do Sertão e Assu Sol ficaram uns 20 pontos abaixo, com 10 janelas cada. | REAL (conferido nos dados) | ✅ |
+| 4 | **"O modelo ganha de uma regra ingênua?"** | Erro médio do modelo e da regra ingênua (hoje 29,9 p.p. nos dois), frase de veredito (hoje "empate"), quantas janelas a regra ingênua também ofereceria (78 de 98), **e, novo, o resultado usina por usina: o modelo ficou mais perto em 2 das 8 e a regra ingênua nas outras 6**, com o aviso de que 10 dias é "uma primeira olhada". | REAL | ✅ |
+| 5 | Nota "O resultado ao vivo aparece como vier, erros incluídos…" | Quando cada previsão foi publicada e carimbada. | | ⚪ |
+| 6 | **Cartão "Três tipos de corte"** | Barra ENE/CNF/REL e tabela: peso, % capturado nas nossas janelas e **"ressarcimento à usina"** (CNF e REL "previsto em lei"; ENE "não"). A nota diz, segundo a imprensa, que uma portaria do ministério (Portaria MME 140/2026) cobre eventos de set/2023 a nov/2025 para quem aderir, e que a REN 1.170/2026 manda a CCEE ratear a energia cortada entre as usinas elegíveis. Gráfico de composição por mês. | REAL | ✅ |
+| 7 | **Tabela "Comparação de modelos"** | 6 modelos (taxa média, regra fixa 8h–15h, mesmo mês de 2025, perfil de 8 semanas, combinado e o de produção em destaque) para ago e set. No celular vira cartões. | REAL | ⚪ |
+| 8 | **Caixa "Leia isto antes de citar a precisão"** | Mesmo um modelo que ignora a hora acerta 89%, porque essas usinas são cortadas em cerca de 47% das meias-horas. | REAL | ✅ |
+| 9 | **"Calibração (agosto)"** e **"Por tipo de usina"** | Gráfico de pontos e resultado por eólica e solar, mais a lista das 8 usinas com confirmadas/janelas no teste e ao vivo. | REAL | ⚪ |
+| 10 | **"Qualquer pessoa pode reproduzir"** | Impressões digitais SHA-256 de cada arquivo de saída (conferidas: as 9 batem), e a frase: "O único registro na blockchain no atlas é a impressão digital de cada previsão diária. A plataforma a grava, como oráculo declarado (o ONS não assina nada)…". | REAL | ✅ |
 
 ---
 
@@ -175,107 +181,73 @@ Pergunta que a página responde: "O que é real, o que é simulado e o que é es
 
 | Seção | Conteúdo | Coerência |
 | --- | --- | --- |
-| **Título "Método e honestidade"** | "O que é real, o que é simulado e o que é estimado, dito antes de alguém perguntar." | ✅ |
-| **3 cartões coloridos: Real / Estimado / Simulado no MVP** | **Real** (verde): dados do ONS, placar ao vivo, previsões, janelas, PLD horário. **Estimado** (laranja): energia esperada (±20%), valor da janela, equivalência em horas de GPU. **Simulado** (roxo): a usina e o operador (carteiras de teste), o trabalho de demonstração, a saída em reais por Pix, a reserva por janela como conceito. | ⚠️ Mencionar GPU e Pix lembra a ideia B. |
+| **Título "Método e transparência"** | "O que é real, o que é simulado e o que é estimado — dito antes de alguém perguntar." | ✅ |
+| **3 cartões coloridos** | **Real** (verde): dados do ONS, placar ao vivo, previsões, janelas e o **PLD horário com o período lido dos dados** (hoje "1º jan 2026 – 11 out 2026"). **Estimado** (laranja): energia esperada (±20%) e valor da janela. **Visão futura, simulada** (roxo): um único item dizendo que reserva de janelas, pagamento em USDC de teste e recibos **não fazem parte do produto e ficam no Laboratório**, com o link "Ver o Laboratório (simulação) →". | ✅ (Pix, operador e reserva por janela saíram daqui) |
 | **Definições** | Corte, GNRa, meia hora cortada (≥ 1 MW médio), janela, confirmada, razões ENE/CNF/REL. | ✅ |
-| **Dados abertos** (9 links de download) | CSV e JSON: chance de corte por usina/mês/hora, corte por estado e mês, corte por razão, janelas ao vivo, janelas ago–set, janelas dos próximos dias, teste retroativo, catálogo das 166 usinas, impressões digitais. Link **"Código-fonte no GitHub →"** (repositório do Guilherme). | ✅ |
-| **Limitações** | Só padrões passados; dados recentes podem ser revisados; o ONS reporta conjuntos, não usinas; não vendemos eletricidade; oráculo declarado e centralizado; **ninguém validou quem pagaria por um certificado horário**; os valores e a calculadora são estimativas. | ✅ Honesto. |
-| ⚠️ Detalhe desatualizado | O item "PLD horário… 1º/jan a 8/out/2026" está fixo no texto e já está defasado. | ⚠️ |
+| **Dados abertos** (9 links de download) | CSV e JSON do atlas, mais o link **"Código-fonte no GitHub →"** (repositório do Guilherme; ver 1.3). | ✅ |
+| **Limitações** | Só padrões passados; dados recentes podem ser revisados; o ONS reporta conjuntos; **"O Nomos não vende eletricidade nem qualquer outro serviço hoje"**; o único registro na blockchain é a impressão digital da previsão (oráculo declarado e centralizado); valores e calculadora são estimativas; **ninguém validou quem pagaria pelo atlas, pela calculadora ou por um certificado**; e **uma carga ao lado de uma usina só poderia usar a energia cortada se contrato, conexão e regulação permitirem**. | ✅ |
 
 ---
 
-## Parte 6. Verificar (`/verify`)
+## Parte 6. Laboratório (`/lab`) (novo)
 
-**Para que serve:** conferir uma reserva simulada lendo a blockchain.
+Onde está tudo o que veio da ideia anterior (reserva, pagamento de teste, recibo). **Não é o produto.**
 
 | # | Elemento | O que faz |
 | --- | --- | --- |
-| 1 | **Título "Verificar uma reserva"** e texto explicativo | Diz que tudo é lido da blockchain (devnet). |
-| 2 | **Campo de texto** (cole o endereço da transação) e botão **"Verificar"** | Busca a transação e mostra os cartões abaixo. |
-| 3 | Mensagens | "Endereço inválido", "Carregando…", ou erro do servidor. |
-| 4 | **Cartão Pagamento** | Usina, janela, energia, quanto foi pago, divisão (usina/operador/plataforma), comprador (abreviado), data, link **Solana Explorer ↗**. |
-| 5 | **Cartão Recibo (fase 1)** | Recibo assinado por usina e operador. |
-| 6 | **Cartão Execução** | Quando o trabalho começou e terminou, se foi dentro da janela ou é um replay, energia estimada do notebook, o que o trabalho de IA descobriu (3 causas do corte), links para início, fim e arquivo do resultado. |
-| 7 | **Cartão Carimbo do ONS (fase 2)** | Confirmada ou errada, % da janela com corte, energia cortada, arquivo do ONS com seu SHA-256, links para a **cópia exata** e para a **versão atual no ONS**. |
-| 8 | **"Confira você mesmo"** e aviso roxo | Passo a passo para verificar sem confiar no site. Aviso: "Demo na devnet: USDC de teste; usina e operador são carteiras de teste; o trabalho não roda na usina, então nenhuma energia cortada foi absorvida." |
+| 1 | **Título** "Laboratório (simulação)" | |
+| 2 | **Caixa roxa destacada** | "Visão futura, simulada na devnet: não é o produto e não vende eletricidade." |
+| 3 | Parágrafo de abertura | Explica a ideia e diz que nada da página faz parte do produto. |
+| 4 | **"1. Experimente uma reserva (demonstração)"**: menu **Usina** e menu **Janela** (grupos "Próximas janelas" e "Janelas passadas (replay)") | Mostra um resumo da janela escolhida (janela, chance, esperado ou cortado, veredito) e o botão **Reservar (demo)** (ou **Replay** em janela passada), que abre a janela de reserva (ver 6.1). |
+| 5 | **"2. Veja um ciclo completo"** | Explica o ciclo real de 08/10 (Rio do Vento Expansão, janela 18:30–24:00; o trabalho rodou dentro da janela; o ONS confirmou corte em 82% das meias-horas, 427 MWh) e leva a `/verify` com essa transação. |
+| 6 | **"3. Verifique uma reserva"** | Leva a `/verify`. |
+| 7 | **Cartão "O que é simulado"** | 7 itens: usina e operador são carteiras de teste; o trabalho roda num notebook e não absorve energia; saída em reais (Pix) seria por provedor autorizado; a reserva por janela é um conceito (hoje os contratos são longos); o oráculo da fase 2 é declarado; recibos dependem das chaves do servidor; ninguém validou que um comprador pagaria. |
+| 8 | **Cartão "Como a demonstração funciona"** | Os 5 passos: previsão carimbada, reserva e pagamento (usina 70%, operador 25%, plataforma 5%), recibo, execução, carimbo do ONS. |
 
-**Coerência:** ❌ Para um visitante sem transação, a página é um campo vazio sem sentido (um beco sem saída). Existe só para a ideia B.
+### 6.1 A janela de reserva (abre ao clicar em Reservar ou Replay)
+Painel que sobe na tela (no celular, vem de baixo). Fecha com o **✕**, com a tecla **Esc** ou clicando fora. Contém: faixa roxa "Demo na devnet…", faixa laranja de replay (se for o caso), o texto "O que você recebe" (diz que **não se compra eletricidade**), controle deslizante de MWh (0,1 a 5), caixa de preço (USDC, R$, PLD, câmbio PTAX; a computação não entra no preço), a divisão 70/25/5, e o fluxo da Phantom: instalar → conectar → saldo → **Pagar X USDC** → pagamento confirmado → recibo e carimbo → link para a comprovação. Mensagens de erro para cancelamento, expiração, falha de rede e simulação.
+
+⚠️ **No site publicado na Vercel não há as chaves das carteiras de teste**, então o pagamento de teste acontece, mas o recibo e o carimbo não são emitidos (o Laboratório avisa isso). Exige Phantom em modo teste com SOL e USDC de teste.
 
 ---
 
-## Parte 7. A janela "Reservar (demo)" (aparece ao clicar em Reservar ou Replay)
+## Parte 7. Verificar (`/verify`)
 
-Painel que sobe na tela (no celular, vem de baixo). Fecha com o **✕**, com a tecla **Esc** ou clicando fora.
+Faz parte do Laboratório (um aviso lilás no topo diz isso).
 
 | # | Elemento | O que faz |
 | --- | --- | --- |
-| 1 | **Título "Reservar uma janela de computação"** e subtítulo (usina · data · janela) | |
-| 2 | **Faixa roxa**: "Demo na devnet da Solana com USDC de teste, nenhum dinheiro real é movimentado." | |
-| 3 | **Faixa laranja** (só no Replay): "Replay de uma janela histórica…" | |
-| 4 | **Texto "O que você recebe"** | Diz que o operador ao lado da usina roda o seu trabalho e que você recebe o resultado e um recibo público. E diz que **você não está comprando eletricidade**. |
-| 5 | **Controle deslizante "Energia que seu trabalho vai usar (MWh)"** | De 0,1 a 5 MWh, passo 0,1. Mostra a nota "Esta janela espera X de corte em Y h; absorver tudo exigiria cerca de Z MW de computadores". |
-| 6 | **Caixa de preço** | Preço em USDC; equivalente em R$; PLD usado; aviso de que o preço é de demonstração e **não cobra a computação**; taxa PTAX do Banco Central; aviso quando o PLD da janela é estimado. |
-| 7 | **Divisão em uma só transação** | Usina (70%), operador (25%), plataforma (5%) e a nota de que usina e operador são simulados. |
-| 8 | Sem Phantom instalada | Aparece "Phantom não encontrada neste navegador" e link **Instalar a Phantom ↗**. |
-| 9 | Phantom instalada, não conectada | Botão roxo **"Conectar Phantom"**. Dica para ativar o Modo Testnet. |
-| 10 | Conectada | Mostra carteira (4 primeiros e 4 últimos caracteres), saldo (USDC e SOL de teste), avisos de saldo baixo (com links para os "faucets" de moedas de teste) e o botão preto **"Pagar X USDC"**. Mensagem "confirme na Phantom em até 1 minuto". |
-| 11 | Depois do pagamento | "✓ Pagamento confirmado na Solana", divisão, memo gravado, estado do **recibo** (fase 1) e do **carimbo do ONS** (fase 2, ou "aguardando"), botão **"Abrir a comprovação completa →"** (vai a `/verify`) e link para o Explorer. |
-| 12 | Erros | Cancelado na Phantom; transação expirada; falha de rede; simulação falhou (nenhum dinheiro movimentado). |
+| 1 | **Título "Verificar uma reserva"** e aviso "Parte da simulação (Laboratório). Não é o produto Nomos." | |
+| 2 | **Sem transação (novo):** cartão "Ainda não há reserva para verificar" | Explica a página e traz dois links: o **exemplo completo do ciclo de 08/10** e o **Laboratório**. |
+| 3 | **Campo para colar a transação** ("Já tem o endereço de uma transação? Cole aqui:") e botão **Verificar** | Busca a transação e mostra os cartões abaixo. |
+| 4 | Cartões **Pagamento**, **Recibo (fase 1)**, **Execução**, **Carimbo do ONS (fase 2)** | Lidos direto da Solana devnet: valores, assinantes, janela, se o trabalho rodou dentro da janela, o que a IA encontrou, veredito do ONS, links para a cópia exata do arquivo do ONS e a versão atual. |
+| 5 | **"Confira você mesmo"** e aviso roxo | Passo a passo para verificar sem confiar no site. |
 
-**Coerência:** ❌ Esta janela inteira pertence à ideia B. **No projeto que você publicou na Vercel, ela não conclui**: o pagamento até ocorreria na devnet para quem tem Phantom em teste, mas o recibo e o carimbo não são emitidos porque o servidor não tem as chaves (aparece "recibo não pôde ser emitido agora").
+O ciclo de exemplo funciona no site publicado (só leitura: não precisa das chaves).
 
 ---
 
-## Parte 8. Os bastidores (o que roda por trás, sem tela)
+## Parte 8. Os bastidores (sem tela)
 
 | Parte | O que faz | Status |
 | --- | --- | --- |
-| `GET /api/previsao` | Devolve a previsão publicada e o seu registro na Solana. Usada pelo Selo da previsão. | Funciona no seu site |
-| `POST /api/previsao` | Grava o hash da previsão na Solana. A automação diária chama. | Precisa de chaves; **não funciona no seu site** |
-| `POST /api/recibo` | Confere a reserva e emite recibo e carimbo. Usada pelo Verificar e pela janela de reserva. | Precisa de chaves |
+| `GET /api/previsao` | Devolve a previsão publicada e o seu registro na Solana. Usada pelo selo da previsão. | Funciona no site publicado |
+| `POST /api/previsao` | Grava o hash da previsão na Solana. | Precisa de chaves; **não funciona no site publicado** |
+| `POST /api/recibo` | Confere uma reserva e emite recibo e carimbo. | Só leitura funciona; emitir precisa de chaves |
 | `POST /api/carimbar` | Carimba as reservas pendentes. | Precisa de chaves |
-| **Atualização diária** (GitHub Actions, 12h40 e 18h10) | Baixa dado novo do ONS, recalcula, publica e registra na Solana. | ⚠️ O arquivo aponta para o site do **Guilherme**; no seu repositório pode estar desligada. |
-| **Operador de demonstração** (`operador/`) | Programa que roda no notebook de alguém, esperando reservas. | SIMULADO; não roda sozinho |
+| **Atualização diária** (GitHub Actions, 12h40 e 18h10) | Baixa o dado novo do ONS, recalcula, publica e registra na Solana. | ⚠️ O arquivo aponta para o site do **Guilherme** (`nomos-energy.vercel.app`) e não foi alterado. Neste site os dados ficam parados em 10/10. |
+| **Operador de demonstração** (`operador/`) | Programa que roda no notebook de alguém, esperando reservas. | SIMULADO |
 
 ---
 
-## Parte 9. O que eu vejo quanto à coerência com a premissa
+## Parte 9. Coerência com a premissa (resumo)
 
-### 9.1 O que combina com "ferramenta de decisão" (manter)
-- Pergunta de abertura e botões para a calculadora.
-- Números de destaque, mapa, tabela de janelas, os cinco gráficos de "por que acontece".
-- Toda a página da usina (cabeçalho, mapa de calor, razões, calculadora, janelas recentes).
-- Placar com amostra, comparação com regra ingênua, três tipos de corte, modelos, calibração.
-- Método e dados abertos.
+**Tudo o que está no caminho principal (Início, usina, Placar, Método) é ✅ ou ⚪.** O que pertencia à reserva simulada (botões, GPU, bloco roxo, página Verificar, operador) está no Laboratório ou escondido por interruptores em `site/src/lib/recursos.ts`.
 
-### 9.2 O que não combina e sugiro tirar do caminho principal
-1. Botões **Reservar (demo)** (Início e página de usina) e **Replay** (página de usina).
-2. A **janela de reserva** inteira.
-3. As **"horas de GPU"** na tabela do Início e a menção no Método.
-4. A aba **Verificar** e a página `/verify`.
-5. O bloco roxo **"Visão futura, simulada"** (só existe por causa do botão).
-6. Os itens do Método sobre Pix, operador e "reserva por janela".
-
-### 9.3 O que precisa de ajuste de texto
-- Frase do cabeçalho ("mapeada e registrada").
-- Rodapé: link para o repositório do Guilherme e a menção ao hackathon.
-- Método: a data fixa do PLD (8/out).
-- Início: o R$ 2,6 bi chamado de "valor da energia cortada" pode ser lido como dinheiro perdido por alguém.
-
-### 9.4 Lacunas da ferramenta (o que ela ainda não responde)
-- Só 8 usinas têm calculadora.
-- Não mostra fatores além da energia: conexão elétrica disponível, terreno, internet, impostos, contrato.
-- Sem login, relatório exportável ou cenários salvos.
-- O site abre em inglês.
-- Os dados ficam parados em 10/10 enquanto a atualização diária não for ajustada.
-
----
-
-## Parte 10. Próximo passo sugerido
-
-Escolher, com este inventário na mão, uma destas versões:
-
-- **Versão "só decisão"**: esconder os itens 9.2 do site (o código continua guardado, só deixa de aparecer). É a que eu recomendo para mandar ao Leonardo.
-- **Versão "ambas as ideias"**: manter tudo, mas separar com clareza "Ferramenta" e "Laboratório (simulação)" no menu.
-
-Depois de você escolher, eu aplico, com um commit por mudança.
+Pontos que ainda pedem uma decisão do time:
+1. **Atualização diária dos dados desta cópia** (depende de mexer no workflow, que está na lista de proibidos sem autorização).
+2. **Link do GitHub do rodapé** (trocar `REPOSITORIO` em `tipos.ts`) e a menção ao hackathon.
+3. **Só 8 usinas** têm calculadora, de 166.
+4. **Sem login, relatório exportável, cenários salvos ou alertas** (os "formatos de acesso" da página inicial são só ideias).
+5. **O modelo empata com a regra ingênua** (10 dias de amostra): está dito no Placar.
+6. **O Laboratório é público**, com o selo "simulação" no menu.

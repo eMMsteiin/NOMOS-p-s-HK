@@ -1,6 +1,6 @@
 # Raio-X completo do Nomos
 
-> **Atenção:** este raio-X descreve o projeto **antes** da versão `so-decisao` (12/10/2026). A reserva simulada (botões Reservar e Replay), as "horas de GPU" e a aba Verificar saíram do caminho principal e foram para o Laboratório (`/lab`).
+> **Atualizado em 12/10/2026 (revisão geral).** A reserva simulada (botões Reservar e Replay), as "horas de GPU" e a aba Verificar saíram do caminho principal e foram para o Laboratório (`/lab`); a calculadora subiu para o topo da página da usina; há aviso de dados antigos e páginas 404 e de erro próprias. **O detalhe de cada tela está em [`inventario-do-site.md`](inventario-do-site.md)** e o resultado da revisão em [`revisao-geral-2026-10-12.md`](revisao-geral-2026-10-12.md).
 
 Escrito em 12/10/2026, a partir da leitura do código e dos dados do repositório `nomos-v2` (versão publicada na branch `main`). Para quem é iniciante em energia, cripto e programação: cada coisa é explicada em português simples, com a "situação de padaria" quando ajuda.
 
@@ -37,7 +37,7 @@ O que o produto **é hoje**: informação e prova. **Não vende nada**, nem ener
 | `site/public/previsoes/` | Cada previsão diária publicada, para qualquer pessoa conferir. |
 | `site/public/execucoes/` | O resultado do trabalho de demonstração de cada reserva simulada. |
 | `.github/workflows/` | A automação que roda todo dia. |
-| `docs/` | O plano de negócio e este raio-X. |
+| `docs/` | O plano de negócio, este raio-X, o inventário do site e o relatório da revisão geral. |
 | `CLAUDE.md` | As instruções e regras de honestidade do projeto. |
 | `README.md` / `README.pt-BR.md` | Apresentação do projeto, em inglês e em português. |
 
@@ -77,47 +77,14 @@ O modelo de produção se chama "contínuo com atraso". Para cada usina, ele olh
 
 ## 4. O site, página por página
 
-O site tem 5 páginas, cabeçalho fixo (com troca PT/EN) e rodapé. Abre em inglês por padrão. A escolha do idioma fica salva no navegador.
+O inventário completo (cada seção, botão e controle) está em [`inventario-do-site.md`](inventario-do-site.md). Em resumo, hoje o site tem:
 
-### 4.1 Início (`/`)
-- **Pergunta de decisão** no topo e botões para a calculadora de cada uma das 8 usinas.
-- **4 números de manchete**: 3.415 MW médios cortados no Nordeste (jan–ago/2026), 82 GWh por dia, o valor ao PLD real (R$ 2,6 bilhões até 10/10) e a energia capturada pelas janelas (90% em ago / 95% em set).
-- **Janelas previstas**: abas para os próximos dias, mapa (Leaflet + OpenStreetMap) e tabela das 8 usinas com janela, chance, energia esperada, "horas de GPU equivalentes" e valor de referência. Cada linha tem o botão **Reservar (demo)**.
-- **Selo da previsão**: mostra que a previsão do dia foi registrada na Solana (lido ao vivo da blockchain).
-- **Bloco "Visão futura, simulada"**: avisa que a reserva é simulada.
-- **"Por que acontece"**: gráficos de perda por hora do dia, chance em dia útil × fim de semana, mistura por razão (ENE/CNF/REL), preço no piso por hora e média mensal.
-- Faixa para o placar.
-
-### 4.2 Página de uma usina (`/plants/CJU_BASAR`, uma para cada uma das 8)
-- Cabeçalho: tipo (eólica/solar), operador, capacidade, ponto de conexão, energia perdida, mapa.
-- **Janelas previstas** da usina, com botão Reservar (demo).
-- **Por que esta usina é cortada**: barra por razão (ENE, CNF, REL).
-- **Mapa de calor**: chance de corte por mês × hora.
-- **Calculadora de carga junto à usina** (nova): você informa os MW, as horas por dia e o horário de início. Ela mostra horas de corte por mês no seu horário, MWh que a carga teria podido usar, valor de referência em R$ (ao PLD médio e ao piso), a divisão ENE × elétrico, o texto sobre a regra da Aneel e as fórmulas.
-- **Janelas recentes e o veredito do ONS**, com botão "Replay".
-- **Backtest da usina**: precisão, cobertura, energia capturada em agosto e setembro.
-
-### 4.3 Placar (`/track-record`)
-- **Resultado ao vivo** desde 01/10: 68 de 98 janelas confirmadas (69%), amostra de **10 dias**. Das previstas antes do dia começar: 28 de 29.
-- **Explicação dos erros** (duas usinas do RN cujo corte noturno parou de repente).
-- **Comparação com a regra ingênua**: empate (29,9 p.p. de erro nos dois).
-- **Três tipos de corte** (ENE, CNF, REL): peso, quanto o modelo captura de cada um e se há ressarcimento (CNF e REL por lei; ENE não).
-- **Comparação de modelos** (agosto e setembro): taxa média, regra fixa 8h–15h, mesmo mês de 2025, perfil de 8 semanas, combinado e o de produção.
-- **Calibração**, resultados por tipo de usina e por usina, e as **impressões digitais (SHA-256)** de todos os arquivos.
-
-### 4.4 Método (`/method`)
-O que é **real**, **estimado** e **simulado**, as definições (corte, GNRa, janela, confirmada), os arquivos abertos para baixar (CSV e JSON) e as limitações.
-
-### 4.5 Verificar (`/verify`)
-Você cola o endereço de uma transação de reserva e a página lê **direto da blockchain**: o pagamento, o recibo, o carimbo do ONS e o resultado do trabalho. Ensina a conferir tudo sem confiar no site. **Só serve para a ideia simulada.**
-
-### 4.6 Recursos que aparecem em todas as páginas
-- **Idiomas PT/EN** (todos os textos em `dicionarios.ts`).
-- **Responsivo**: no celular as tabelas viram cartões; no tablet e no computador mantêm a tabela.
-- **Instalável** no celular ("Adicionar à tela inicial").
-- **Gráficos próprios em SVG** (sem biblioteca) e **mapas Leaflet**.
-
----
+- **Início (`/`)**: a pergunta de decisão ("se você colocar uma carga ao lado de uma usina, quanta energia cortada ela poderia ter aproveitado?"), 8 botões que levam à calculadora de cada usina, 4 números de destaque, as janelas previstas (mapa e tabela, **sem botão de reserva e sem "horas de GPU"**), os gráficos de "por que acontece", a seção **"Para quem é e como seria o acesso"** (hipótese, não validada) e a faixa para o Placar.
+- **Página de usina (`/plants/<id>`, 8 páginas)**: cabeçalho, **calculadora de carga logo abaixo**, janelas previstas, por que a usina é cortada, mapa de calor mês × hora, janelas recentes com o veredito do ONS e o teste retroativo da usina.
+- **Placar (`/track-record`)**: resultado ao vivo com o tamanho da amostra, **comparação com uma regra ingênua (empate; usina por usina o modelo ficou mais perto em 2 das 8)**, os três tipos de corte, comparação de modelos, calibração e impressões digitais SHA-256.
+- **Método (`/method`)**: o que é real, estimado e simulado (o item simulado aponta para o Laboratório), definições, dados abertos e limitações.
+- **Laboratório (`/lab`)**: a reserva demonstrativa (escolha de usina e janela), um ciclo completo de exemplo (08/10) e a lista do que é simulado, com um aviso destacado de que **não é o produto**. A página **Verificar (`/verify`)** faz parte dele e, sem transação, explica a si mesma.
+- **Em todas as páginas**: cabeçalho (Atlas, Placar, Método, Laboratório com o selo "simulação", seletor EN/PT), **aviso de dados com 3 dias ou mais**, rodapé, página 404 e página de erro. O site abre em português quando o navegador está em português, funciona em celular, tablet e computador (as tabelas viram cartões no celular) e pode ser instalado na tela inicial.
 
 ## 5. A calculadora de carga (nova): como cada número sai
 
@@ -188,7 +155,7 @@ Duas vezes por dia (12h40 e 18h10, horário de Brasília), o GitHub Actions: bai
 - Razões no Nordeste em 2026: ENE cerca de 67%, CNF cerca de 24%, REL cerca de 10%.
 - **Backtest** (ago–set, 154 usinas): janelas capturaram 90% e 95% da energia cortada.
 - **Ao vivo** (01–10/10): 68 de 98 janelas confirmadas (69%); amostra de só **10 dias**.
-- **Contra a regra ingênua** (mesmas janelas ao vivo): **empate**.
+- **Contra a regra ingênua** (mesmas janelas ao vivo): **empate** (29,9 p.p. nos dois); usina por usina, o modelo ficou mais perto em 2 das 8.
 
 ---
 
@@ -209,43 +176,37 @@ Duas vezes por dia (12h40 e 18h10, horário de Brasília), o GitHub Actions: bai
 
 ---
 
-## 11. A que "ideia" cada funcionalidade pertence
+## 11. A que "ideia" cada funcionalidade pertence (e como ficou)
 
-**Ideia A: ferramenta de decisão (o que a premissa atual diz).**
+**Ideia A: ferramenta de decisão (a premissa atual)**, no caminho principal:
 - Atlas, mapa, páginas de usina, mapa de calor, razões ENE/CNF/REL
-- **Calculadora de carga**
+- **Calculadora de carga** (primeira seção da página de usina)
 - Previsão de 8 dias e janelas
-- Placar, comparação com regra ingênua, método, dados abertos
+- Placar, comparação com a regra ingênua, método, dados abertos
 - Carimbo do hash da previsão na Solana (a prova)
+- Seção "Para quem é" (hipótese)
 
-**Ideia B: mercado e recibo simulados (sobra da primeira fase).**
-- Botões **Reservar (demo)** e **Replay**
-- Pagamento em USDC, divisão 70/25/5, recibo, carimbo de reserva
-- Página **Verificar**
+**Ideia B: mercado e recibo simulados**, agora no **Laboratório** (`/lab` e `/verify`):
+- Reserva demonstrativa (botões Reservar e Replay), pagamento em USDC de teste, divisão 70/25/5, recibo, carimbo de reserva
 - Operador de computação e trabalho de IA
-- **"Horas de GPU equivalentes"** na tabela da página inicial
 - APIs `recibo` e `carimbar`
-- Bloco "Visão futura, simulada"
+- Escondidos por interruptores (`site/src/lib/recursos.ts`): botões nas páginas do atlas, "horas de GPU" na tabela do Início, bloco "Visão futura" do Início e a aba "Verificar"
 
-**Recomendação para alinhar com a premissa:** a Ideia A fica à frente. A Ideia B some do caminho principal (botões e GPU) e fica descrita só no Método e no README como visão futura.
+## 12. Problemas e riscos (estado depois da revisão geral)
 
----
+Resolvidos na revisão geral (detalhes em [`revisao-geral-2026-10-12.md`](revisao-geral-2026-10-12.md)): textos da Ideia B no caminho principal, número de mês errado, explicação dos erros ao vivo, regra da Aneel descrita pelo texto, empate escondendo o resultado por usina, 404 padrão preta, data fixa do PLD, link do gráfico do piso, nome de uma pessoa num documento.
 
-## 12. Problemas e riscos que encontrei
+Ainda abertos:
 
-1. **A automação diária aponta para o site do Guilherme.** O workflow usa `nomos-energy.vercel.app`. Se as GitHub Actions estiverem ligadas no seu repositório (não consegui verificar), ele recalcula dados e dá commit na sua `main`, mas espera e chama o site do **Guilherme**, não o seu. Em um repositório copiado, as Actions costumam vir **desligadas**. Vale conferir na aba **Actions** do seu repositório. Mudar o workflow é uma das áreas que as suas regras proíbem eu tocar sem você mandar.
-2. **Os dados do seu site na Vercel ficam parados em 10/10**, a menos que a automação seja religada e adaptada.
-3. **Botão Reservar e "horas de GPU"** continuam visíveis e contradizem a premissa (produto de informação).
-4. **A calculadora só existe para 8 usinas**, de um catálogo de 166.
-5. **A previsão empata com uma regra ingênua** na amostra ao vivo de 10 dias. Está escrito no site; é preciso mais semanas de dados.
-6. **O site abre em inglês** por padrão.
-7. **Sem login, sem salvar cenário, sem relatório exportável.**
-8. **Afirmações do README que não verifiquei:** o objetivo 24/7 da Google e a regra europeia de hidrogênio (Regulamento Delegado 2023/1184). Estão lá desde antes.
-9. **Textos com fonte ainda a completar** no plano de negócio (custo da GPU-hora, bitcoin, 83% do Nordeste, texto oficial da Lei 15.269).
-10. **O `CLAUDE.md` está um pouco desatualizado**: diz que a calculadora "falta commit" e que a REN 1.170 é "só imprensa".
-11. **A localização das usinas é aproximada** (centro do município, fonte pública); só uma usina (CJU_CEITC) tem o nome comercial não confirmado.
-
----
+1. **A automação diária aponta para o site do Guilherme.** O workflow usa `nomos-energy.vercel.app`. Não foi alterado (área proibida sem autorização). Neste site os dados ficam parados em 10/10 e o site avisa quando têm 3 dias ou mais.
+2. **Só 8 usinas** têm calculadora, de 166.
+3. **A previsão empata com uma regra ingênua** na amostra ao vivo de 10 dias. Está escrito no Placar.
+4. **Sem login, relatório exportável, cenários salvos ou alertas.**
+5. **O repositório é público** (inclui o `CLAUDE.md`, os documentos e o histórico).
+6. **No site publicado não há as chaves das carteiras de teste**: a reserva do Laboratório não emite recibo.
+7. **Vulnerabilidades moderadas** em dependências do `@solana/web3.js` (corrigir exige uma mudança grande de versão): risco prático baixo, anotado.
+8. **O link do GitHub no rodapé** aponta para o repositório do Guilherme.
+9. **Texto do README sobre a regra europeia de hidrogênio**: não conseguimos confirmar o número do parágrafo (ficou "Art. 4").
 
 ## 13. Glossário rápido
 

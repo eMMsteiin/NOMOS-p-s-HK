@@ -8,16 +8,28 @@ Projeto de Emmanuel Stein e Guilherme Amorim (Nomos) para o Colosseum Crypto Wor
 
 **Site:** [nomos-energy.vercel.app](https://nomos-energy.vercel.app) — publicado na Vercel; cada `git push` na `main` atualiza o site.
 
+## O que o Nomos é (e o que não é)
+
+**O Nomos não vende nada.** Ele é uma ferramenta de informação para decidir onde instalar ou expandir uma unidade ao lado de uma usina eólica ou solar. O modelo de negócio (acesso à plataforma, relatórios, alertas) é uma **hipótese, ainda não validada**.
+
+- **Atlas:** onde, quanto e por que as usinas do Nordeste são cortadas (ENE sobra de energia, CNF confiabilidade, REL linha ou equipamento fora), com mapa de calor por mês e hora.
+- **Calculadora de carga junto à usina** (em cada página de usina): "se eu instalar X MW ao lado desta usina e operar Y horas por dia, quanto corte eu teria aproveitado?". São estimativas feitas com dados do passado, sem garantia. As fórmulas estão na própria página (seção "Como calculamos").
+- **Previsão e placar público:** janelas de corte para 8 dias e o resultado ao vivo, com os erros incluídos. Cada previsão diária tem o SHA-256 gravado na Solana (devnet) antes do dia.
+- **Laboratório (`/lab`):** a ideia anterior de reservar uma janela, pagar em USDC de teste e receber um recibo na Solana. É uma **visão futura, simulada**; não é o produto.
+
+**O que aprendemos até aqui:** em 10 dias de placar ao vivo, o modelo **empata com uma regra ingênua** (erro médio de 29,9 pontos percentuais nos dois; usina por usina, o modelo ficou mais perto em 2 das 8 e a regra ingênua nas outras 6). O valor está no histórico, na calculadora e na transparência.
+
 ## Estado
 
 | Etapa | Situação |
 | --- | --- |
 | 1. Dados reais do ONS e teste retroativo | Concluída (`dados/`) |
 | 2. Atlas (site) | Concluída (`site/`) |
-| 3. Pagamento na Solana (devnet) | Concluída (`site/src/lib/solana.ts`) |
-| 4. Recibo em duas fases e verificação pública | Concluída (`site/src/lib/recibo.ts`, página `/verify`) |
-| 5. Dados ao vivo e trabalho em lote | Em andamento (`operador/`, atualização diária) |
-| 6. Entrega | A fazer |
+| 3. Pagamento na Solana (devnet) | Concluída como **simulação** (`site/src/lib/solana.ts`; fica no Laboratório, `/lab`) |
+| 4. Recibo em duas fases e verificação pública | Concluída como **simulação** (`site/src/lib/recibo.ts`, página `/verify`) |
+| 5. Dados ao vivo e trabalho em lote | Dados ao vivo e placar: em andamento (atualização diária). Operador de computação: simulação (`operador/`) |
+| 6. Calculadora de carga e reenquadramento como ferramenta de decisão | Concluída (`site/src/lib/calculadora.ts`) |
+| 7. Entrega | A fazer |
 
 ## Etapa 1 em resumo
 
@@ -25,7 +37,7 @@ O Nordeste deixou de gerar **3,4 GW médios** de eólica e solar em jan–ago/20
 
 ## Pagamento na Solana (Etapa 3)
 
-Cada janela prevista tem um botão **Comprar**: o comprador escolhe os MWh, o preço sai do PLD da janela convertido em USDC pela PTAX do Banco Central, e **uma única transação** assinada na Phantom paga usina (70%), operador (25%) e plataforma (5%) e grava um memo com o que foi comprado. A plataforma nunca segura o dinheiro. Roda na **devnet** com USDC de teste; usina e operador são carteiras de teste.
+Esta etapa é uma **simulação** (visão futura, não o produto). No Laboratório (`/lab`) você escolhe uma usina e uma janela e aperta **Reservar (demo)**: o comprador escolhe os MWh, o preço sai do PLD da janela convertido em USDC pela PTAX do Banco Central, e **uma única transação** assinada na Phantom paga usina (70%), operador (25%) e plataforma (5%) e grava um memo com o que foi comprado. A plataforma nunca segura o dinheiro. Roda na **devnet** com USDC de teste; usina e operador são carteiras de teste. Os botões Reservar e Replay não aparecem nas páginas do atlas.
 
 **Primeira compra (08/10/2026):** 0,5 MWh da Serra do Assuruá por 5,73846 USDC — [ver no Solana Explorer](https://explorer.solana.com/tx/5bRw4an8rY7hpYxVnoo217MN85dGUfycp5t6Q6mGQkFDubDdbLE2MABiYVGecacT9SkLoTL1ijtTrj9NjULy5Bg9?cluster=devnet).
 
@@ -54,7 +66,7 @@ O ONS publica o dado de cada dia por volta das 12h do dia seguinte. Todo dia, de
 
 O teste de agosto e setembro continua congelado. De 1º/10 em diante, o placar **ao vivo** mostra cada janela prevista e o veredito do ONS, com os erros incluídos.
 
-## Operador de computação (Etapa 5)
+## Operador de computação (Etapa 5, simulação)
 
 O operador de demonstração roda num notebook. Ele lê as compras na Solana, espera a janela começar e roda um trabalho real de IA:
 
@@ -74,7 +86,7 @@ A chave do operador fica fora do repositório (`../carteiras-teste/operador.json
 
 ## Atlas (site)
 
-Site bilíngue (inglês e português) com o mapa das usinas, as janelas previstas, o placar público e o método. Veja [`site/README.md`](site/README.md).
+Site bilíngue (inglês e português; abre em português quando o navegador está em português) com o mapa das usinas, a calculadora de carga em cada página de usina, as janelas previstas, o placar público, o método e o Laboratório (simulação). Funciona em celular, tablet e computador. Veja [`site/README.md`](site/README.md).
 
 ```bash
 python dados/scripts/atlas.py     # prepara os dados do site

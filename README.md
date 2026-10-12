@@ -17,20 +17,20 @@ Built by Emmanuel Stein and Guilherme Amorim, university students in Brazil, for
 
 In 2026, the Northeast of Brazil curtailed **3.4 GW of wind and solar power on average** (82 GWh of clean energy a day, January–August), because the grid could not absorb it. The national grid operator (ONS) orders plants to cut output and publishes what happened, half-hour by half-hour, about a day later.
 
-- From January 1 to October 9, the curtailed energy was worth **R$ 2.6 billion** at the actual hourly spot price (PLD). Two thirds of it was cut while the price was already at its legal floor.
-- **66%** of it was an *energy surplus* (ONS reason `ENE`), the predictable part. The rest was electrical: grid reliability limits (`CNF`, 24%) and lines or equipment out (`REL`, 10%).
-- Law 15.269/2025 provides retroactive compensation to plants for `CNF` and `REL` cuts. `ENE` cuts are not compensated; on October 6, 2026, Aneel decided to share the losses from them among generators.
+- From January 1 to October 10, the curtailed energy was worth **R$ 2.6 billion** at the actual hourly spot price (PLD). This is an estimate of value, not money anyone received. Two thirds of it was cut while the price was already at its legal floor.
+- **66.5%** of it was an *energy surplus* (ONS reason `ENE`), the predictable part. The rest was electrical: grid reliability limits (`CNF`, 24%) and lines or equipment out (`REL`, 10%).
+- Law 15.269/2025 provides compensation to plants for `CNF` and `REL` cuts; according to the press, an MME ordinance (Portaria 140/2026) covers past events (Sep 2023 to Nov 2025) for companies that adhere voluntarily. `ENE` cuts are not compensated. Aneel Resolution 1.170/2026 (signed Oct 6, published Oct 9, 2026) says the CCEE shares the curtailed energy among the eligible plants. We have not checked how all this is being applied.
 
 ## What Nomos does
 
-**Today (the product): an open atlas and a neutral reference for contracts.** Loads that want to sit next to wind and solar plants, such as miners, data centers and other flexible compute, sign long contracts (around 2 years), and curtailment works as a discount in them. To price it, they need to know how much each plant loses, of which kind, at which hours, and how predictable it is. Plants have that history and paid intelligence; the other side has less. The atlas gives it openly, per plant:
+**Today (the product): an open atlas and a decision tool, a neutral reference for contracts. Nomos does not sell anything.** Loads that want to sit next to wind and solar plants, such as miners, data centers and other flexible compute, sign long contracts (around 2 years), and curtailment works as a discount in them. To price it, they need to know how much each plant loses, of which kind, at which hours, and how predictable it is. Plants have that history and paid intelligence; the other side has less. The atlas gives it openly, per plant:
 
 - curtailed energy, the reason mix and a month × hour heat map;
 - a **load calculator** on each plant page: "if I install X MW next to this plant and run Y hours a day, how much curtailment would I have met?" It is an estimate from past data, not a forecast or a guarantee;
 - a daily forecast of curtailment windows for the next 8 days, with a reference value at the hourly PLD;
 - a public track record: a frozen backtest plus a live scoreboard that shows every miss.
 
-**The vision: an hourly certificate that a load used energy that would otherwise be lost.** Each window can be reserved for a compute job. The reservation leaves a chain of public records on Solana:
+**The vision, simulated in the Lab (`/lab`): an hourly certificate that a load used energy that would otherwise be lost.** This is not the product. In the Lab, a window can be reserved for a compute job on Solana devnet, with test wallets and test USDC. The reservation leaves a chain of public records on Solana:
 
 1. **Forecast.** Every day, after the ONS publishes, the SHA-256 of the forecast file is recorded on-chain. This proves the forecast existed before the day.
 2. **Reservation and payment.** One transaction in Phantom pays the plant (70%), the compute operator (25%) and the platform (5%) in USDC. The platform never holds the money.
@@ -38,23 +38,25 @@ In 2026, the Northeast of Brazil curtailed **3.4 GW of wind and solar power on a
 4. **Execution.** The operator waits for the window, runs a small AI job, and records its start and end on-chain. The block times show that it ran inside the window.
 5. **ONS stamp (phase 2).** The next day, the verdict (confirmed or wrong) is recorded with the official ONS file and its SHA-256.
 
-Hour-by-hour clean-energy claims are where large buyers are heading: Google's 24/7 carbon-free goal and EnergyTag's granular certificates. EU rules for renewable hydrogen already count grid power used during renewable curtailment as renewable (Delegated Regulation 2023/1184, Art. 4(3)). **Who would pay for this certificate in Brazil has not been validated yet**; it is the next thing we will test.
+Hour-by-hour clean-energy claims are where large buyers are heading: Google's 24/7 carbon-free goal and EnergyTag's granular certificates. EU rules for renewable hydrogen (Delegated Regulation 2023/1184, Art. 4) can count grid electricity as renewable when the electrolyser's consumption reduces the need to redispatch renewable generation, under conditions. **Who would pay for this certificate in Brazil has not been validated yet**, and neither has who would pay for the atlas or the calculator: these are the hypotheses we are testing.
 
 ## Try it in two minutes
 
 1. **[Track record](https://nomos-energy.vercel.app/track-record):** the backtest, the live scoreboard and the three kinds of curtailment.
-2. **[A plant page](https://nomos-energy.vercel.app/plants/CJU_BASAR):** why it is curtailed, the forecast windows and the history with the ONS verdict.
-3. **[A complete live cycle](https://nomos-energy.vercel.app/verify?tx=5MHPTtL3KopV1hAZd2cd4cNZUB79FvdiVo2RZnJFNRTjkshaZC7atmyibwsokAKNYv4boUNx2G85Kxnuc4ofWhBv):**
+2. **[A plant page](https://nomos-energy.vercel.app/plants/CJU_BASAR):** the load calculator, why the plant is curtailed, the forecast windows and the history with the ONS verdict.
+3. **Optional, in the Lab (simulation). [A complete live cycle](https://nomos-energy.vercel.app/verify?tx=5MHPTtL3KopV1hAZd2cd4cNZUB79FvdiVo2RZnJFNRTjkshaZC7atmyibwsokAKNYv4boUNx2G85Kxnuc4ofWhBv):**
     - the forecast was published on Oct 7;
     - the window was reserved at 4 pm on Oct 8;
     - the AI job ran inside the window at 6:30 pm;
     - the ONS confirmed the curtailment on Oct 9 (82% of the half-hours, 427 MWh).
 
    Every record links to Solana Explorer.
-4. **Optional: reserve a window yourself.**
+4. **Optional, in the Lab: reserve a window yourself.**
     - Switch Phantom to Testnet mode on Solana Devnet.
     - Get test SOL ([faucet.solana.com](https://faucet.solana.com)) and test USDC ([faucet.circle.com](https://faucet.circle.com)).
-    - Click **Reserve** on any forecast window, or **Replay** on a past one to see the whole cycle at once.
+    - Open the **Lab** page, pick a plant and a window, and press **Reserve (demo)**; past windows run as a **Replay**, so the whole cycle appears at once.
+
+   The Reserve and Replay buttons are not on the atlas pages: the reservation is a simulation, not the product.
 
 ## Results
 
@@ -64,10 +66,11 @@ Hour-by-hour clean-energy claims are where large buyers are heading: Google's 24
 | Precision / coverage of the production model | 89.5% / 82.4% (Aug), 84.8% / 90.2% (Sep) |
 | Error reduction vs. the plant's average rate (Brier skill) | 54% (Aug), 56% (Sep) |
 | Windows confirmed by the ONS, 8 featured plants | 564 of 614 (Aug–Sep) |
-| Live since Oct 1 | 60 of 89 confirmed (Oct 1–9), a sample of only nine days; 20 of 20 for forecasts published before the day |
+| Live since Oct 1 | 68 of 98 confirmed (Oct 1–10), a sample of only ten days; 28 of 29 for forecasts published before the day (from Oct 8) |
+| Live, model vs. a naive rule (same 98 windows) | A tie: 29.9 percentage points of average error for both. Plant by plant, the model was closer in 2 of the 8 plants and the naive rule in the other 6 |
 | Captured by reason, backtest | energy surplus 95%, reliability 89%, line or equipment out 81% |
 
-The forecast parameters were fixed before the test. Early October was weaker: in two Rio Grande do Norte plants, the night-time reliability cuts stopped abruptly on Sep 28–29, and a model that only learns from past patterns kept offering those windows. This is exactly the kind of change an operator told us to expect from electrical curtailment.
+The forecast parameters were fixed before the test. Early October was weaker: in two Rio Grande do Norte plants, the night-time reliability cuts stopped abruptly on Sep 28–29, and a model that only learns from past patterns kept offering those windows. The night cuts came back around Oct 8. This is exactly the kind of change an operator we heard told us to expect from electrical curtailment. The value of Nomos today is in the history, the calculator and the transparency, not in beating a simple rule.
 
 Everything is reproducible. The pipeline writes byte-identical outputs on any machine, and their SHA-256 fingerprints are published. Our daily GitHub Actions run on Linux regenerates the same files the team produces on Windows.
 
@@ -76,14 +79,16 @@ Everything is reproducible. The pipeline writes byte-identical outputs on any ma
 | Part | Status |
 | --- | --- |
 | ONS curtailment data (with the reason for every cut), CCEE hourly PLD, Central Bank PTAX rate | Real, open data, updated daily |
-| Forecast, backtest, live scoreboard | Real |
-| Reservation, payment split, receipt, execution records, ONS stamp | Real on Solana devnet, with test USDC |
+| Forecast, backtest, live scoreboard | Real (the live sample is only ten days) |
+| Load calculator and reference values in R$ | Real arithmetic on past data: an estimate, not a forecast, a price or a guarantee |
+| Daily forecast fingerprint on Solana | Real on devnet, written by the platform (a declared oracle) |
+| Reservation, payment split, receipt, execution records, ONS stamp (the Lab) | Simulated: real transactions on Solana devnet, with test USDC and test wallets |
 | AI job | Real but small: a multilingual embedding model on a laptop CPU, which runs in seconds |
-| Plant and compute operator | Simulated (test wallets); we have no partner plant or operator yet |
+| Plant and compute operator | Simulated (test wallets); no plant or operator has agreed to take part yet |
 | Absorbing curtailed energy | Does not happen in the demo: the laptop is not at the plant |
 | Phase 2 oracle | Centralized and declared (the platform); the ONS signs nothing. A production version could let anyone challenge a stamp with the ONS file |
 | Certificate buyer | Not validated: nobody has told us they would pay for an hourly certificate |
-| Selling electricity | We do not sell electricity: the energy never leaves the plant, the job travels over the internet |
+| Selling anything | Nomos does not sell electricity or any other service today: it is an information tool. The business model is a hypothesis, not validated |
 
 ## How it is built
 
