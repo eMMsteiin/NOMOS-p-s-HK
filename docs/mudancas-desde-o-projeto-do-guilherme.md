@@ -4,7 +4,7 @@ Documento geral, em português simples, de **tudo o que foi feito nesta cópia (
 
 - **Ponto de partida (o projeto do Guilherme):** o último commit dele é o `10cd1b8` ("Atualização diária: dados do ONS até 2026-10-10", de 11/10/2026). Tudo antes disso é dele (e do `business-plan.md` inicial, criado pelo Stein).
 - **Hoje:** `main` e a branch `design` estão em `1130920`, publicadas no GitHub.
-- **Tamanho da mudança:** 76 arquivos alterados, cerca de 6.700 linhas adicionadas e 1.100 removidas (sem contar os arquivos de dados). São 21 commits novos (de `2862461` a `1130920`).
+- **Tamanho da mudança:** 76 arquivos alterados, cerca de 6.700 linhas adicionadas e 1.100 removidas (sem contar os arquivos de dados). São 28 commits novos (de `2862461` a `1130920`).
 
 ---
 
