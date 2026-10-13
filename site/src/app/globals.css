@@ -178,6 +178,14 @@ input[type="range"].campo-faixa::-moz-range-thumb {
   box-shadow: 0 1px 3px rgb(14 28 23 / 0.25);
 }
 
+/* Linhas que rolam para o lado (atalhos, abas de dia): sem a barra de rolagem, que fica pesada no visual */
+.sem-barra {
+  scrollbar-width: none;
+}
+.sem-barra::-webkit-scrollbar {
+  display: none;
+}
+
 /* Perguntas frequentes e blocos que abrem e fecham */
 details.abre > summary {
   list-style: none;
@@ -293,11 +301,6 @@ details.abre[open] > summary .sinal {
   }
   .so-impressao {
     display: block;
-  }
-  header,
-  footer,
-  nav {
-    display: none !important;
   }
   main {
     max-width: none !important;

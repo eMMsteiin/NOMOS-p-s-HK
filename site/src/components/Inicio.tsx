@@ -67,7 +67,8 @@ function GuiaDeUso() {
           {t.panel.howToClose}
         </button>
       </div>
-      <ol className="mt-4 grid gap-4 sm:grid-cols-3">
+      <p className="mt-3 text-sm leading-relaxed text-ink-2 sm:hidden">{t.panel.howToShort}</p>
+      <ol className="mt-4 hidden gap-4 sm:grid sm:grid-cols-3">
         {t.panel.howTo.map((x, i) => (
           <li key={x} className="flex gap-3 text-sm leading-relaxed text-ink-2">
             <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-semibold text-white">{i + 1}</span>

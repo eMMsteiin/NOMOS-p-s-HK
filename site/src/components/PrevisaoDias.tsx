@@ -51,7 +51,7 @@ export function PrevisaoDias({
         <SeloPrevisao />
       </div>
 
-      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0" role="tablist" aria-label={t.home.day}>
+      <div className="sem-barra -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0" role="tablist" aria-label={t.home.day}>
         <div className="flex gap-1.5 pb-1">
           {previsao.dias.map((x) => (
             <button

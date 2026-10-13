@@ -200,7 +200,7 @@ export function RankingUsinas({ usinas, pld }: { usinas: UsinaPainel[]; pld: Pld
                       >
                         <td className="py-3.5 pl-5 pr-3">
                           <div className="flex items-start gap-3">
-                            <span className="tabular mt-0.5 hidden w-4 shrink-0 text-xs font-semibold text-faint sm:block">{i + 1}</span>
+                            <span className="tabular mt-0.5 hidden w-4 shrink-0 text-xs font-semibold text-muted sm:block">{i + 1}</span>
                             <div className="min-w-0">
                               <Link href={ROTAS.usina(x.u.id)} className="font-semibold text-ink hover:text-brand-700 hover:underline">
                                 {x.u.nome.replace(/^Conj\. /, "")}

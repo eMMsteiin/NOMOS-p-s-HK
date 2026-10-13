@@ -27,7 +27,7 @@ function Chip({ ativo, onClick, children }: { ativo: boolean; onClick: () => voi
       type="button"
       onClick={onClick}
       aria-pressed={ativo}
-      className={`min-h-9 rounded-full border px-3.5 text-xs font-semibold transition ${
+      className={`min-h-9 shrink-0 whitespace-nowrap rounded-full border px-3.5 text-xs font-semibold transition ${
         ativo ? "border-brand-700 bg-brand-700 text-white" : "border-line-strong bg-card text-ink-2 hover:border-ink-2 hover:text-ink"
       }`}
     >
@@ -122,7 +122,7 @@ export function CamposCenario({
               style={{ "--p": `${progresso}%` } as CSSProperties}
             />
           </div>
-          <div className="mt-0.5 flex justify-between text-[11px] text-faint" aria-hidden>
+          <div className="mt-0.5 flex justify-between text-[11px] text-muted" aria-hidden>
             <span>1 h</span>
             <span>12 h</span>
             <span>24 h</span>
@@ -152,9 +152,9 @@ export function CamposCenario({
       </div>
 
       <div className="mt-6 grid gap-x-8 gap-y-4 md:grid-cols-[1fr_1.7fr]">
-        <div>
+        <div className="min-w-0">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted">{p.quickLoad}</p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
+          <div className="sem-barra -mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible">
             {MW_RAPIDOS.map((mw) => (
               <Chip
                 key={mw}
@@ -169,9 +169,9 @@ export function CamposCenario({
             ))}
           </div>
         </div>
-        <div>
+        <div className="min-w-0">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted">{p.quickSchedule}</p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
+          <div className="sem-barra -mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible">
             {PRESETS.map((pr) => (
               <Chip key={pr.chave} ativo={cenario.inicio === pr.inicio && cenario.horas === pr.horas} onClick={() => aoMudar({ inicio: pr.inicio, horas: pr.horas })}>
                 {p.presets[pr.chave]} · {pr.horas === 24 ? "24 h" : faixaDeHorario(pr.inicio, pr.horas).replaceAll(":00", "h")}
