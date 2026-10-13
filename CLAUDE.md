@@ -17,6 +17,7 @@
 - Nomos é um atlas aberto da energia eólica e solar que o ONS manda cortar no Nordeste: quanto, por quê (ENE sobra de energia, CNF confiabilidade, REL linha ou equipamento fora), previsão por usina para 8 dias e um placar público de acertos, com cada previsão carimbada na Solana antes do dia.
 - Mudança de rumo: sair de "previsão do tempo" (a Volt Robotics, a ePowerBay e o painel do ONS já fazem algo parecido) para ferramenta de DECISÃO: "se eu instalar X MW de carga ao lado desta usina, quanto corte eu teria aproveitado?" Essa é a Calculadora de carga junto à usina, na página de cada usina.
 - O único uso honesto de blockchain: carimbar a previsão antes do dia para o placar não poder ser reescrito. Recibo de execução e split em USDC são VISÃO FUTURA, simulada na devnet. O comprador do certificado hora a hora NÃO está validado.
+- **Fluxo do site (desde 12/10/2026):** apresentação em `/` (a dor e os botões de cadastro) → login em `/login` (Google) → plataforma em `/app`. O login com o Google AINDA NÃO está ligado: hoje o botão leva direto à plataforma e a tela avisa. Ligar o login real mexe em rota `/api` e em variáveis secretas, então depende de autorização do Stein.
 - Hoje o produto é informação e prova, não energia. A demo roda na devnet, usina e operador são simulados, o trabalho de IA roda num notebook e não consome energia cortada.
 
 ## O que está comprovado e o que é hipótese

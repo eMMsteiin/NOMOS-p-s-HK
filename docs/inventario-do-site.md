@@ -1,6 +1,6 @@
 # Inventário completo do site Nomos: cada página, seção, botão e função
 
-Versão de **12/10/2026, depois da revisão geral** (branch `revisao-geral`). Escrito lendo o código do site (`site/src`). Cada item diz **o que é**, **o que acontece quando você usa**, **de onde vem a informação** e se **combina com a premissa**.
+Versão de **12/10/2026, depois da revisão geral e do novo fluxo apresentação → login → plataforma** (branch `fluxo-login`). Escrito lendo o código do site (`site/src`). Cada item diz **o que é**, **o que acontece quando você usa**, **de onde vem a informação** e se **combina com a premissa**.
 
 **A premissa de referência** (a "Ideia A"): o Nomos é uma **ferramenta de informação para decidir** onde instalar ou expandir uma unidade ao lado de uma usina eólica ou solar. Ele **não vende nada**. O modelo de negócio é hipótese, não validada.
 
@@ -14,13 +14,15 @@ Versão de **12/10/2026, depois da revisão geral** (branch `revisao-geral`). Es
 - ⚪ **Apoio**: sustenta a credibilidade, sem confundir.
 - ⚠️ **Revisar**: ainda pede uma decisão ou um ajuste.
 
-> **O que mudou em relação à versão anterior deste documento:** a reserva (botões Reservar e Replay), as "horas de GPU", o bloco roxo "Visão futura" do Início e a aba "Verificar" saíram do caminho principal e foram para o **Laboratório** (`/lab`). A calculadora subiu para o topo da página da usina. Há aviso de dados antigos, páginas 404 e de erro próprias, e o site abre em português quando o navegador está em português.
+> **O fluxo do site agora tem 3 paradas:** (1) a **apresentação** em `/`, que mostra a dor e tem os botões "Quero realizar o cadastro" e "Quero conhecer mais"; (2) a tela de **login** em `/login` (botão do Google); (3) a **plataforma** em `/app`, que é tudo o que este documento descreve nas Partes 1 a 8. O login com o Google **ainda não está ligado**: o botão leva direto à plataforma e a tela avisa.
+
+> **O que mudou na versão anterior deste documento (revisão geral):** a reserva (botões Reservar e Replay), as "horas de GPU", o bloco roxo "Visão futura" do Início e a aba "Verificar" saíram do caminho principal e foram para o **Laboratório** (`/lab`). A calculadora subiu para o topo da página da usina. Há aviso de dados antigos, páginas 404 e de erro próprias, e o site abre em português quando o navegador está em português.
 
 ---
 
 ## Parte 0. O site em números
 
-- **6 páginas** (rotas): Início `/`, Usina `/plants/<id>` (8 páginas, uma por usina), Placar `/track-record`, Método `/method`, **Laboratório `/lab`** e Verificar `/verify` (que faz parte do Laboratório). Mais a página 404 e uma página de erro.
+- **8 páginas** (rotas): **Apresentação `/`**, **Login `/login`**, e as da plataforma: Início `/app`, Usina `/app/plants/<id>` (8 páginas, uma por usina), Placar `/app/track-record`, Método `/app/method`, **Laboratório `/app/lab`** e Verificar `/app/verify` (que faz parte do Laboratório). Mais a página 404 e uma página de erro. Os **endereços antigos** (`/plants/...`, `/track-record`, `/method`, `/lab`, `/verify`) redirecionam para os novos.
 - **8 usinas de destaque** têm página própria e calculadora, de **166 conjuntos** modelados (RN, BA e CE).
 - **2 idiomas** (PT e EN). Sem escolha salva, o site abre em **português se o idioma principal do navegador for português** (pt, pt-BR, pt-PT) e em inglês nos demais casos. A escolha pelo botão EN/PT fica salva no navegador (`localStorage`).
 - **Sem login, sem conta, sem cookies de rastreio, sem analytics.** Nada do visitante é guardado, exceto o idioma.
@@ -30,21 +32,56 @@ Versão de **12/10/2026, depois da revisão geral** (branch `revisao-geral`). Es
 
 ---
 
-## Parte 1. Elementos que aparecem em TODAS as páginas
+## Parte A. Apresentação (`/`): a 1ª parada do fluxo
+
+Página pública que mostra a dor e tenta convencer o visitante. Pergunta que responde: "Isto serve para mim? Por que me cadastrar?".
+
+| Ordem | Seção | O que mostra ou faz | Dado |
+| --- | --- | --- | --- |
+| 0 | **Cabeçalho próprio** | Logotipo; âncoras **O problema**, **Como funciona**, **Transparência** (só em tela larga); seletor EN/PT; **Entrar** e **Quero me cadastrar** (levam a `/login`). Fixo no topo. | |
+| 1 | **Abertura** | Título "A energia limpa sobra no Nordeste. Descubra quanto dela caberia na sua unidade.", parágrafo, botões **"Quero realizar o cadastro"** (vai ao login) e **"Quero conhecer mais"** (desce até "Como funciona"), aviso "Versão de teste… O Nomos não vende energia nem contrato". Ao lado, o **cartão de exemplo com dados reais**: Serra do Assuruá, carga de 10 MW, 8 h por dia → 179,3 h de corte por mês, 1.793 MWh, R$ 186.700 de valor de referência (a mesma conta da calculadora, calculada na hora). | atlas.json |
+| 2 | **O problema** (`#dor`) | Explica o corte; 3 números (3,4 GW, 82 GWh por dia, R$ 2,6 bi estimados, "não é dinheiro que alguém recebeu"); 3 perguntas que quem quer instalar uma carga não consegue responder hoje. | atlas.json |
+| 3 | **Como o Nomos ajuda** (`#como-funciona`) | 3 passos (escolha uma usina, informe a sua carga, veja o que o passado mostra) e a cobertura honesta: "8 usinas de destaque têm a calculadora; o catálogo modela 166 conjuntos". | atlas.json |
+| 4 | **O que você encontra na plataforma** | 4 cartões: atlas do corte, calculadora de carga, previsão e placar público, dados abertos. | texto |
+| 5 | **Transparência** (`#transparencia`) | "O que o Nomos é" × "O que o Nomos não é" (não vende nada; não promete economia nem preço; não substitui contrato nem parecer jurídico) e o que ainda está sendo validado. | texto |
+| 6 | **Para quem é e como seria o acesso** | Hipótese, ainda não validada: 3 perfis e 3 formatos possíveis, sem preço e sem promessa. (Veio do Início da plataforma.) | texto |
+| 7 | **Perguntas frequentes** | 4 perguntas: vende energia? os números são garantidos? de onde vêm os dados? quanto custa ("nesta fase não cobramos e ainda não definimos preços")? | texto |
+| 8 | **Chamada final** (faixa preta) | "Pronto para ver o corte da usina que interessa à sua operação?" com **Quero realizar o cadastro** e **Voltar ao topo**. | |
+| 9 | **Rodapé** | O mesmo da plataforma. | |
+
+---
+
+## Parte B. Login (`/login`): a 2ª parada do fluxo
+
+| # | Elemento | O que faz |
+| --- | --- | --- |
+| 1 | **Cabeçalho mínimo** | Logotipo (volta à apresentação) e seletor EN/PT. |
+| 2 | **Cartão de login** | "Entrar no Nomos. Crie a sua conta ou entre com o Google para abrir a plataforma." |
+| 3 | **Botão "Continuar com o Google"** (com o logotipo do Google) | **Hoje leva direto à plataforma**, ou ao endereço pedido em `?from=` quando ele é interno (`/app/...`); qualquer outro destino é ignorado (proteção contra redirecionamento para outro site). |
+| 4 | **Aviso roxo** "Versão de teste: o login com o Google ainda não está ligado…" | Aparece enquanto o login real não existir. Some quando ele for ligado. |
+| 5 | Frase "Esta é uma versão de teste: os números são estimativas…" | Aviso de honestidade. |
+| 6 | Links **← Voltar para a apresentação** e **Quero conhecer mais antes** | Voltam à apresentação (o segundo, já na seção "Como funciona"). |
+
+Como ligar o login real: só o arquivo `site/src/lib/sessao.tsx` muda (ver o `CLAUDE.md`).
+
+---
+
+## Parte 1. Elementos que aparecem em TODAS as páginas da plataforma (`/app/...`)
 
 ### 1.1 Cabeçalho (fixo no topo)
 
 | # | Elemento | O que faz | Coerência |
 | --- | --- | --- | --- |
-| 1 | **Logotipo "nomos"** | Clique leva ao Início. | ⚪ |
+| 1 | **Logotipo "nomos"** | Clique leva ao início da plataforma (`/app`). | ⚪ |
 | 2 | **Frase ao lado do logotipo**: "Para decidir onde instalar ao lado de uma usina." (EN: "To decide where to install next to a power plant.") | Só aparece em tela larga (a partir de 1024 px). | ✅ |
 | 3 | **Atlas** | Vai ao Início. Fica destacado em `/` e em qualquer página de usina. | ✅ |
 | 4 | **Placar** (EN: "Track record") | Vai a `/track-record`. | ⚪ |
 | 5 | **Método** | Vai a `/method`. | ⚪ |
 | 6 | **Laboratório** com o selo **"simulação"** (EN: "Lab", "simulation") | Vai a `/lab`. Fica destacado também em `/verify`. No celular o selo fica sobre o canto da aba. | ✅ separa a simulação do produto |
 | 7 | **Seletor EN / PT** | Troca todo o texto do site na hora e guarda a escolha. | ✅ |
+| 8 | **Sair** | Volta para a apresentação (`/`). Quando o login real for ligado, também encerra a sessão. | ✅ |
 
-No celular o menu desce para uma segunda linha.
+No celular o menu desce para uma segunda linha. A apresentação e a tela de login têm cabeçalhos próprios (partes A e B).
 
 ### 1.2 Aviso de dados antigos (novo)
 Faixa laranja logo abaixo do cabeçalho. **Só aparece quando os dados têm 3 dias ou mais** (contados em dias de Brasília): "Dados até 10 de out. de 2026 (há N dias). Esta versão de teste ainda não se atualiza sozinha, então as janelas previstas para dias que já passaram deixaram de ser previsões." Some sozinha quando os dados forem atualizados. ✅ (evita mostrar "previsão" de um dia que já passou)
@@ -62,7 +99,7 @@ O site tem um manifesto: no celular dá para "Adicionar à tela inicial" e abrir
 
 ---
 
-## Parte 2. Início (`/`)
+## Parte 2. Início da plataforma (`/app`)
 
 Pergunta que a página responde: "Quanta energia cortada existe e como uso isso na minha decisão?".
 
@@ -108,15 +145,15 @@ Pergunta que a página responde: "Quanta energia cortada existe e como uso isso 
 | 4 | **O preço vai ao piso justamente quando a energia é cortada** | % das horas com PLD no piso, por hora. Usa o mesmo período dos números ao lado (até 10/10). | passar o mouse | REAL ✅ |
 | 5 | **Potência cortada média no Nordeste, por mês** | Barras mensais, eólica + solar. | passar o mouse | REAL ✅ |
 
-### 2.5 Seção "Para quem é e como seria o acesso" (nova)
-Título, selo **"Hipótese, ainda não validada"**, uma frase dizendo que nada ali é plano, preço nem promessa, **3 cartões** de borda tracejada (operadores de carga flexível, geradoras, investidores) e um cartão com **3 formatos de acesso a testar** (mais usinas com calculadora; relatórios exportáveis; alertas), terminando em "Sem preços, sem prazo e sem promessa". ✅ (deixa claro que o modelo de negócio é hipótese)
+### 2.5 Seção "Para quem é e como seria o acesso"
+Foi **movida para a apresentação** (`/`, ver a Parte A), que agora é a primeira página do site. Na plataforma não aparece mais.
 
 ### 2.6 Faixa preta final
 **"Veja como a previsão se saiu →"**: leva ao Placar. Mostra "564 das 614 janelas oferecidas em ago–set foram confirmadas" e "Ao vivo desde 1º/10: 68 de 98 (69%), amostra de apenas 10 dias". ⚪
 
 ---
 
-## Parte 3. Página de uma usina (`/plants/CJU_BASAR` e mais 7)
+## Parte 3. Página de uma usina (`/app/plants/CJU_BASAR` e mais 7)
 
 Usinas: Serra do Assuruá (BA), Rio do Vento (RN), Rio do Vento Expansão (RN), Novo Horizonte (BA), Sol do Sertão (BA), Assu Sol (RN), Itarema V (CE), Mauriti (CE).
 
@@ -156,7 +193,7 @@ Tudo recalcula na hora, no navegador. Nada é enviado a nenhum servidor.
 
 ---
 
-## Parte 4. Placar (`/track-record`)
+## Parte 4. Placar (`/app/track-record`)
 
 Pergunta que a página responde: "Posso confiar na previsão?".
 
@@ -175,7 +212,7 @@ Pergunta que a página responde: "Posso confiar na previsão?".
 
 ---
 
-## Parte 5. Método (`/method`)
+## Parte 5. Método (`/app/method`)
 
 Pergunta que a página responde: "O que é real, o que é simulado e o que é estimado?".
 
@@ -189,7 +226,7 @@ Pergunta que a página responde: "O que é real, o que é simulado e o que é es
 
 ---
 
-## Parte 6. Laboratório (`/lab`) (novo)
+## Parte 6. Laboratório (`/app/lab`)
 
 Onde está tudo o que veio da ideia anterior (reserva, pagamento de teste, recibo). **Não é o produto.**
 
@@ -211,7 +248,7 @@ Painel que sobe na tela (no celular, vem de baixo). Fecha com o **✕**, com a t
 
 ---
 
-## Parte 7. Verificar (`/verify`)
+## Parte 7. Verificar (`/app/verify`)
 
 Faz parte do Laboratório (um aviso lilás no topo diz isso).
 
@@ -242,7 +279,7 @@ O ciclo de exemplo funciona no site publicado (só leitura: não precisa das cha
 
 ## Parte 9. Coerência com a premissa (resumo)
 
-**Tudo o que está no caminho principal (Início, usina, Placar, Método) é ✅ ou ⚪.** O que pertencia à reserva simulada (botões, GPU, bloco roxo, página Verificar, operador) está no Laboratório ou escondido por interruptores em `site/src/lib/recursos.ts`.
+**Tudo o que está no caminho principal (apresentação, login, início, usina, Placar, Método) é ✅ ou ⚪.** O que pertencia à reserva simulada (botões, GPU, bloco roxo, página Verificar, operador) está no Laboratório ou escondido por interruptores em `site/src/lib/recursos.ts`.
 
 Pontos que ainda pedem uma decisão do time:
 1. **Atualização diária dos dados desta cópia** (depende de mexer no workflow, que está na lista de proibidos sem autorização).
