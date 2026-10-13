@@ -10,6 +10,8 @@ import { Icone, type NomeIcone } from "./Icones";
 import { LogotipoNomos } from "./Marca";
 import { SeletorIdioma } from "./SeletorIdioma";
 import { Nota } from "./ui";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 /** Logotipo "G" do Google (cores oficiais), para o botão de login. */
 function IconeGoogle() {
@@ -26,8 +28,13 @@ function IconeGoogle() {
 export function Login() {
   const { t } = useIdioma();
   const l = t.login;
-  const { modo, entrar } = useSessao();
+  const { modo, usuario, erro, entrar } = useSessao();
+  const router = useRouter();
   const destino = destinoSeguro(useSearchParams().get("from"));
+  // Quem já está logado vai direto para a plataforma
+  useEffect(() => {
+    if (modo === "google" && usuario) router.replace(destino);
+  }, [modo, usuario, destino, router]);
   const pontos = l.panelPoints as { icon: string; title: string; text: string }[];
 
   return (
@@ -78,6 +85,11 @@ export function Login() {
                 <IconeGoogle />
                 {l.google}
               </button>
+              {erro && (
+                <Nota tom="aviso" className="mt-5">
+                  {l.error}
+                </Nota>
+              )}
               {modo === "aberto" && (
                 <Nota tom="neutro" className="mt-5">
                   {l.testNote}

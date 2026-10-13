@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AvisoDados } from "@/components/AvisoDados";
 import { Cabecalho } from "@/components/Cabecalho";
+import { PortaoSessao } from "@/components/PortaoSessao";
 import { CabecalhoImpressao } from "@/components/CabecalhoImpressao";
 import { Rodape } from "@/components/Rodape";
 import { SementeDoCenario } from "@/components/SementeDoCenario";
@@ -18,7 +19,7 @@ export default function PlataformaLayout({ children }: LayoutProps<"/app">) {
       <AvisoDados dadosAte={atlas.dados_ate} />
       <main id="conteudo" className="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 pt-6 sm:px-6 sm:pt-10">
         <CabecalhoImpressao />
-        {children}
+        <PortaoSessao>{children}</PortaoSessao>
       </main>
       <Rodape />
     </>
