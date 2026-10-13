@@ -5,5 +5,5 @@ import dynamic from "next/dynamic";
 
 export const MapaCarregado = dynamic(() => import("./MapaUsinas"), {
   ssr: false,
-  loading: () => <div className="h-full min-h-[380px] w-full animate-pulse rounded-xl bg-line/60" />,
+  loading: () => <div className="h-full min-h-[320px] w-full animate-pulse rounded-2xl bg-line/60" />,
 });

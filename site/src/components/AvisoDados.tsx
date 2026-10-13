@@ -6,6 +6,7 @@
 import { useSyncExternalStore } from "react";
 import { useIdioma } from "@/i18n/idioma";
 import { dataCurta } from "@/lib/formato";
+import { Icone } from "./Icones";
 
 const DIA_MS = 86_400_000;
 const LIMITE_DIAS = 3; // o ONS publica com cerca de 1 dia de atraso: 3 dias ou mais já é dado velho
@@ -27,8 +28,11 @@ export function AvisoDados({ dadosAte }: { dadosAte: string }) {
   const dias = useSyncExternalStore(assinar, () => idadeEmDias(dadosAte), () => 0);
   if (dias < LIMITE_DIAS) return null;
   return (
-    <div className="border-b border-line bg-sun-soft" role="status">
-      <p className="mx-auto max-w-6xl px-4 py-2 text-xs text-sun sm:px-6">{t.dataAge(dataCurta(dadosAte, t.locale, true), String(dias))}</p>
+    <div className="nao-imprimir border-b border-warn-mark/40 bg-warn-soft" role="status">
+      <p className="mx-auto flex max-w-6xl items-start gap-2.5 px-4 py-2.5 text-xs leading-relaxed text-warn sm:px-6">
+        <Icone nome="alerta" className="mt-px size-4" />
+        {t.dataAge(dataCurta(dadosAte, t.locale, true), String(dias))}
+      </p>
     </div>
   );
 }

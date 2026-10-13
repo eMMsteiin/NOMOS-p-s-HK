@@ -6,8 +6,10 @@ import { useSearchParams } from "next/navigation";
 import { useIdioma } from "@/i18n/idioma";
 import { ROTAS } from "@/lib/rotas";
 import { destinoSeguro, useSessao } from "@/lib/sessao";
-import { CabecalhoSimples } from "./CabecalhoSimples";
+import { Icone, type NomeIcone } from "./Icones";
 import { LogotipoNomos } from "./Marca";
+import { SeletorIdioma } from "./SeletorIdioma";
+import { Nota } from "./ui";
 
 /** Logotipo "G" do Google (cores oficiais), para o botão de login. */
 function IconeGoogle() {
@@ -26,35 +28,89 @@ export function Login() {
   const l = t.login;
   const { modo, entrar } = useSessao();
   const destino = destinoSeguro(useSearchParams().get("from"));
+  const pontos = l.panelPoints as { icon: string; title: string; text: string }[];
 
   return (
-    <>
-      <CabecalhoSimples />
-      <main className="flex flex-1 items-center justify-center px-4 py-10">
-        <div className="w-full max-w-md rounded-2xl border border-line bg-card p-6 shadow-sm sm:p-8">
-          <LogotipoNomos className="text-[2rem]" />
-          <h1 className="mt-6 text-2xl font-semibold tracking-tight">{l.title}</h1>
-          <p className="mt-2 text-muted">{l.lead}</p>
-          <button
-            type="button"
-            onClick={() => entrar(destino)}
-            className="mt-6 flex w-full items-center justify-center gap-3 rounded-lg border border-line bg-white px-4 py-3 text-sm font-medium text-ink transition hover:bg-paper"
-          >
-            <IconeGoogle />
-            {l.google}
-          </button>
-          {modo === "aberto" && <p className="mt-4 rounded-lg bg-wait-soft px-3 py-2 text-xs text-wait">{l.testNote}</p>}
-          <p className="mt-4 text-xs leading-relaxed text-muted">{l.fine}</p>
-          <div className="mt-6 flex flex-col gap-1.5 border-t border-line pt-4 text-sm">
-            <Link href={ROTAS.inicio} className="text-muted hover:text-ink hover:underline">
-              {l.back}
-            </Link>
-            <Link href={`${ROTAS.inicio}#como-funciona`} className="text-muted hover:text-ink hover:underline">
-              {l.more}
-            </Link>
-          </div>
+    <div className="flex min-h-dvh flex-1 flex-col lg:flex-row">
+      {/* Painel de apresentação: só em telas largas; no celular os mesmos pontos aparecem abaixo do cartão */}
+      <aside className="relative hidden overflow-hidden bg-brand-950 text-white lg:flex lg:w-[46%] lg:flex-col lg:justify-between lg:p-12 xl:p-16">
+        <div aria-hidden className="fundo-pontos-claro pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,#000,transparent_85%)]" />
+        <div aria-hidden className="pointer-events-none absolute -left-24 -top-24 size-96 rounded-full bg-brand-600/30 blur-3xl" />
+        <Link href={ROTAS.inicio} className="relative w-fit rounded-md" aria-label="Nomos">
+          <LogotipoNomos className="text-[2rem] text-white" />
+        </Link>
+        <div className="relative">
+          <h2 className="max-w-md font-display text-[2.6rem] font-medium leading-[1.08] tracking-tight xl:text-5xl">{l.panelTitle}</h2>
+          <ul className="mt-10 space-y-6">
+            {pontos.map((p) => (
+              <li key={p.title} className="flex gap-4">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white/10 text-brand-200 ring-1 ring-inset ring-white/15">
+                  <Icone nome={p.icon as NomeIcone} className="size-5" />
+                </span>
+                <div>
+                  <p className="font-semibold text-white">{p.title}</p>
+                  <p className="mt-0.5 text-sm leading-relaxed text-brand-100/75">{p.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </main>
-    </>
+        <p className="relative text-xs text-brand-200/70">{l.panelFoot}</p>
+      </aside>
+
+      <div className="flex flex-1 flex-col">
+        <header className="flex items-center justify-between gap-4 px-4 py-3 sm:px-8 lg:justify-end">
+          <Link href={ROTAS.inicio} className="rounded-md lg:hidden" aria-label="Nomos">
+            <LogotipoNomos className="text-[1.75rem]" />
+          </Link>
+          <SeletorIdioma />
+        </header>
+        <main id="conteudo" className="flex flex-1 items-center justify-center px-4 pb-12 pt-4 sm:px-8">
+          <div className="w-full max-w-md">
+            <div className="rounded-3xl border border-line bg-card p-6 shadow-lift sm:p-8">
+              <h1 className="font-display text-[2rem] font-medium leading-tight tracking-tight text-ink">{l.title}</h1>
+              <p className="mt-2 text-ink-2">{l.lead}</p>
+              <button
+                type="button"
+                onClick={() => entrar(destino)}
+                className="mt-7 flex min-h-12 w-full items-center justify-center gap-3 rounded-xl border border-line-strong bg-white px-4 py-3 text-[0.9375rem] font-semibold text-ink shadow-card transition hover:bg-sunken active:translate-y-px"
+              >
+                <IconeGoogle />
+                {l.google}
+              </button>
+              {modo === "aberto" && (
+                <Nota tom="neutro" className="mt-5">
+                  {l.testNote}
+                </Nota>
+              )}
+              <p className="mt-5 text-xs leading-relaxed text-muted">{l.fine}</p>
+              <div className="mt-6 flex flex-col gap-1 border-t border-line pt-4 text-sm">
+                <Link href={ROTAS.inicio} className="rounded-md py-1.5 font-medium text-ink-2 hover:text-ink hover:underline">
+                  {l.back}
+                </Link>
+                <Link href={`${ROTAS.inicio}#como-funciona`} className="rounded-md py-1.5 text-muted hover:text-ink hover:underline">
+                  {l.more}
+                </Link>
+              </div>
+            </div>
+
+            {/* No celular, os pontos do painel aparecem aqui embaixo */}
+            <ul className="mt-8 space-y-4 lg:hidden">
+              {pontos.map((p) => (
+                <li key={p.title} className="flex gap-3.5">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-inset ring-brand-100">
+                    <Icone nome={p.icon as NomeIcone} className="size-[1.1rem]" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-ink">{p.title}</p>
+                    <p className="text-sm leading-relaxed text-muted">{p.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </main>
+      </div>
+    </div>
   );
 }

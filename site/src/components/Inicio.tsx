@@ -1,273 +1,129 @@
 "use client";
 
+// "Onde instalar": a página de entrada da plataforma. Primeiro o cenário e o ranking das usinas (o que o visitante
+// veio fazer), depois as janelas dos próximos dias e, por fim, o contexto: por que o corte acontece.
 import Link from "next/link";
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useIdioma } from "@/i18n/idioma";
-import type { Atlas, Janela, Usina } from "@/lib/tipos";
-import { dataCurta, energia, num, pct, reais } from "@/lib/formato";
+import type { PldRef } from "@/lib/calculadora";
+import { dataCurta, num, pct } from "@/lib/formato";
 import { diasDoPeriodo } from "@/lib/linhaDeBase";
 import { ROTAS } from "@/lib/rotas";
-import { MapaCarregado } from "./MapaCarregado";
-import { BarraChance, Cartao, Numero, SeloTipo } from "./Selos";
-import { BotaoComprar } from "./BotaoComprar";
-import { MOSTRAR } from "@/lib/recursos";
-import { SeloPrevisao } from "./SeloPrevisao";
-import { BarraRazoes, GraficoHoras, GraficoMensal, GraficoPiso } from "./Graficos";
+import type { Atlas } from "@/lib/tipos";
+import { Icone } from "./Icones";
+import { PorQueAcontece } from "./PorQueAcontece";
+import { PrevisaoDias } from "./PrevisaoDias";
+import { RankingUsinas, type UsinaPainel } from "./RankingUsinas";
+import { CabecalhoPagina } from "./ui";
 
 export type DadosInicio = Pick<Atlas, "manchete" | "previsao" | "pld" | "padroes" | "dados_ate" | "cambio"> & {
   placar: Atlas["teste"]["placar"];
   ao_vivo: Atlas["ao_vivo"];
   razoes_nordeste: Record<string, number>;
-  usinas: Pick<Usina, "id" | "nome" | "uf" | "tipo" | "local" | "capacidade_mw" | "proximas">[];
+  usinas: UsinaPainel[];
+  pldRef: PldRef;
 };
+
+// "Como ler esta página": aparece na primeira visita e some quando a pessoa fecha (fica guardado no aparelho)
+const CHAVE_GUIA = "nomos-guia-visto";
+const ouvintes = new Set<() => void>();
+const guiaVisto = () => {
+  try {
+    return localStorage.getItem(CHAVE_GUIA) === "1";
+  } catch {
+    return false;
+  }
+};
+const assinarGuia = (f: () => void) => {
+  ouvintes.add(f);
+  return () => void ouvintes.delete(f);
+};
+function fecharGuia() {
+  try {
+    localStorage.setItem(CHAVE_GUIA, "1");
+  } catch {
+    // sem armazenamento: o guia some só até recarregar
+  }
+  ouvintes.forEach((f) => f());
+}
+
+function GuiaDeUso() {
+  const { t } = useIdioma();
+  // No servidor vale "já visto" (nada aparece); no navegador, o que está guardado
+  const visto = useSyncExternalStore(assinarGuia, guiaVisto, () => true);
+  if (visto) return null;
+  return (
+    <section className="nao-imprimir rounded-2xl border border-brand-100 bg-brand-50/70 p-5 sm:p-6" aria-label={t.panel.howToTitle}>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <h2 className="flex items-center gap-2.5 font-semibold text-brand-900">
+          <Icone nome="info" className="size-5 text-brand-700" />
+          {t.panel.howToTitle}
+        </h2>
+        <button
+          type="button"
+          onClick={fecharGuia}
+          className="min-h-9 rounded-full bg-card px-4 text-sm font-semibold text-brand-800 shadow-card ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
+        >
+          {t.panel.howToClose}
+        </button>
+      </div>
+      <ol className="mt-4 grid gap-4 sm:grid-cols-3">
+        {t.panel.howTo.map((x, i) => (
+          <li key={x} className="flex gap-3 text-sm leading-relaxed text-ink-2">
+            <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-semibold text-white">{i + 1}</span>
+            {x}
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
 
 export function Inicio({ d }: { d: DadosInicio }) {
   const { t } = useIdioma();
   const L = t.locale;
-  // o primeiro dia previsto é o dia seguinte ao último dado do ONS, ou seja, normalmente hoje
-  const [dia, setDia] = useState(d.previsao.dias[0]);
-  const doDia = d.previsao.por_dia[dia];
-  const piso = `R$ ${num(d.pld.piso_2026_rs_mwh, L, 2)}`;
-  const compacto = (x: number) => new Intl.NumberFormat(L, { notation: "compact", maximumFractionDigits: 1 }).format(x);
-
-  const linhas = d.usinas.flatMap((u): { u: (typeof d.usinas)[number]; j: Janela | null }[] => {
-    const js = u.proximas.filter((j) => j.data === dia);
-    return js.length ? js.map((j) => ({ u, j })) : [{ u, j: null }];
-  });
-  const pontos = d.usinas.map((u) => {
-    const js = u.proximas.filter((j) => j.data === dia);
-    const melhor = js.reduce<(typeof js)[number] | null>((a, b) => (!a || b.chance_prevista > a.chance_prevista ? b : a), null);
-    return {
-      id: u.id,
-      nome: u.nome,
-      tipo: u.tipo,
-      lat: u.local.lat,
-      lon: u.local.lon,
-      capacidade_mw: u.capacidade_mw,
-      chance: melhor?.chance_prevista ?? null,
-      rotulo: melhor
-        ? `${melhor.inicio}–${melhor.fim} · ${pct(melhor.chance_prevista, L)} · ~${energia(melhor.energia_esperada_mwh, L)}`
-        : t.home.noWindow,
-    };
-  });
+  const p = t.panel;
 
   return (
-    <div className="space-y-12 pt-8">
-      {/* Manchete */}
-      <section className="max-w-3xl">
-        <p className="text-sm font-medium uppercase tracking-wide text-cut">{t.home.kicker}</p>
-        <h1 className="mt-2 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{t.home.title}</h1>
-        <p className="mt-4 text-lg leading-relaxed">{t.home.context(`${num(d.manchete.nordeste_mw_medios / 1000, L, 1)} GW`)}</p>
-        <p className="mt-3 leading-relaxed text-muted">{t.home.lead}</p>
-        <div className="mt-5 rounded-xl border border-ink p-4">
-          <div className="font-semibold">{t.home.calcCta}</div>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {d.usinas.map((u) => (
-              <Link
-                key={u.id}
-                href={ROTAS.calculadora(u.id)}
-                className="rounded-md bg-ink px-3 py-1.5 text-sm font-medium text-white hover:bg-ink/90"
-              >
-                {u.nome.replace(/^Conj\. /, "")} →
-              </Link>
-            ))}
+    <div className="space-y-14">
+      <div className="space-y-6">
+        <CabecalhoPagina eyebrow={p.eyebrow} titulo={p.title} lead={p.lead}>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-sunken px-3 py-1.5 text-xs font-medium text-ink-2 ring-1 ring-inset ring-line">
+            <Icone nome="calendario" className="size-3.5" />
+            {p.dataUntil(dataCurta(d.dados_ate, L, true))}
+          </span>
+        </CabecalhoPagina>
+        <GuiaDeUso />
+      </div>
+
+      <RankingUsinas usinas={d.usinas} pld={d.pldRef} />
+
+      <PrevisaoDias
+        previsao={d.previsao}
+        usinas={d.usinas}
+        dadosAte={d.dados_ate}
+        pldPiso={d.pld.piso_2026_rs_mwh}
+        comPldReal={!!d.pld.cruzamento}
+        cambio={d.cambio}
+      />
+
+      <PorQueAcontece d={{ manchete: d.manchete, pld: d.pld, padroes: d.padroes, razoes_nordeste: d.razoes_nordeste }} />
+
+      <Link href={ROTAS.placar} className="nao-imprimir group block rounded-3xl bg-brand-900 p-6 text-white transition hover:bg-brand-800 sm:p-8">
+        <div className="flex items-center justify-between gap-6">
+          <div>
+            <h2 className="font-display text-2xl font-medium tracking-tight sm:text-3xl">{t.home.trackCta}</h2>
+            <p className="mt-2 text-brand-100/85">{t.home.trackCtaLead(num(d.placar.confirmadas, L), num(d.placar.total, L))}</p>
+            {d.ao_vivo.total > 0 && (
+              <p className="mt-1 text-sm text-brand-200/75">
+                {t.home.liveLine(num(d.ao_vivo.confirmadas, L), num(d.ao_vivo.total, L), pct(d.ao_vivo.fracao_confirmadas ?? 0, L), num(diasDoPeriodo(d.ao_vivo.periodo), L))}
+              </p>
+            )}
           </div>
-          <p className="mt-2 text-xs text-muted">{t.home.calcCtaNote}</p>
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/10 ring-1 ring-inset ring-white/20 transition group-hover:translate-x-1">
+            <Icone nome="seta" className="size-5" />
+          </span>
         </div>
-      </section>
-
-      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Numero valor={`${num(d.manchete.nordeste_mw_medios, L)} MW`} rotulo={t.home.statCut} destaque />
-        <Numero valor={`${num(d.manchete.nordeste_gwh_dia, L)} GWh`} rotulo={t.home.statDay} />
-        {d.manchete.valor_pld_real_rs ? (
-          <Numero
-            valor={reais(d.manchete.valor_pld_real_rs, L, true)}
-            rotulo={t.home.statValueReal(dataCurta((d.manchete.valor_pld_real_periodo ?? "").slice(-10), L, true))}
-          />
-        ) : (
-          <Numero valor={reais(d.manchete.valor_anual_piso_rs, L, true)} rotulo={t.home.statValue} />
-        )}
-        <Numero valor={`${pct(d.manchete.energia_capturada_ago, L)} / ${pct(d.manchete.energia_capturada_set, L)}`} rotulo={t.home.statCapture} />
-      </section>
-
-      {/* Previsão */}
-      <section className="space-y-4">
-        <div className="max-w-3xl">
-          <h2 className="text-2xl font-semibold tracking-tight">{t.home.forecastTitle}</h2>
-          <p className="mt-2 text-muted">{t.home.forecastLead(dataCurta(d.dados_ate, L, true))}</p>
-          <SeloPrevisao />
-        </div>
-
-        <div className="flex flex-wrap gap-1.5" role="tablist" aria-label={t.home.day}>
-          {d.previsao.dias.map((x) => (
-            <button
-              key={x}
-              type="button"
-              role="tab"
-              aria-selected={x === dia}
-              onClick={() => setDia(x)}
-              className={`rounded-md border px-3 py-2.5 text-sm sm:px-2.5 sm:py-1.5 ${x === dia ? "border-ink bg-ink text-white" : "border-line bg-card text-muted hover:text-ink"}`}
-            >
-              {dataCurta(x, L)}
-            </button>
-          ))}
-        </div>
-
-        <div className="grid gap-4 lg:grid-cols-5">
-          <div className="h-[420px] lg:col-span-2 lg:h-auto">
-            <MapaCarregado pontos={pontos} />
-          </div>
-          <Cartao className="overflow-x-auto p-0 lg:col-span-3">
-            <table className="tabela-cartoes w-full text-sm">
-              <thead className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
-                <tr>
-                  <th className="px-4 py-3 font-medium">{t.home.featured}</th>
-                  <th className="px-2 py-3 font-medium">{t.common.window}</th>
-                  <th className="px-2 py-3 font-medium">{t.common.chance}</th>
-                  <th className="px-2 py-3 text-right font-medium">{t.common.expected}</th>
-                  <th className="px-4 py-3 text-right font-medium">{t.common.value}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {linhas.map(({ u, j }, i) => (
-                  <tr key={`${u.id}-${i}`} className="border-b border-line/70 last:border-0">
-                    <td className="px-4 py-2.5">
-                      <Link href={ROTAS.usina(u.id)} className="font-medium hover:underline">
-                        {u.nome.replace(/^Conj\. /, "")}
-                      </Link>
-                      <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs text-muted">
-                        <SeloTipo tipo={u.tipo} />
-                        <span className="whitespace-nowrap">
-                          {u.local.municipio}, {u.uf}
-                        </span>
-                      </div>
-                    </td>
-                    {j ? (
-                      <>
-                        <td data-label={t.common.window} className="tabular whitespace-nowrap px-2 py-2.5">
-                          {j.inicio}–{j.fim}
-                        </td>
-                        <td data-label={t.common.chance} className="px-2 py-2.5">
-                          <BarraChance valor={j.chance_prevista} />
-                        </td>
-                        <td data-label={t.common.expected} className="tabular whitespace-nowrap px-2 py-2.5 text-right">
-                          ~{energia(j.energia_esperada_mwh, L)}
-                          {MOSTRAR.horasDeGpu && (
-                            <div className="text-xs text-muted">
-                              {compacto(j.gpu_horas_esperadas)} {t.common.gpuHours}
-                            </div>
-                          )}
-                        </td>
-                        <td data-label={t.common.value} className="tabular whitespace-nowrap px-4 py-2.5 text-right">
-                          {reais(j.valor_referencia_rs ?? 0, L, true)}
-                          {j.pld_estimado && (
-                            <span title={t.common.pldEstTitle} className="ml-1 cursor-help text-[10px] text-muted underline decoration-dotted">
-                              {t.common.pldEst}
-                            </span>
-                          )}
-                          {MOSTRAR.reservaNoAtlas && (
-                            <div className="mt-1">
-                              <BotaoComprar idUsina={u.id} nomeUsina={u.nome} janela={j} cambio={d.cambio} />
-                            </div>
-                          )}
-                        </td>
-                      </>
-                    ) : (
-                      <td colSpan={4} className="px-2 py-2.5 text-muted">
-                        {t.home.noWindow}
-                      </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Cartao>
-        </div>
-        {doDia && (
-          <p className="text-sm text-muted">
-            {t.home.allPlantsLine(num(doDia.janelas, L), num(doDia.usinas, L), energia(doDia.energia_esperada_mwh, L))}
-          </p>
-        )}
-        <p className="text-xs text-muted">
-          {d.pld.cruzamento ? t.home.valueNoteReal(piso) : t.home.valueNote(piso)}
-        </p>
-        {MOSTRAR.visaoFuturaNoInicio && (
-          <div className="max-w-3xl rounded-lg border border-line bg-wait-soft/50 p-3 text-sm">
-            <div className="font-semibold text-wait">{t.home.visionTitle}</div>
-            <p className="mt-1 text-muted">{t.home.visionNote}</p>
-          </div>
-        )}
-      </section>
-
-      {/* Por que acontece */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold tracking-tight">{t.home.whyTitle}</h2>
-        <div className="grid gap-4 lg:grid-cols-3">
-          <Cartao className="lg:col-span-2">
-            <h3 className="font-medium">{t.home.hourTitle}</h3>
-            <div className="mt-3">
-              <GraficoHoras eolica={d.padroes.perda_por_hora_pct.eolica} solar={d.padroes.perda_por_hora_pct.solar} />
-            </div>
-            <p className="mt-2 text-sm text-muted">{t.home.hourNote}</p>
-          </Cartao>
-          <Cartao>
-            <h3 className="font-medium">{t.home.weekTitle}</h3>
-            <dl className="mt-4 space-y-4">
-              <div>
-                <dt className="text-sm text-muted">{t.home.weekday}</dt>
-                <dd className="tabular text-3xl font-semibold">{pct(d.padroes.chance_dia_util, L)}</dd>
-              </div>
-              <div>
-                <dt className="text-sm text-muted">{t.home.weekend}</dt>
-                <dd className="tabular text-3xl font-semibold text-cut">{pct(d.padroes.chance_fim_de_semana, L)}</dd>
-              </div>
-            </dl>
-            <p className="mt-4 text-sm text-muted">{t.home.weekNote}</p>
-          </Cartao>
-        </div>
-        <Cartao>
-          <h3 className="font-medium">{t.reasons.title}</h3>
-          <p className="mt-1 text-sm text-muted">{t.reasons.homeLead(pct(d.razoes_nordeste.ENE ?? 0, L))}</p>
-          <div className="mt-3">
-            <BarraRazoes fracao={d.razoes_nordeste} />
-          </div>
-          <Link href={ROTAS.placar} className="mt-3 inline-block text-sm font-medium underline">
-            {t.reasons.homeLink} →
-          </Link>
-        </Cartao>
-        {d.pld.cruzamento && (
-          <Cartao>
-            <h3 className="font-medium">{t.home.floorTitle}</h3>
-            <p className="mt-1 text-sm text-muted">{t.home.floorChart(dataCurta(d.pld.cruzamento.periodo.slice(-10), L, true))}</p>
-            <div className="mt-3">
-              <GraficoPiso pct={d.pld.cruzamento.piso_por_hora_pct} />
-            </div>
-            <p className="mt-2 text-sm text-muted">
-              {t.home.floorNote(
-                pct(Math.min(...d.pld.cruzamento.piso_por_hora_pct.slice(9, 13)) / 100, L),
-                pct(d.pld.cruzamento.fracao_energia_com_pld_no_piso, L),
-                piso,
-              )}
-            </p>
-          </Cartao>
-        )}
-        <Cartao>
-          <h3 className="font-medium">{t.home.monthTitle}</h3>
-          <div className="mt-3">
-            <GraficoMensal meses={d.padroes.nordeste_mensal_mw} />
-          </div>
-          <p className="mt-2 text-sm text-muted">{t.home.monthNote}</p>
-        </Cartao>
-      </section>
-
-      <Link href={ROTAS.placar} className="block rounded-xl bg-ink p-6 text-white transition hover:bg-ink/90">
-        <div className="text-xl font-semibold">{t.home.trackCta} →</div>
-        <div className="mt-1 text-white/75">{t.home.trackCtaLead(num(d.placar.confirmadas, L), num(d.placar.total, L))}</div>
-        {d.ao_vivo.total > 0 && (
-          <div className="text-white/75">
-            {t.home.liveLine(num(d.ao_vivo.confirmadas, L), num(d.ao_vivo.total, L), pct(d.ao_vivo.fracao_confirmadas ?? 0, L), num(diasDoPeriodo(d.ao_vivo.periodo), L))}
-          </div>
-        )}
       </Link>
     </div>
   );
