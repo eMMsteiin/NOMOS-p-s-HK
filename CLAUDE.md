@@ -18,6 +18,7 @@
 - Mudança de rumo: sair de "previsão do tempo" (a Volt Robotics, a ePowerBay e o painel do ONS já fazem algo parecido) para ferramenta de DECISÃO: "se eu instalar X MW de carga ao lado desta usina, quanto corte eu teria aproveitado?" Essa é a Calculadora de carga junto à usina, na página de cada usina.
 - O único uso honesto de blockchain: carimbar a previsão antes do dia para o placar não poder ser reescrito. Recibo de execução e split em USDC são VISÃO FUTURA, simulada na devnet. O comprador do certificado hora a hora NÃO está validado.
 - **Fluxo do site (desde 12/10/2026):** apresentação em `/` (a dor e os botões de cadastro) → login em `/login` (Google) → plataforma em `/app`. O login com o Google AINDA NÃO está ligado: hoje o botão leva direto à plataforma e a tela avisa. Ligar o login real mexe em rota `/api` e em variáveis secretas, então depende de autorização do Stein.
+- **Design (desde 13/10/2026, branch `design`):** o site foi redesenhado para o público-alvo (quem decide numa empresa de carga flexível, no celular, vindo de um link no WhatsApp). A página de entrada da plataforma é "Onde instalar" (`/app`): a pessoa informa a carga (cenário guardado no aparelho e no link) e vê as usinas ordenadas. As razões de cada escolha visual estão em `docs/design-publico-alvo.md`; ao mexer em cor, texto ou botão, confira se continua atendendo a esse público e às regras de honestidade.
 - Hoje o produto é informação e prova, não energia. A demo roda na devnet, usina e operador são simulados, o trabalho de IA roda num notebook e não consome energia cortada.
 
 ## O que está comprovado e o que é hipótese
@@ -42,7 +43,7 @@ Hipótese ou não verificado (nunca afirmar como fato):
 - Nunca inventar números, fontes ou resultados. Se um número não existe nos dados, diga que não existe.
 
 ## Backlog em ordem de prioridade
-Feitos (até 12/10/2026): 1. calculadora de carga junto à usina; 2. correção de textos e READMEs pelas regras de honestidade; 3. placar com linha de base ingênua e tamanho da amostra em dias (resultado: empate); 4. página inicial com a pergunta de decisão, reserva/USDC movidos para o Laboratório (`/lab`); 5. docs/business-plan.md.
+Feitos (até 13/10/2026): 1. calculadora de carga junto à usina; 2. correção de textos e READMEs pelas regras de honestidade; 3. placar com linha de base ingênua e tamanho da amostra em dias (resultado: empate); 4. página inicial com a pergunta de decisão, reserva/USDC movidos para o Laboratório (`/lab`); 5. docs/business-plan.md; 6. fluxo apresentação → login → plataforma; 7. redesenho visual para o público-alvo (ranking "Onde instalar", resumo e botões de compartilhar na página da usina, glossário, navegação no celular, pré-visualização do link).
 
 Abertos, em ordem de prioridade:
 1. Validar com quem poderia usar (operadores de carga flexível, geradoras, investidores): a calculadora responde à pergunta deles? O que falta? Pagariam por quê? Registrar por escrito e só citar nomes com autorização.

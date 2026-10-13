@@ -2,7 +2,7 @@
 
 const en = {
   locale: "en-US",
-  nav: { atlas: "Where to install", track: "Track record", method: "Method", lab: "Lab", labBadge: "simulation", signOut: "Sign out", tagline: "To decide where to install next to a power plant." },
+  nav: { atlas: "Where to install", track: "Track record", method: "Method", lab: "Lab", labBadge: "simulation", signOut: "Sign out" },
   dataAge: (ate: string, dias: string) =>
     `Data up to ${ate} (${dias} days ago). This test version does not update itself yet, so forecast windows for days that have passed are no longer forecasts.`,
   notFound: { title: "Page not found", text: "This address does not exist in the Nomos atlas.", back: "Back to the start" },
@@ -16,7 +16,7 @@ const en = {
     scenarioTitle: "Your load",
     load: "Load",
     loadHint: "Computers, a factory, any load that can stop and restart.",
-    hours: "Operating hours per day",
+    hours: "Hours per day",
     start: "Starts at",
     best: "Use the best start time for each plant",
     bestHint: "For loads that can choose when to run: each plant is shown at the start time with the most curtailed hours.",
@@ -130,13 +130,6 @@ const en = {
     skip: "Skip to content",
   },
   home: {
-    kicker: "Northeast Brazil · official ONS data",
-    title: "If you put a load next to a wind or solar plant in Brazil's Northeast, how much curtailed energy could it have used?",
-    context: (mw: string) => `In 2026 the Northeast curtailed ${mw} of wind and solar power on average: the grid could not absorb it, so the operator ordered plants to cut output.`,
-    lead:
-      "Nomos is an open atlas of that curtailment: where and how much is cut, why (energy surplus, grid reliability or a line or equipment out), what it is worth at the hourly spot price, and how well we forecast it. Each plant page has a calculator: enter the MW you would install and the hours per day, and see, from the past and not as a promise, how many hours and how much energy you would have met.",
-    calcCta: "Try the calculator on a plant",
-    calcCtaNote: "Estimates from past ONS data, not a guarantee. The contract with the plant has to be negotiated.",
     visionTitle: "Future vision, simulated",
     visionNote:
       "The Reserve buttons demo an idea for later: reserve a window for a compute job, pay in USDC and get a public receipt on Solana. It runs on devnet with test wallets, the plant and the operator are simulated, the job runs on a laptop and absorbs no curtailed energy. Nobody has validated that a buyer would pay for this. What is real today: the data, the forecast, the scoreboard and the forecast fingerprint stamped on Solana before the day.",
@@ -190,7 +183,6 @@ const en = {
       `Between 9:00 and 12:59, the Northeast spot price sat at its ${piso}/MWh floor in ${pico} of hours. ${energia} of the energy curtailed in 2026 was cut while the price was already at the minimum: there is so much clean power that not even the lowest price finds a buyer.`,
     whyTitle: "Why it happens",
     hourTitle: "Curtailed energy by hour of day (Jan–Jul 2026)",
-    hourNote: "Wind is curtailed precisely when solar is producing: 61% of lost wind energy falls between 8:00 and 14:59.",
     weekTitle: "Chance of curtailment",
     weekday: "Weekdays",
     weekend: "Weekends & holidays",
@@ -710,7 +702,7 @@ export type ChaveGlossario = keyof typeof en.glossary;
 
 const pt: Dicionario = {
   locale: "pt-BR",
-  nav: { atlas: "Onde instalar", track: "Placar", method: "Método", lab: "Laboratório", labBadge: "simulação", signOut: "Sair", tagline: "Para decidir onde instalar ao lado de uma usina." },
+  nav: { atlas: "Onde instalar", track: "Placar", method: "Método", lab: "Laboratório", labBadge: "simulação", signOut: "Sair" },
   dataAge: (ate: string, dias: string) =>
     `Dados até ${ate} (há ${dias} dias). Esta versão de teste ainda não se atualiza sozinha, então as janelas previstas para dias que já passaram deixaram de ser previsões.`,
   notFound: { title: "Página não encontrada", text: "Este endereço não existe no atlas do Nomos.", back: "Voltar ao início" },
@@ -724,7 +716,7 @@ const pt: Dicionario = {
     scenarioTitle: "A sua carga",
     load: "Carga",
     loadHint: "Computadores, uma fábrica, qualquer carga que possa parar e voltar.",
-    hours: "Horas de operação por dia",
+    hours: "Horas por dia",
     start: "Começa às",
     best: "Usar o melhor horário de início de cada usina",
     bestHint: "Para cargas que podem escolher quando rodar: cada usina aparece no horário de início com mais horas de corte.",
@@ -838,13 +830,6 @@ const pt: Dicionario = {
     skip: "Pular para o conteúdo",
   },
   home: {
-    kicker: "Nordeste do Brasil · dados oficiais do ONS",
-    title: "Se você colocar uma carga ao lado de uma usina eólica ou solar do Nordeste, quanta energia cortada ela poderia ter aproveitado?",
-    context: (mw: string) => `Em 2026 o Nordeste teve ${mw} de energia eólica e solar cortados em média: a rede não conseguia absorver, então o operador mandou as usinas reduzirem a produção.`,
-    lead:
-      "O Nomos é um atlas aberto desse corte: onde e quanto se corta, por quê (sobra de energia, confiabilidade da rede ou linha ou equipamento fora), quanto vale ao preço horário de curto prazo e quanto a nossa previsão acerta. Cada página de usina tem uma calculadora: informe os MW que você instalaria e as horas por dia, e veja, pelo passado e não como promessa, quantas horas e quanta energia você teria aproveitado.",
-    calcCta: "Experimente a calculadora numa usina",
-    calcCtaNote: "Estimativas com dados passados do ONS, não garantia. O contrato com a usina precisa ser negociado.",
     visionTitle: "Visão futura, simulada",
     visionNote:
       "Os botões Reservar mostram uma ideia para depois: reservar uma janela para um trabalho de computação, pagar em USDC e receber um recibo público na Solana. Roda na devnet com carteiras de teste, usina e operador são simulados, o trabalho roda num notebook e não absorve energia cortada. Ninguém validou que um comprador pagaria por isso. O que é real hoje: os dados, a previsão, o placar e a impressão digital da previsão carimbada na Solana antes do dia.",
@@ -898,7 +883,6 @@ const pt: Dicionario = {
       `Entre 9h e 12h59, o preço de curto prazo do Nordeste ficou no piso de ${piso}/MWh em ${pico} das horas. ${energia} da energia cortada em 2026 foi desligada com o preço já no mínimo: sobra tanta energia limpa que nem o menor preço encontra comprador.`,
     whyTitle: "Por que acontece",
     hourTitle: "Energia cortada por hora do dia (jan–jul/2026)",
-    hourNote: "A eólica é cortada justamente quando a solar está gerando: 61% da perda eólica fica entre 8h e 14h59.",
     weekTitle: "Chance de corte",
     weekday: "Dias úteis",
     weekend: "Fins de semana e feriados",

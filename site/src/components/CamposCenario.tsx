@@ -105,7 +105,7 @@ export function CamposCenario({
             <label htmlFor={`${id}-h`} className="text-sm font-semibold text-ink">
               {p.hours}
             </label>
-            <output htmlFor={`${id}-h`} className="tabular text-lg font-semibold leading-none text-ink">
+            <output htmlFor={`${id}-h`} className="tabular whitespace-nowrap text-lg font-semibold leading-none text-ink">
               {cenario.horas} h
             </output>
           </div>

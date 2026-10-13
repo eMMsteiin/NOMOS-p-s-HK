@@ -40,19 +40,24 @@ export function Cabecalho() {
           <Link href={ROTAS.plataforma} className="flex items-center whitespace-nowrap rounded-md" aria-label="Nomos">
             <LogotipoNomos className="text-[1.75rem]" />
           </Link>
-          <nav className="ml-4 hidden items-center gap-1 md:flex" aria-label="Menu">
+          <nav className="ml-2 hidden items-center gap-0.5 md:flex lg:ml-4 lg:gap-1" aria-label="Menu">
             {itens.map((i) => (
               <Link
                 key={i.href}
                 href={i.href}
                 aria-current={i.ativo ? "page" : undefined}
-                className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-medium transition ${
+                className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-2.5 py-2 text-sm font-medium transition lg:px-3.5 ${
                   i.ativo ? "bg-brand-50 text-brand-800 ring-1 ring-inset ring-brand-100" : "text-ink-2 hover:bg-line/60 hover:text-ink"
                 }`}
               >
-                <Icone nome={i.icone} className="size-[1.1rem]" />
+                <Icone nome={i.icone} className="hidden size-[1.1rem] lg:block" />
                 {i.rotulo}
-                {i.selo && <span className="rounded-full bg-sim-soft px-1.5 py-0.5 text-[10px] font-semibold leading-none text-sim">{i.selo}</span>}
+                {i.selo && (
+                  <>
+                    <span aria-hidden className="size-1.5 rounded-full bg-sim-mark lg:hidden" />
+                    <span className="hidden rounded-full bg-sim-soft px-1.5 py-0.5 text-[10px] font-semibold leading-none text-sim lg:inline">{i.selo}</span>
+                  </>
+                )}
               </Link>
             ))}
           </nav>
@@ -61,11 +66,11 @@ export function Cabecalho() {
             <button
               type="button"
               onClick={sair}
-              className="flex min-h-9 items-center gap-2 rounded-xl px-2.5 text-sm font-medium text-ink-2 transition hover:bg-line/60 hover:text-ink md:px-3"
+              className="flex min-h-9 items-center gap-2 rounded-xl px-2.5 text-sm font-medium text-ink-2 transition hover:bg-line/60 hover:text-ink lg:px-3"
               aria-label={t.nav.signOut}
             >
               <Icone nome="sair" className="size-[1.1rem]" />
-              <span className="hidden md:inline">{t.nav.signOut}</span>
+              <span className="hidden lg:inline">{t.nav.signOut}</span>
             </button>
           </div>
         </div>

@@ -6,16 +6,25 @@ The site follows a flow: **presentation → sign-in → platform**.
 
 | Page | What it shows |
 | --- | --- |
-| `/` | **Presentation (landing)**: the pain, how Nomos helps, transparency, FAQ and the sign-up buttons ("I want to sign up", "I want to learn more"). Public |
+| `/` | **Presentation (landing)**: a real-data example (hourly curtailment profile of a plant with the load's schedule highlighted), the size of the surplus, the pain, how Nomos helps in three steps, who it is for, transparency (three evidence levels), FAQ and the sign-up buttons. Public |
 | `/login` | **Sign-in** with Google. Today Google sign-in is not connected yet: the button goes straight to the platform (the screen says so). Everything is wired through `src/lib/sessao.tsx`, the only file that changes when real login is connected |
-| `/app` | **Platform**: official curtailment in the Northeast, map of featured plants, forecast windows by day, the three kinds of curtailment and the price at the floor |
-| `/app/plants/[id]` | One plant: the **load calculator** (client-side, from the data already loaded), forecast windows, why it is curtailed, month × hour heat map, recent windows with the ONS verdict, backtest |
+| `/app` | **Where to install** (platform entry): describe your load once (MW, hours a day, start time; saved on the device and shareable in a link) and see the featured plants ranked by the curtailed energy that load would have found, with a map linked to the table; then forecast windows by day and "why it happens" charts |
+| `/app/plants/[id]` | One plant: the **load calculator** (client-side, from the data already loaded) with a one-sentence answer, an hourly chart, and actions to copy the summary, copy the scenario link, send on WhatsApp or print; forecast windows, why it is curtailed, month × hour heat map, recent windows with the ONS verdict, backtest |
 | `/app/track-record` | Live scoreboard, model vs. a naive rule, curtailment by reason, model comparison, calibration, SHA-256 fingerprints |
-| `/app/method` | What is real, estimated and simulated; definitions; open data downloads; limitations |
+| `/app/method` | What is real, estimated and simulated; glossary; open data downloads; limitations |
 | `/app/lab` | **Lab (simulation)**: the reservation demo (pick a plant and a window; Reserve and Replay live only here), a complete example cycle and the list of what is simulated. Not the product |
 | `/app/verify?tx=…` | Part of the Lab: the public proof of a simulated reservation (payment, receipt, execution and ONS stamp), read from Solana devnet. Without a transaction it explains itself |
 
 The old addresses (`/plants/…`, `/track-record`, `/method`, `/lab`, `/verify`) redirect to the new ones (see `next.config.ts`). All internal links are in `src/lib/rotas.ts`.
+
+## Design
+
+The visual language and the reasons behind it (audience, principles, colors, type, components) are in [`../docs/design-publico-alvo.md`](../docs/design-publico-alvo.md). In short:
+
+- **Tokens** (colors, fonts, shadows) live in `src/app/globals.css`; buttons, badges, cards and notes in `src/components/ui.tsx`; icons in `Icones.tsx`; charts (own SVG, tooltip + table view) in `Graficos.tsx`.
+- **Glossary balloons:** add a term to the `glossary` block of `src/i18n/dicionarios.ts` (both languages) and use `<Termo k="key">` or `<Termo k="key" soIcone />`; it also shows up in the Method page glossary.
+- **Scenario** (MW, hours, start): `src/lib/cenario.ts`; read it with `useCenario()`. A link with `?mw=10&h=8&i=8` seeds it.
+- **Link preview** (WhatsApp, LinkedIn): `src/app/opengraph-image.tsx`; the site address comes from Vercel's `VERCEL_PROJECT_PRODUCTION_URL`.
 
 API routes (server only; they hold the test-wallet keys from environment variables):
 

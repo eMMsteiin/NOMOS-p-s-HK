@@ -14,7 +14,8 @@ const outfit = Outfit({ variable: "--font-outfit", subsets: ["latin"], weight: [
 const newsreader = Newsreader({ variable: "--font-newsreader", subsets: ["latin"], axes: ["opsz"], style: ["normal", "italic"], display: "swap" });
 
 // O endereço público do site (a Vercel informa na hora de publicar) serve para a imagem de pré-visualização do link
-const ENDERECO = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3100";
+const DOMINIO = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
+const ENDERECO = DOMINIO ? `https://${DOMINIO}` : "http://localhost:3100";
 
 export const metadata: Metadata = {
   metadataBase: new URL(ENDERECO),

@@ -6,16 +6,25 @@ O site segue um fluxo: **apresentação → login → plataforma**.
 
 | Página | O que mostra |
 | --- | --- |
-| `/` | **Apresentação (landing)**: a dor, como o Nomos ajuda, transparência, perguntas frequentes e os botões de cadastro ("Quero realizar o cadastro", "Quero conhecer mais"). Pública |
+| `/` | **Apresentação (landing)**: um exemplo com dados reais (perfil por hora de uma usina, com o horário da carga em destaque), o tamanho da sobra, a dor, como o Nomos ajuda em três passos, para quem é, transparência (três níveis de evidência), perguntas frequentes e os botões de cadastro. Pública |
 | `/login` | **Login** com o Google. Hoje o login com o Google ainda não está ligado: o botão leva direto à plataforma (a tela avisa). Tudo passa por `src/lib/sessao.tsx`, o único arquivo que muda quando o login real for ligado |
-| `/app` | **Plataforma**: corte oficial do Nordeste, mapa das usinas de destaque, janelas previstas por dia, os três tipos de corte e o preço no piso |
-| `/app/plants/[id]` | Detalhe de cada usina: a **calculadora de carga** (feita no navegador, com os dados já carregados), janelas previstas, mapa de calor mês × hora, histórico com o veredito do ONS e teste retroativo |
+| `/app` | **Onde instalar** (entrada da plataforma): informe a sua carga uma vez (MW, horas por dia, início; fica guardado no aparelho e pode ir num link) e veja as usinas de destaque ordenadas por quanta energia cortada essa carga teria encontrado, com o mapa ligado à tabela; depois, as janelas previstas por dia e os gráficos de "por que acontece" |
+| `/app/plants/[id]` | Detalhe de cada usina: a **calculadora de carga** (feita no navegador, com os dados já carregados) com a resposta em uma frase, um gráfico por hora e ações para copiar o resumo, copiar o link do cenário, enviar no WhatsApp ou imprimir; janelas previstas, por que é cortada, mapa de calor mês × hora, histórico com o veredito do ONS e teste retroativo |
 | `/app/track-record` | Placar público: resultado ao vivo, modelo contra uma regra ingênua, razões do corte, comparação de modelos, calibração e impressões digitais (SHA-256) |
-| `/app/method` | O que é real, estimado e simulado; definições; dados abertos para baixar; limitações |
+| `/app/method` | O que é real, estimado e simulado; glossário; dados abertos para baixar; limitações |
 | `/app/lab` | **Laboratório (simulação)**: a demonstração de reserva (escolha de usina e janela; Reservar e Replay só existem aqui), um ciclo completo de exemplo e a lista do que é simulado. Não é o produto |
 | `/app/verify?tx=…` | Parte do Laboratório: a comprovação pública de uma reserva simulada, lida da Solana devnet. Sem transação, explica a si mesma |
 
 Os endereços antigos (`/plants/…`, `/track-record`, `/method`, `/lab`, `/verify`) redirecionam para os novos (veja `next.config.ts`). Todos os links internos estão em `src/lib/rotas.ts`.
+
+## Design
+
+A linguagem visual e os porquês (público, princípios, cores, tipografia, componentes) estão em [`../docs/design-publico-alvo.md`](../docs/design-publico-alvo.md). Em resumo:
+
+- **Tokens** (cores, fontes, sombras) ficam em `src/app/globals.css`; botões, selos, cartões e notas em `src/components/ui.tsx`; ícones em `Icones.tsx`; gráficos (SVG próprio, com balão e versão em tabela) em `Graficos.tsx`.
+- **Balões de explicação:** acrescente o termo ao bloco `glossary` de `src/i18n/dicionarios.ts` (nas duas línguas) e use `<Termo k="chave">` ou `<Termo k="chave" soIcone />`; ele também aparece no glossário da página Método.
+- **Cenário** (MW, horas, início): `src/lib/cenario.ts`; leia com `useCenario()`. Um link com `?mw=10&h=8&i=8` preenche o cenário.
+- **Pré-visualização do link** (WhatsApp, LinkedIn): `src/app/opengraph-image.tsx`; o endereço do site vem da variável `VERCEL_PROJECT_PRODUCTION_URL` da Vercel.
 
 ## Dados
 

@@ -5,11 +5,12 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Nomos",
     short_name: "Nomos",
-    description: "Open atlas of the wind and solar power curtailed in Brazil's Northeast.",
+    description: "Atlas aberto do corte de energia eólica e solar no Nordeste do Brasil.",
+    lang: "pt-BR",
     start_url: "/app",
     display: "standalone",
-    background_color: "#f6f7f4",
-    theme_color: "#f6f7f4",
+    background_color: "#f8f7f2",
+    theme_color: "#f8f7f2",
     icons: [{ src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" }],
   };
 }
