@@ -7,6 +7,31 @@ const en = {
     `Data up to ${ate} (${dias} days ago). This test version does not update itself yet, so forecast windows for days that have passed are no longer forecasts.`,
   notFound: { title: "Page not found", text: "This address does not exist in the Nomos atlas.", back: "Back to the start" },
   pageError: { title: "Something went wrong", text: "The page failed to load. Try again; if it keeps failing, reload the site.", retry: "Try again" },
+  evidence: { official: "Official data", estimate: "Estimate", simulation: "Simulation" },
+  glossary: {
+    curtailment: {
+      term: "Curtailment",
+      def: "When the grid operator orders a wind or solar plant to produce less than it could, because the grid cannot absorb all the energy at that moment. The energy not produced is the “curtailed energy”.",
+    },
+    ons: { term: "ONS", def: "The National Electric System Operator: it coordinates Brazil's power grid and publishes the curtailment data used here." },
+    ccee: { term: "CCEE", def: "The electricity trading chamber: it publishes the hourly spot price (PLD) used to value the curtailed energy." },
+    pld: {
+      term: "PLD",
+      def: "Brazil's short-term (spot) electricity price, set by hour and by region. In curtailment hours the Northeast price usually sits at its regulatory minimum (the floor).",
+    },
+    mw: { term: "MW (megawatt)", def: "Power: the “size” of a load or a plant at a given instant. A 10 MW load draws 10 megawatts while it is on." },
+    mwh: { term: "MWh (megawatt-hour)", def: "Energy: power × time. 10 MW on for 1 hour use 10 MWh. It is the unit in which energy is measured, bought and sold. 1 GWh = 1,000 MWh." },
+    ene: { term: "ENE · energy surplus", def: "Curtailment because there is more clean power than the system needs at that moment. The most predictable kind: it follows demand, sun and wind." },
+    cnf: { term: "CNF · grid reliability", def: "Curtailment to keep the grid within its safe operating limits. It can start or stop abruptly." },
+    rel: { term: "REL · line or equipment out", def: "Curtailment because a transmission line or a piece of equipment is unavailable. Also hard to predict." },
+    gnra: { term: "GNRa", def: "Unrealized generation: the ONS's own estimate of what a plant would have generated minus what it actually generated." },
+    window: { term: "Window", def: "A stretch of at least one hour in which our forecast gives a 50% chance or more of curtailment." },
+    chance: { term: "Chance", def: "The probability our model gives that curtailment happens in that period, based on past patterns. It is not a guarantee." },
+    backtest: {
+      term: "Backtest",
+      def: "We pretended to be in the past: we forecast August and September using only the data that existed at the time, and compared with what actually happened.",
+    },
+  },
   common: {
     wind: "Wind",
     solar: "Solar",
@@ -35,6 +60,7 @@ const en = {
     pldEst: "est.",
     pldEstTitle: "The CCEE has not published this hour's PLD yet (it does so the day before): valued at the floor, as an estimate.",
     live: "live",
+    skip: "Skip to content",
   },
   home: {
     kicker: "Northeast Brazil · official ONS data",
@@ -564,6 +590,7 @@ const en = {
 };
 
 export type Dicionario = typeof en;
+export type ChaveGlossario = keyof typeof en.glossary;
 
 const pt: Dicionario = {
   locale: "pt-BR",
@@ -572,6 +599,31 @@ const pt: Dicionario = {
     `Dados até ${ate} (há ${dias} dias). Esta versão de teste ainda não se atualiza sozinha, então as janelas previstas para dias que já passaram deixaram de ser previsões.`,
   notFound: { title: "Página não encontrada", text: "Este endereço não existe no atlas do Nomos.", back: "Voltar ao início" },
   pageError: { title: "Algo deu errado", text: "A página não carregou. Tente de novo; se continuar falhando, recarregue o site.", retry: "Tentar de novo" },
+  evidence: { official: "Dado oficial", estimate: "Estimativa", simulation: "Simulação" },
+  glossary: {
+    curtailment: {
+      term: "Corte (curtailment)",
+      def: "Quando o operador da rede manda uma usina eólica ou solar produzir menos do que poderia, porque a rede não consegue absorver toda a energia naquele momento. A energia que deixa de ser gerada é a “energia cortada”.",
+    },
+    ons: { term: "ONS", def: "Operador Nacional do Sistema Elétrico: coordena a rede elétrica do Brasil e publica os dados de corte usados aqui." },
+    ccee: { term: "CCEE", def: "Câmara de Comercialização de Energia Elétrica: publica o preço de curto prazo (PLD) usado para dar valor à energia cortada." },
+    pld: {
+      term: "PLD",
+      def: "O preço de curto prazo da energia elétrica no Brasil, definido por hora e por região. Nas horas de corte, o preço do Nordeste costuma ficar no valor mínimo permitido (o piso).",
+    },
+    mw: { term: "MW (megawatt)", def: "Potência: o “tamanho” de uma carga ou de uma usina num instante. Uma carga de 10 MW puxa 10 megawatts enquanto está ligada." },
+    mwh: { term: "MWh (megawatt-hora)", def: "Energia: potência × tempo. 10 MW ligados por 1 hora usam 10 MWh. É a unidade em que a energia é medida, comprada e vendida. 1 GWh = 1.000 MWh." },
+    ene: { term: "ENE · sobra de energia", def: "Corte porque há mais energia limpa do que o sistema precisa naquele momento. É o tipo mais previsível: acompanha a demanda, o sol e o vento." },
+    cnf: { term: "CNF · confiabilidade da rede", def: "Corte para manter a rede dentro dos limites seguros de operação. Pode começar ou parar de repente." },
+    rel: { term: "REL · linha ou equipamento fora", def: "Corte porque uma linha de transmissão ou um equipamento está indisponível. Também é difícil de prever." },
+    gnra: { term: "GNRa", def: "Geração não realizada: a estimativa do próprio ONS do quanto a usina teria gerado menos o quanto ela gerou." },
+    window: { term: "Janela", def: "Um trecho de pelo menos uma hora em que a nossa previsão dá 50% ou mais de chance de haver corte." },
+    chance: { term: "Chance", def: "A probabilidade que o nosso modelo dá de haver corte naquele período, com base nos padrões do passado. Não é garantia." },
+    backtest: {
+      term: "Teste retroativo",
+      def: "Fingimos estar no passado: previmos agosto e setembro usando só os dados que existiam na época, e comparamos com o que de fato aconteceu.",
+    },
+  },
   common: {
     wind: "Eólica",
     solar: "Solar",
@@ -600,6 +652,7 @@ const pt: Dicionario = {
     viewPlant: "Detalhes da usina",
     back: "Voltar ao Atlas",
     mwAvg: "MW médios",
+    skip: "Pular para o conteúdo",
   },
   home: {
     kicker: "Nordeste do Brasil · dados oficiais do ONS",
