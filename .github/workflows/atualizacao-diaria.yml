@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
-      SITE: https://nomos-energy.vercel.app
+      SITE: https://nomos-v2-one.vercel.app
     steps:
       - uses: actions/checkout@v4
 
@@ -86,5 +86,14 @@ jobs:
 
       - name: Registrar a previsão e carimbar as compras na Solana
         run: |
-          curl -s --fail-with-body -X POST "$SITE/api/previsao"; echo
-          curl -s --fail-with-body -X POST "$SITE/api/carimbar"; echo
+          # Se as chaves das carteiras de teste ainda não estão na Vercel, a API responde 503: avisamos e seguimos
+          # (os dados já foram publicados acima). Qualquer outro erro derruba o passo.
+          for rota in previsao carimbar; do
+            codigo=$(curl -s -o resposta.json -w "%{http_code}" -X POST "$SITE/api/$rota")
+            cat resposta.json; echo
+            if [ "$codigo" = "503" ]; then
+              echo "::warning::Chaves da Solana não configuradas na Vercel: /api/$rota pulado"
+            elif [ "$codigo" -ge 400 ]; then
+              exit 1
+            fi
+          done
