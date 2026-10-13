@@ -2,14 +2,20 @@
 
 Next.js 16, TypeScript and Tailwind CSS. The site opens in Portuguese when the browser is in Portuguese and in English otherwise, with an EN/PT toggle; all texts live in [`src/i18n/dicionarios.ts`](src/i18n/dicionarios.ts).
 
+The site follows a flow: **presentation → sign-in → platform**.
+
 | Page | What it shows |
 | --- | --- |
-| `/` | Official curtailment in the Northeast, map of featured plants, forecast windows by day, the three kinds of curtailment and the price at the floor |
-| `/plants/[id]` | One plant: the **load calculator** (client-side, from the data already loaded), forecast windows, why it is curtailed, month × hour heat map, recent windows with the ONS verdict, backtest |
-| `/track-record` | Live scoreboard, curtailment by reason, model comparison, calibration, SHA-256 fingerprints |
-| `/method` | What is real, estimated and simulated; definitions; open data downloads; limitations |
-| `/lab` | **Lab (simulation)**: the reservation demo (pick a plant and a window; Reserve and Replay live only here), a complete example cycle and the list of what is simulated. Not the product |
-| `/verify?tx=…` | Part of the Lab: the public proof of a simulated reservation (payment, receipt, execution and ONS stamp), read from Solana devnet. Without a transaction it explains itself |
+| `/` | **Presentation (landing)**: the pain, how Nomos helps, transparency, FAQ and the sign-up buttons ("I want to sign up", "I want to learn more"). Public |
+| `/login` | **Sign-in** with Google. Today Google sign-in is not connected yet: the button goes straight to the platform (the screen says so). Everything is wired through `src/lib/sessao.tsx`, the only file that changes when real login is connected |
+| `/app` | **Platform**: official curtailment in the Northeast, map of featured plants, forecast windows by day, the three kinds of curtailment and the price at the floor |
+| `/app/plants/[id]` | One plant: the **load calculator** (client-side, from the data already loaded), forecast windows, why it is curtailed, month × hour heat map, recent windows with the ONS verdict, backtest |
+| `/app/track-record` | Live scoreboard, model vs. a naive rule, curtailment by reason, model comparison, calibration, SHA-256 fingerprints |
+| `/app/method` | What is real, estimated and simulated; definitions; open data downloads; limitations |
+| `/app/lab` | **Lab (simulation)**: the reservation demo (pick a plant and a window; Reserve and Replay live only here), a complete example cycle and the list of what is simulated. Not the product |
+| `/app/verify?tx=…` | Part of the Lab: the public proof of a simulated reservation (payment, receipt, execution and ONS stamp), read from Solana devnet. Without a transaction it explains itself |
+
+The old addresses (`/plants/…`, `/track-record`, `/method`, `/lab`, `/verify`) redirect to the new ones (see `next.config.ts`). All internal links are in `src/lib/rotas.ts`.
 
 API routes (server only; they hold the test-wallet keys from environment variables):
 

@@ -6,6 +6,7 @@ import type { Cambio, Usina } from "@/lib/tipos";
 import type { PldRef } from "@/lib/calculadora";
 import { BotaoComprar } from "./BotaoComprar";
 import { MOSTRAR } from "@/lib/recursos";
+import { ROTAS } from "@/lib/rotas";
 import { dataCurta, energia, num, pct, reais } from "@/lib/formato";
 import { MapaCarregado } from "./MapaCarregado";
 import { BarraChance, Cartao, Numero, SeloResultado, SeloTipo } from "./Selos";
@@ -30,7 +31,7 @@ export function PaginaUsina({ u, cambio, dadosAte, pld }: { u: Usina; cambio: Ca
 
   return (
     <div className="space-y-8 pt-8">
-      <Link href="/" className="text-sm text-muted hover:text-ink">
+      <Link href={ROTAS.plataforma} className="text-sm text-muted hover:text-ink">
         ← {t.common.back}
       </Link>
 

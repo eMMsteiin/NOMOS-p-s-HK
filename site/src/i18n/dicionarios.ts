@@ -2,10 +2,10 @@
 
 const en = {
   locale: "en-US",
-  nav: { atlas: "Atlas", track: "Track record", method: "Method", lab: "Lab", labBadge: "simulation", tagline: "To decide where to install next to a power plant." },
+  nav: { atlas: "Atlas", track: "Track record", method: "Method", lab: "Lab", labBadge: "simulation", signOut: "Sign out", tagline: "To decide where to install next to a power plant." },
   dataAge: (ate: string, dias: string) =>
     `Data up to ${ate} (${dias} days ago). This test version does not update itself yet, so forecast windows for days that have passed are no longer forecasts.`,
-  notFound: { title: "Page not found", text: "This address does not exist in the Nomos atlas.", back: "Back to the Atlas" },
+  notFound: { title: "Page not found", text: "This address does not exist in the Nomos atlas.", back: "Back to the start" },
   pageError: { title: "Something went wrong", text: "The page failed to load. Try again; if it keeps failing, reload the site.", retry: "Try again" },
   common: {
     wind: "Wind",
@@ -469,6 +469,94 @@ const en = {
       "ONS stamp (phase 2): once the ONS publishes the data, the platform, a declared oracle, records whether the window was confirmed.",
     ],
   },
+  landing: {
+    nav: { pain: "The problem", how: "How it works", trust: "Transparency", signIn: "Sign in", signUp: "Create account" },
+    hero: {
+      kicker: "Wind and solar · Northeast Brazil · official ONS data",
+      title: "Clean energy is left over in Brazil's Northeast. Find out how much of it your site could use.",
+      lead: "Nomos brings together the official ONS data and shows, plant by plant, when and why wind and solar generation is curtailed. Then it estimates how much of that curtailment a load installed next to the plant would have used.",
+      ctaPrimary: "I want to sign up",
+      ctaSecondary: "I want to learn more",
+      micro: "Test version. Estimates computed from past data, not a guarantee. Nomos does not sell energy or contracts: it is an information tool.",
+      exampleKicker: "Example with real data",
+      exampleTitle: (usina: string, uf: string, mw: string, horas: string) => `${usina} (${uf}) · ${mw} MW load · ${horas} h a day`,
+      exampleHours: "curtailed hours a month, inside that schedule",
+      exampleEnergy: "MWh a month that load could have used",
+      exampleValue: "a month: reference value for negotiation, not a price",
+      exampleNote: (ate: string) => `Historical data, Jan 2025 to ${ate}. Not a guarantee. The contract with the plant has to be negotiated.`,
+    },
+    pain: {
+      title: "The problem: clean energy that is ready and gets switched off",
+      lead: "When the grid has more clean energy than it can absorb, the operator (ONS) orders wind and solar plants to reduce output. This is called curtailment.",
+      questionsTitle: "If you want to install a load near a plant, curtailment can be an opportunity. But deciding in the dark is expensive:",
+      questions: [
+        "How many hours a month is this plant curtailed, at the hours my operation would run?",
+        "Is the curtailment caused by an energy surplus (more predictable) or by a grid problem (it can stop and come back overnight)?",
+        "Which reference number do I take to the conversation with the plant?",
+      ],
+      closing: "Today the answer is scattered across ONS files that are published once a day, per group of plants, in half-hour steps.",
+    },
+    how: {
+      title: "How Nomos helps",
+      lead: "Three steps, with the data already prepared.",
+      steps: [
+        { title: "Pick a plant", text: "See on the map the wind and solar plants of the Northeast, how much each one lost and at which hours." },
+        { title: "Enter your load", text: "Megawatts, hours a day and start time: computers, a factory or any load that can stop and restart." },
+        { title: "See what the past shows", text: "Curtailed hours a month inside your schedule, the energy your load could have used, how much of it was energy surplus and how much electrical, and a reference value to negotiate." },
+      ],
+      coverage: (n: string, total: string) => `Today ${n} featured plants already have the calculator; the catalog models ${total} groups of plants in RN, BA and CE.`,
+    },
+    features: {
+      title: "What you find in the platform",
+      items: [
+        { title: "Curtailment atlas", text: "Map, month × hour heat map and the reason for each cut: energy surplus, grid reliability or a line or equipment out." },
+        { title: "Load calculator", text: "How much of a plant's past curtailment a load next to it would have met, with the formulas in plain sight." },
+        { title: "Forecast and public scoreboard", text: "Curtailment windows forecast for the next 8 days, and a scoreboard that shows hits and misses." },
+        { title: "Open data", text: "Everything can be downloaded and reproduced. Each daily forecast is stamped on a public record (a test network) before the day, so the scoreboard cannot be rewritten." },
+      ],
+    },
+    trust: {
+      title: "Transparency, before you ask",
+      lead: "We would rather you trust the tool for what it is than be disappointed by what it is not.",
+      isTitle: "What Nomos is",
+      is: [
+        "An information tool, built on open ONS and CCEE data.",
+        "A public scoreboard: we show hits and misses, not only the good days.",
+        "Estimates computed from the past, with the formulas on screen.",
+      ],
+      isNotTitle: "What Nomos is not",
+      isNot: [
+        "It does not sell energy, contracts or any service.",
+        "It does not promise savings or a price: the value in reais is a reference to start a negotiation.",
+        "It does not replace a contract or legal advice: rules such as Aneel's Resolution 1.170/2026 still have to be assessed case by case.",
+      ],
+      validating: "What we are still validating: who would use this, and for what. That is why this is a test version.",
+    },
+    faq: {
+      title: "Frequent questions",
+      items: [
+        { q: "Does Nomos sell energy?", a: "No. Nomos does not sell energy, contracts or services. It shows data and estimates to help you decide." },
+        { q: "Are the numbers guaranteed?", a: "No. They are estimates computed from past data. The past does not guarantee the future, and the real value depends on the contract with the plant." },
+        { q: "Where does the data come from?", a: "From open data: the ONS (curtailment, half-hourly) and the CCEE (hourly spot price). All the files can be downloaded in the platform." },
+        { q: "How much does it cost?", a: "In this test phase there is no charge, and we have not defined prices. We promise nothing about that yet." },
+      ],
+    },
+    final: {
+      title: "Ready to see the curtailment of the plant that matters to your operation?",
+      text: "Sign up with your Google account and open the platform.",
+      cta: "I want to sign up",
+      top: "Back to the top",
+    },
+  },
+  login: {
+    title: "Sign in to Nomos",
+    lead: "Create your account or sign in with Google to open the platform.",
+    google: "Continue with Google",
+    testNote: "Test version: Google sign-in is not connected yet. For now, the button takes you straight to the platform.",
+    fine: "This is a test version: the numbers are estimates computed from past data, not a guarantee.",
+    back: "← Back to the presentation",
+    more: "I want to learn more first",
+  },
   footer: {
     data: "Data: ONS open data (CC-BY). Prices: CCEE open data (hourly PLD).",
     team: "Built by team Nomos for the Colosseum Crypto World's Fair 2026.",
@@ -479,10 +567,10 @@ export type Dicionario = typeof en;
 
 const pt: Dicionario = {
   locale: "pt-BR",
-  nav: { atlas: "Atlas", track: "Placar", method: "Método", lab: "Laboratório", labBadge: "simulação", tagline: "Para decidir onde instalar ao lado de uma usina." },
+  nav: { atlas: "Atlas", track: "Placar", method: "Método", lab: "Laboratório", labBadge: "simulação", signOut: "Sair", tagline: "Para decidir onde instalar ao lado de uma usina." },
   dataAge: (ate: string, dias: string) =>
     `Dados até ${ate} (há ${dias} dias). Esta versão de teste ainda não se atualiza sozinha, então as janelas previstas para dias que já passaram deixaram de ser previsões.`,
-  notFound: { title: "Página não encontrada", text: "Este endereço não existe no atlas do Nomos.", back: "Voltar ao Atlas" },
+  notFound: { title: "Página não encontrada", text: "Este endereço não existe no atlas do Nomos.", back: "Voltar ao início" },
   pageError: { title: "Algo deu errado", text: "A página não carregou. Tente de novo; se continuar falhando, recarregue o site.", retry: "Tentar de novo" },
   common: {
     wind: "Eólica",
@@ -945,6 +1033,94 @@ const pt: Dicionario = {
       "Execução: o operador roda um pequeno trabalho de IA e grava o início e o fim na blockchain.",
       "Carimbo do ONS (fase 2): quando o ONS publica o dado, a plataforma, como oráculo declarado, grava se a janela foi confirmada.",
     ],
+  },
+  landing: {
+    nav: { pain: "O problema", how: "Como funciona", trust: "Transparência", signIn: "Entrar", signUp: "Quero me cadastrar" },
+    hero: {
+      kicker: "Energia eólica e solar · Nordeste do Brasil · dados oficiais do ONS",
+      title: "A energia limpa sobra no Nordeste. Descubra quanto dela caberia na sua unidade.",
+      lead: "O Nomos junta os dados oficiais do ONS e mostra, usina por usina, quando e por que a geração eólica e solar é cortada. Depois estima quanto desse corte uma carga instalada ao lado da usina teria aproveitado.",
+      ctaPrimary: "Quero realizar o cadastro",
+      ctaSecondary: "Quero conhecer mais",
+      micro: "Versão de teste. Estimativas feitas com dados do passado, sem garantia. O Nomos não vende energia nem contrato: é uma ferramenta de informação.",
+      exampleKicker: "Exemplo com dados reais",
+      exampleTitle: (usina: string, uf: string, mw: string, horas: string) => `${usina} (${uf}) · carga de ${mw} MW · ${horas} h por dia`,
+      exampleHours: "horas de corte por mês, dentro desse horário",
+      exampleEnergy: "MWh por mês que essa carga teria podido usar",
+      exampleValue: "por mês: valor de referência para negociação, não é um preço",
+      exampleNote: (ate: string) => `Dados históricos, de jan/2025 a ${ate}. Não é garantia. O contrato com a usina precisa ser negociado.`,
+    },
+    pain: {
+      title: "O problema: energia limpa pronta que é desligada",
+      lead: "Quando a rede tem mais energia limpa do que consegue absorver, o operador (ONS) manda as usinas eólicas e solares reduzirem a produção. Isso se chama corte (curtailment).",
+      questionsTitle: "Para quem quer instalar uma carga perto de uma usina, o corte pode ser uma oportunidade. Mas decidir no escuro custa caro:",
+      questions: [
+        "Quantas horas por mês esta usina é cortada, nos horários em que a minha operação funcionaria?",
+        "O corte é por sobra de energia (mais previsível) ou por problema na rede (pode parar e voltar de um dia para o outro)?",
+        "Que número de referência levar para a conversa com a usina?",
+      ],
+      closing: "Hoje essa resposta está espalhada em arquivos do ONS publicados uma vez por dia, por conjunto de usinas, de meia em meia hora.",
+    },
+    how: {
+      title: "Como o Nomos ajuda",
+      lead: "Três passos, com os dados já preparados.",
+      steps: [
+        { title: "Escolha uma usina", text: "Veja no mapa as usinas eólicas e solares do Nordeste, quanto cada uma perdeu e em quais horas." },
+        { title: "Informe a sua carga", text: "Megawatts, horas por dia e horário de início: computadores, uma fábrica ou qualquer carga que possa parar e voltar." },
+        { title: "Veja o que o passado mostra", text: "Horas de corte por mês dentro do seu horário, a energia que a sua carga teria podido usar, quanto do corte foi sobra de energia e quanto foi elétrico, e um valor de referência para negociar." },
+      ],
+      coverage: (n: string, total: string) => `Hoje ${n} usinas de destaque já têm a calculadora; o catálogo modela ${total} conjuntos de usinas do RN, BA e CE.`,
+    },
+    features: {
+      title: "O que você encontra na plataforma",
+      items: [
+        { title: "Atlas do corte", text: "Mapa, mapa de calor por mês e hora e a razão de cada corte: sobra de energia, confiabilidade da rede ou linha ou equipamento fora." },
+        { title: "Calculadora de carga", text: "Quanto do corte passado de uma usina uma carga ao lado dela teria aproveitado, com as fórmulas à vista." },
+        { title: "Previsão e placar público", text: "Janelas de corte previstas para os próximos 8 dias e um placar que mostra acertos e erros." },
+        { title: "Dados abertos", text: "Tudo pode ser baixado e reproduzido. Cada previsão diária é carimbada num registro público (uma rede de testes) antes do dia, para o placar não poder ser reescrito." },
+      ],
+    },
+    trust: {
+      title: "Transparência, antes de você perguntar",
+      lead: "Preferimos que você confie na ferramenta pelo que ela é, e não se decepcione com o que ela não é.",
+      isTitle: "O que o Nomos é",
+      is: [
+        "Uma ferramenta de informação, feita com dados abertos do ONS e da CCEE.",
+        "Um placar público: mostramos acertos e erros, não só os dias bons.",
+        "Estimativas feitas a partir do passado, com as fórmulas na tela.",
+      ],
+      isNotTitle: "O que o Nomos não é",
+      isNot: [
+        "Não vende energia, contrato nem serviço.",
+        "Não promete economia nem preço: o valor em reais é uma referência para começar a negociação.",
+        "Não substitui contrato nem parecer jurídico: regras como a Resolução 1.170/2026 da Aneel ainda precisam ser avaliadas caso a caso.",
+      ],
+      validating: "O que ainda estamos validando: quem usaria isto e para quê. Por isso esta é uma versão de teste.",
+    },
+    faq: {
+      title: "Perguntas frequentes",
+      items: [
+        { q: "O Nomos vende energia?", a: "Não. O Nomos não vende energia, contrato nem serviço. Ele mostra dados e estimativas para ajudar na decisão." },
+        { q: "Os números são garantidos?", a: "Não. São estimativas feitas com dados do passado. O passado não garante o futuro, e o valor real depende do contrato com a usina." },
+        { q: "De onde vêm os dados?", a: "De dados abertos: do ONS (corte, de meia em meia hora) e da CCEE (preço de curto prazo, por hora). Todos os arquivos podem ser baixados na plataforma." },
+        { q: "Quanto custa?", a: "Nesta fase de teste não cobramos, e ainda não definimos preços. Não prometemos nada sobre isso por enquanto." },
+      ],
+    },
+    final: {
+      title: "Pronto para ver o corte da usina que interessa à sua operação?",
+      text: "Cadastre-se com a sua conta do Google e abra a plataforma.",
+      cta: "Quero realizar o cadastro",
+      top: "Voltar ao topo",
+    },
+  },
+  login: {
+    title: "Entrar no Nomos",
+    lead: "Crie a sua conta ou entre com o Google para abrir a plataforma.",
+    google: "Continuar com o Google",
+    testNote: "Versão de teste: o login com o Google ainda não está ligado. Por enquanto, o botão leva direto para a plataforma.",
+    fine: "Esta é uma versão de teste: os números são estimativas feitas com dados do passado, sem garantia.",
+    back: "← Voltar para a apresentação",
+    more: "Quero conhecer mais antes",
   },
   footer: {
     data: "Dados: ONS, dados abertos (CC-BY). Preços: CCEE, dados abertos (PLD horário).",

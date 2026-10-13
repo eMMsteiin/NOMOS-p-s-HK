@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { useIdioma } from "@/i18n/idioma";
 import { dataCurta, energia, pct } from "@/lib/formato";
 import { LINK_CICLO_0810 } from "@/lib/laboratorio";
+import { ROTAS } from "@/lib/rotas";
 import type { Cambio, Janela } from "@/lib/tipos";
 import { BotaoComprar } from "./BotaoComprar";
 import { Cartao, SeloResultado } from "./Selos";
@@ -137,7 +138,7 @@ export function Laboratorio({ usinas, cambio }: { usinas: UsinaLab[]; cambio: Ca
         <Cartao>
           <h2 className="text-lg font-semibold">{lab.verifyTitle}</h2>
           <p className="mt-1 text-sm text-muted">{lab.verifyLead}</p>
-          <Link href="/verify" className="mt-3 inline-block text-sm font-medium underline">
+          <Link href={ROTAS.verificar} className="mt-3 inline-block text-sm font-medium underline">
             {lab.verifyLink}
           </Link>
         </Cartao>

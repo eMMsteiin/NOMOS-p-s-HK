@@ -20,6 +20,7 @@ import {
   usdc,
   type Compra,
 } from "@/lib/solana";
+import { ROTAS } from "@/lib/rotas";
 import { PLD_PISO_2026, type RespostaRecibo } from "@/lib/tipos";
 import type { AlvoCompra } from "./BotaoComprar";
 import Link from "next/link";
@@ -193,7 +194,7 @@ export default function CompraJanela({ idUsina, nomeUsina, janela, cambio, repla
               )}
             </div>
             <Link
-              href={`/verify?tx=${estado.assinatura}`}
+              href={ROTAS.verificarTx(estado.assinatura)}
               onClick={fechar}
               className="block rounded-lg bg-ink px-4 py-2.5 text-center text-sm font-medium text-white"
             >

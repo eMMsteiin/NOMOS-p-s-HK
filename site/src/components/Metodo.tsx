@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useIdioma } from "@/i18n/idioma";
 import { dataCurta } from "@/lib/formato";
 import { MOSTRAR } from "@/lib/recursos";
+import { ROTAS } from "@/lib/rotas";
 import { REPOSITORIO } from "@/lib/tipos";
 import { Cartao } from "./Selos";
 
@@ -20,7 +21,7 @@ export function Metodo({ pldPeriodo }: { pldPeriodo: string }) {
     { titulo: m.realTitle, itens: [...m.real, m.pldItem(periodoLegivel(pldPeriodo, t.locale))], cor: "border-ok" },
     { titulo: m.estTitle, itens: MOSTRAR.horasDeGpu ? [...m.est, m.estGpu] : m.est, cor: "border-sun" },
     // A reserva simulada saiu daqui: o cartão só aponta para o Laboratório
-    { titulo: m.simTitle, itens: m.sim, cor: "border-wait", link: { href: "/lab", rotulo: m.simLink } },
+    { titulo: m.simTitle, itens: m.sim, cor: "border-wait", link: { href: ROTAS.laboratorio, rotulo: m.simLink } },
   ];
 
   return (

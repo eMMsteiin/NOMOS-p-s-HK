@@ -7,6 +7,7 @@ import { dataCurta, num, pct } from "@/lib/formato";
 import { Cartao, SeloTipo } from "./Selos";
 import { BarraRazoes, GraficoCalibracao, GraficoRazoesMes } from "./Graficos";
 import type { ComparacaoLinhaDeBase } from "@/lib/linhaDeBase";
+import { ROTAS } from "@/lib/rotas";
 
 const DICIONARIO_ONS =
   "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/restricao_coff_eolica_tm/DicionarioDados_RestricaoContrainedoff_UsiEolicas.pdf";
@@ -233,7 +234,7 @@ export function Placar({ d }: { d: DadosPlacar }) {
               {d.usinas.map((u) => (
                 <tr key={u.id} className="border-b border-line/70 last:border-0">
                   <td className="py-1.5">
-                    <Link href={`/plants/${u.id}`} className="hover:underline">
+                    <Link href={ROTAS.usina(u.id)} className="hover:underline">
                       {u.nome.replace(/^Conj\. /, "")}
                     </Link>{" "}
                     <span className="text-xs text-muted">{u.uf}</span>

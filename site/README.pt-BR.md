@@ -2,14 +2,20 @@
 
 Site em Next.js 16 + TypeScript + Tailwind. Abre em português quando o navegador está em português e em inglês nos demais casos, com um botão EN/PT.
 
+O site segue um fluxo: **apresentação → login → plataforma**.
+
 | Página | O que mostra |
 | --- | --- |
-| `/` | Manchete com o corte oficial do Nordeste, mapa das usinas de destaque, janelas previstas por dia e os padrões do corte |
-| `/plants/[id]` | Detalhe de cada usina: a **calculadora de carga** (feita no navegador, com os dados já carregados), janelas previstas, mapa de calor mês × hora, histórico com o veredito do ONS e teste retroativo |
-| `/track-record` | Placar público: comparação de modelos, calibração e impressões digitais (SHA-256) |
-| `/method` | O que é real, estimado e simulado; definições; dados abertos para baixar; limitações |
-| `/lab` | **Laboratório (simulação)**: a demonstração de reserva (escolha de usina e janela; Reservar e Replay só existem aqui), um ciclo completo de exemplo e a lista do que é simulado. Não é o produto |
-| `/verify?tx=…` | Parte do Laboratório: a comprovação pública de uma reserva simulada, lida da Solana devnet. Sem transação, explica a si mesma |
+| `/` | **Apresentação (landing)**: a dor, como o Nomos ajuda, transparência, perguntas frequentes e os botões de cadastro ("Quero realizar o cadastro", "Quero conhecer mais"). Pública |
+| `/login` | **Login** com o Google. Hoje o login com o Google ainda não está ligado: o botão leva direto à plataforma (a tela avisa). Tudo passa por `src/lib/sessao.tsx`, o único arquivo que muda quando o login real for ligado |
+| `/app` | **Plataforma**: corte oficial do Nordeste, mapa das usinas de destaque, janelas previstas por dia, os três tipos de corte e o preço no piso |
+| `/app/plants/[id]` | Detalhe de cada usina: a **calculadora de carga** (feita no navegador, com os dados já carregados), janelas previstas, mapa de calor mês × hora, histórico com o veredito do ONS e teste retroativo |
+| `/app/track-record` | Placar público: resultado ao vivo, modelo contra uma regra ingênua, razões do corte, comparação de modelos, calibração e impressões digitais (SHA-256) |
+| `/app/method` | O que é real, estimado e simulado; definições; dados abertos para baixar; limitações |
+| `/app/lab` | **Laboratório (simulação)**: a demonstração de reserva (escolha de usina e janela; Reservar e Replay só existem aqui), um ciclo completo de exemplo e a lista do que é simulado. Não é o produto |
+| `/app/verify?tx=…` | Parte do Laboratório: a comprovação pública de uma reserva simulada, lida da Solana devnet. Sem transação, explica a si mesma |
+
+Os endereços antigos (`/plants/…`, `/track-record`, `/method`, `/lab`, `/verify`) redirecionam para os novos (veja `next.config.ts`). Todos os links internos estão em `src/lib/rotas.ts`.
 
 ## Dados
 

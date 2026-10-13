@@ -3,7 +3,7 @@ import { atlas } from "@/lib/atlas";
 import { Placar } from "@/components/Placar";
 import { compararComLinhaDeBase, diasDoPeriodo } from "@/lib/linhaDeBase";
 import type { Janela } from "@/lib/tipos";
-import vivo from "../../../public/data/janelas_ao_vivo.json";
+import vivo from "../../../../public/data/janelas_ao_vivo.json";
 
 export const metadata: Metadata = { title: "Track record — Nomos" };
 

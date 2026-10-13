@@ -1,19 +1,32 @@
+import { Landing, type DadosLanding } from "@/components/Landing";
 import { atlas } from "@/lib/atlas";
-import { Inicio, type DadosInicio } from "@/components/Inicio";
+import { calcular } from "@/lib/calculadora";
+import { pldDeReferencia } from "@/lib/pldReferencia";
+import catalogo from "../../public/data/usinas.json";
 
+// Primeira parada do fluxo: a apresentação do Nomos (a dor, a proposta e os botões de cadastro).
 export default function Page() {
-  // Só o necessário vai para o navegador; o resto do atlas.json fica no servidor.
-  const dados: DadosInicio = {
-    manchete: atlas.manchete,
-    previsao: atlas.previsao,
-    pld: atlas.pld,
-    padroes: atlas.padroes,
-    dados_ate: atlas.dados_ate,
-    cambio: atlas.cambio,
-    placar: atlas.teste.placar,
-    ao_vivo: atlas.ao_vivo,
-    razoes_nordeste: atlas.razoes.nordeste_2026.fracao,
-    usinas: atlas.usinas.map(({ id, nome, uf, tipo, local, capacidade_mw, proximas }) => ({ id, nome, uf, tipo, local, capacidade_mw, proximas })),
+  // O exemplo da abertura usa a mesma conta da calculadora, com dados reais: Serra do Assuruá, 10 MW, 8 h por dia
+  const usina = atlas.usinas.find((u) => u.id === "CJU_BASAR") ?? atlas.usinas[0];
+  const entrada = { mw: 10, horasPorDia: 8, inicio: 8 };
+  const r = calcular(usina, pldDeReferencia(atlas.pld), entrada);
+  const dados: DadosLanding = {
+    mwMedios: atlas.manchete.nordeste_mw_medios,
+    gwhDia: atlas.manchete.nordeste_gwh_dia,
+    valorReais: atlas.manchete.valor_pld_real_rs,
+    valorAte: (atlas.manchete.valor_pld_real_periodo ?? "").slice(-10),
+    dadosAte: atlas.dados_ate,
+    usinasComCalculadora: atlas.usinas.length,
+    conjuntosModelados: catalogo.length,
+    exemplo: {
+      usina: usina.nome.replace(/^Conj\. /, ""),
+      uf: usina.uf,
+      mw: entrada.mw,
+      horas: entrada.horasPorDia,
+      horasCorteMes: r.horasCorteMes,
+      mwhMes: r.mwhMes,
+      reais: r.reaisMedio,
+    },
   };
-  return <Inicio d={dados} />;
+  return <Landing d={dados} />;
 }

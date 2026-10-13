@@ -3,10 +3,7 @@ import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import { ProvedorIdioma } from "@/i18n/idioma";
-import { Cabecalho } from "@/components/Cabecalho";
-import { Rodape } from "@/components/Rodape";
-import { AvisoDados } from "@/components/AvisoDados";
-import { atlas } from "@/lib/atlas";
+import { SessaoProvider } from "@/lib/sessao";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -32,10 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <ProvedorIdioma>
-          <Cabecalho />
-          <AvisoDados dadosAte={atlas.dados_ate} />
-          <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 sm:px-6">{children}</main>
-          <Rodape />
+          <SessaoProvider>{children}</SessaoProvider>
         </ProvedorIdioma>
       </body>
     </html>

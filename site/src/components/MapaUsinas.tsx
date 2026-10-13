@@ -8,6 +8,7 @@
 // com map.remove() na limpeza, então pode ser recriado quantas vezes for preciso.
 import L from "leaflet";
 import { useRouter } from "next/navigation";
+import { ROTAS } from "@/lib/rotas";
 import { useEffect, useRef } from "react";
 
 export type PontoMapa = {
@@ -49,7 +50,7 @@ export default function MapaUsinas({ pontos, selecionado }: { pontos: PontoMapa[
         fillOpacity: p.chance === null ? 0.12 : 0.25 + p.chance * 0.6,
       })
         .bindTooltip(`<strong>${escapar(p.nome)}</strong><br/>${escapar(p.rotulo)}`, { direction: "top", offset: [0, -raio] })
-        .on("click", () => router.push(`/plants/${p.id}`))
+        .on("click", () => router.push(ROTAS.usina(p.id)))
         .addTo(mapa);
     }
 

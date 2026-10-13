@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useIdioma } from "@/i18n/idioma";
 import { dataCurta, num, pct } from "@/lib/formato";
 import { LINK_CICLO_0810 } from "@/lib/laboratorio";
+import { ROTAS } from "@/lib/rotas";
 import type { RegistroCadeia, RespostaRecibo, ResultadoTrabalho } from "@/lib/tipos";
 import { Cartao } from "./Selos";
 
@@ -58,7 +59,7 @@ export function Verificacao({ nomes }: { nomes: Record<string, string> }) {
             <Link href={LINK_CICLO_0810} className="font-medium underline">
               {v.emptyExample}
             </Link>
-            <Link href="/lab" className="font-medium underline">
+            <Link href={ROTAS.laboratorio} className="font-medium underline">
               {v.emptyLab}
             </Link>
           </div>
@@ -70,7 +71,7 @@ export function Verificacao({ nomes }: { nomes: Record<string, string> }) {
           className="flex flex-col gap-2 sm:flex-row"
           onSubmit={(e) => {
             e.preventDefault();
-            router.push(`/verify?tx=${campo.trim()}`);
+            router.push(ROTAS.verificarTx(campo.trim()));
           }}
         >
           <input
