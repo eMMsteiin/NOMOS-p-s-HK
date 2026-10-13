@@ -160,18 +160,18 @@ export default function CompraJanela({ idUsina, nomeUsina, janela, cambio, repla
           </button>
         </div>
 
-        <p className="mt-3 rounded-lg bg-wait-soft px-3 py-2 text-xs text-wait">{b.devnet}</p>
-        {replay && <p className="mt-2 rounded-lg bg-sun-soft px-3 py-2 text-xs text-sun">{b.replayNote}</p>}
+        <p className="mt-3 rounded-xl bg-sim-soft px-3 py-2 text-xs text-sim">{b.devnet}</p>
+        {replay && <p className="mt-2 rounded-xl bg-warn-soft px-3 py-2 text-xs text-warn">{b.replayNote}</p>}
         <p className="mt-3 text-sm leading-snug">{b.receive}</p>
 
         {!cambio || !preco ? (
-          <p className="mt-4 text-sm text-cut">{b.unavailable}</p>
+          <p className="mt-4 text-sm text-crit">{b.unavailable}</p>
         ) : estado.fase === "pago" ? (
           <div className="mt-5 space-y-3">
             <p className="text-lg font-semibold text-ok">✓ {b.success}</p>
             <p className="text-sm text-muted">{b.successLead}</p>
             <Divisao partes={preco.partes} usd={usd} />
-            <div className="rounded-lg bg-paper p-3 text-xs">
+            <div className="rounded-xl bg-sunken p-3 text-xs">
               <div className="font-medium">{b.memo}</div>
               <code className="mt-1 block break-words text-muted">{textoMemo(compra!)}</code>
             </div>
@@ -196,7 +196,7 @@ export default function CompraJanela({ idUsina, nomeUsina, janela, cambio, repla
             <Link
               href={ROTAS.verificarTx(estado.assinatura)}
               onClick={fechar}
-              className="block rounded-lg bg-ink px-4 py-2.5 text-center text-sm font-medium text-white"
+              className="block rounded-xl bg-brand-700 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-brand-800"
             >
               {b.viewProof} →
             </Link>
@@ -217,14 +217,14 @@ export default function CompraJanela({ idUsina, nomeUsina, janela, cambio, repla
                   value={mwh}
                   disabled={ocupado}
                   onChange={(e) => setMwh(Math.round(Number(e.target.value) * 10) / 10)}
-                  className="w-full accent-[var(--color-ink)]"
+                  className="w-full accent-[var(--color-brand-700)]"
                 />
                 <span className="tabular w-24 shrink-0 whitespace-nowrap text-right font-semibold">{num(mwh, L, 1)} MWh</span>
               </div>
               {capacidade && <p className="mt-1 text-[11px] leading-snug text-muted">{capacidade}</p>}
             </label>
 
-            <div className="rounded-lg bg-paper p-3">
+            <div className="rounded-xl bg-sunken p-3">
               <div className="flex items-baseline justify-between">
                 <span className="text-sm text-muted">{b.price}</span>
                 <span className="tabular text-xl font-semibold">{usd(preco.total)} USDC</span>
@@ -257,7 +257,7 @@ export default function CompraJanela({ idUsina, nomeUsina, janela, cambio, repla
                 type="button"
                 onClick={conectar}
                 disabled={ocupado}
-                className="w-full rounded-lg bg-[#ab9ff2] px-4 py-2.5 text-sm font-semibold text-ink hover:brightness-95 disabled:opacity-60"
+                className="w-full rounded-xl bg-[#ab9ff2] px-4 py-2.5 text-sm font-semibold text-ink hover:brightness-95 disabled:opacity-60"
               >
                 {estado.fase === "conectando" ? b.connecting : b.connect}
               </button>
@@ -267,13 +267,13 @@ export default function CompraJanela({ idUsina, nomeUsina, janela, cambio, repla
                   {b.wallet}: <code>{carteira.toBase58().slice(0, 4)}…{carteira.toBase58().slice(-4)}</code>
                   {saldo && <> · {b.balance(num(usdc(saldo.usdc), L, 2), num(saldo.sol, L, 3))}</>}
                 </div>
-                {semUsdc && <p className="text-xs text-cut">{b.lowUsdc}</p>}
-                {semSol && <p className="text-xs text-cut">{b.lowSol}</p>}
+                {semUsdc && <p className="text-xs text-crit">{b.lowUsdc}</p>}
+                {semSol && <p className="text-xs text-crit">{b.lowSol}</p>}
                 <button
                   type="button"
                   onClick={pagar}
                   disabled={ocupado || semUsdc || semSol}
-                  className="w-full rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-ink/85 disabled:opacity-50"
+                  className="w-full rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800 disabled:opacity-50"
                 >
                   {estado.fase === "assinando" ? b.signing : estado.fase === "confirmando" ? b.confirming : b.pay(usd(preco.total))}
                 </button>
@@ -282,7 +282,7 @@ export default function CompraJanela({ idUsina, nomeUsina, janela, cambio, repla
             )}
 
             {estado.fase === "erro" && (
-              <div className="rounded-lg bg-cut-soft p-3 text-xs text-cut">
+              <div className="rounded-xl bg-crit-soft p-3 text-xs text-crit">
                 <p className="break-words">{estado.mensagem}</p>
                 {estado.rede && <p className="mt-1">{b.networkHint}</p>}
               </div>

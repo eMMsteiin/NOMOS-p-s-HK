@@ -5,7 +5,7 @@ import { compararComLinhaDeBase, diasDoPeriodo } from "@/lib/linhaDeBase";
 import type { Janela } from "@/lib/tipos";
 import vivo from "../../../../public/data/janelas_ao_vivo.json";
 
-export const metadata: Metadata = { title: "Track record — Nomos" };
+export const metadata: Metadata = { title: "Placar — Nomos" };
 
 export default function Page() {
   // Linha de base ingênua nas mesmas janelas ao vivo (todas as publicadas, não só as mostradas por usina)

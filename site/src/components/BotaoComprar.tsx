@@ -20,7 +20,7 @@ export function BotaoComprar(props: AlvoCompra) {
       <button
         type="button"
         onClick={() => setAberto(true)}
-        className="rounded-md bg-ink px-2.5 py-1 text-xs font-medium text-white hover:bg-ink/85"
+        className="rounded-lg bg-brand-700 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-brand-800"
       >
         {props.replay ? t.buy.replayButton : t.buy.button}
       </button>

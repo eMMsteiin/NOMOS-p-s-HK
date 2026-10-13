@@ -52,12 +52,6 @@
   --color-sim-mark: #7c4dd8;
   --color-sim-soft: #f0ebfc;
 
-  /* apelidos dos nomes antigos, para o que ainda não foi migrado */
-  --color-cut: var(--color-brand-600);
-  --color-cut-soft: var(--color-brand-100);
-  --color-wait: var(--color-sim);
-  --color-wait-soft: var(--color-sim-soft);
-
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-marca: var(--font-outfit), var(--font-geist-sans), ui-sans-serif, sans-serif;

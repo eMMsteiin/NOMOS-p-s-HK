@@ -105,5 +105,6 @@ export function cenarioDaBusca(busca: string): Partial<Cenario> | null {
 export function linkDoCenario(c: Cenario, caminho: string): string {
   const q = new URLSearchParams({ mw: String(c.mw), h: String(c.horas), i: String(c.inicio) });
   if (c.melhorHorario) q.set("m", "1");
-  return `${window.location.origin}${caminho}?${q.toString()}`;
+  const origem = typeof window === "undefined" ? "" : window.location.origin;
+  return `${origem}${caminho}?${q.toString()}`;
 }

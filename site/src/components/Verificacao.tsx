@@ -9,7 +9,8 @@ import { dataCurta, num, pct } from "@/lib/formato";
 import { LINK_CICLO_0810 } from "@/lib/laboratorio";
 import { ROTAS } from "@/lib/rotas";
 import type { RegistroCadeia, RespostaRecibo, ResultadoTrabalho } from "@/lib/tipos";
-import { Cartao } from "./Selos";
+import { Cartao, Evidencia } from "./Selos";
+import { Botao, CabecalhoPagina } from "./ui";
 
 const URL_ONS = (arquivo: string) =>
   `https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/restricao_coff_${arquivo.includes("EOLICA") ? "eolica" : "fotovoltaica"}_tm/${arquivo}`;
@@ -43,23 +44,22 @@ export function Verificacao({ nomes }: { nomes: Record<string, string> }) {
   const curto = (s: string) => `${s.slice(0, 6)}…${s.slice(-6)}`;
 
   return (
-    <div className="space-y-6 pt-8">
-      <header className="max-w-3xl">
-        <h1 className="text-3xl font-semibold tracking-tight">{v.title}</h1>
-        <p className="mt-3 text-muted">{v.lead}</p>
-        <p className="mt-3 inline-block rounded-lg bg-wait-soft px-3 py-1.5 text-xs font-medium text-wait">{v.simNote}</p>
-      </header>
+    <div className="space-y-6">
+      <CabecalhoPagina eyebrow={t.nav.lab} titulo={v.title} lead={v.lead}>
+        <Evidencia nivel="simulacao" />
+      </CabecalhoPagina>
+      <p className="inline-block rounded-xl bg-sim-soft px-3.5 py-2 text-xs font-medium text-sim">{v.simNote}</p>
 
       {/* Sem endereço de transação: explica a página em vez de deixar só um campo vazio */}
       {!tx && (
         <Cartao>
-          <h2 className="font-semibold">{v.emptyTitle}</h2>
+          <h2 className="text-lg font-semibold text-ink">{v.emptyTitle}</h2>
           <p className="mt-1 max-w-3xl text-sm text-muted">{v.emptyLead}</p>
           <div className="mt-3 flex flex-col gap-2 text-sm sm:flex-row sm:flex-wrap sm:gap-x-6">
-            <Link href={LINK_CICLO_0810} className="font-medium underline">
+            <Link href={LINK_CICLO_0810} className="font-semibold text-brand-700 underline underline-offset-2">
               {v.emptyExample}
             </Link>
-            <Link href={ROTAS.laboratorio} className="font-medium underline">
+            <Link href={ROTAS.laboratorio} className="font-semibold text-brand-700 underline underline-offset-2">
               {v.emptyLab}
             </Link>
           </div>
@@ -79,24 +79,22 @@ export function Verificacao({ nomes }: { nomes: Record<string, string> }) {
             onChange={(e) => setCampo(e.target.value)}
             placeholder={v.placeholder}
             aria-label={v.placeholder}
-            className="w-full rounded-lg border border-line bg-card px-3 py-2 font-mono text-sm"
+            className="min-h-11 w-full rounded-xl border border-line-strong bg-card px-3.5 font-mono text-sm shadow-card"
           />
-          <button type="submit" className="rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white">
-            {v.button}
-          </button>
+          <Botao type="submit">{v.button}</Botao>
         </form>
       </div>
 
-      {tx && !VALIDA.test(tx) && <p className="text-sm text-cut">{v.invalid}</p>}
+      {tx && !VALIDA.test(tx) && <p className="text-sm text-crit">{v.invalid}</p>}
       {carregando && <p className="text-sm text-muted">{v.loading}</p>}
       {dados?.erro && (
-        <p className="rounded-lg bg-cut-soft p-3 text-sm text-cut">{dados.erro === "sem_sol_plataforma" ? v.noSol : dados.erro}</p>
+        <p className="rounded-xl bg-crit-soft p-3 text-sm text-crit">{dados.erro === "sem_sol_plataforma" ? v.noSol : dados.erro}</p>
       )}
 
       {dados?.compra && (
         <div className="grid gap-4 md:grid-cols-2">
           <Cartao>
-            <h2 className="font-semibold">{v.payment}</h2>
+            <h2 className="text-lg font-semibold text-ink">{v.payment}</h2>
             <p className="mt-1 text-sm font-medium text-ok">✓ {t.buy.success}</p>
             <dl className="mt-3 space-y-1.5 text-sm">
               <Linha rotulo={v.plant} valor={(nomes[dados.compra.idUsina] ?? dados.compra.idUsina).replace(/^Conj\. /, "")} />
@@ -113,7 +111,7 @@ export function Verificacao({ nomes }: { nomes: Record<string, string> }) {
           </Cartao>
 
           <Cartao>
-            <h2 className="font-semibold">{v.receipt}</h2>
+            <h2 className="text-lg font-semibold text-ink">{v.receipt}</h2>
             {dados.recibo ? (
               <Fase registro={dados.recibo} lead={v.receiptLead} quando={quando} />
             ) : (
@@ -124,10 +122,10 @@ export function Verificacao({ nomes }: { nomes: Record<string, string> }) {
           <CartaoExecucao exec={dados.execucao ?? null} mwh={dados.compra.mwh} quando={quando} />
 
           <Cartao>
-            <h2 className="font-semibold">{v.stamp}</h2>
+            <h2 className="text-lg font-semibold text-ink">{v.stamp}</h2>
             {dados.carimbo && dados.veredito ? (
               <>
-                <p className={`mt-1 text-sm font-semibold ${dados.veredito.resultado === "confirmado" ? "text-ok" : "text-cut"}`}>
+                <p className={`mt-1 text-sm font-semibold ${dados.veredito.resultado === "confirmado" ? "text-ok" : "text-crit"}`}>
                   {dados.veredito.resultado === "confirmado" ? `✓ ${v.confirmed}` : `✗ ${v.wrong}`}
                 </p>
                 <ul className="mt-2 space-y-1 text-sm">
@@ -140,10 +138,10 @@ export function Verificacao({ nomes }: { nomes: Record<string, string> }) {
                   <div className="mt-1 break-all font-mono text-muted">sha256 {dados.veredito.sha256}</div>
                   <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
                     {/* Cópia exata guardada pelo atlas.py: o ONS pode republicar o mês e mudar o SHA-256 */}
-                    <a href={`/ons/${dados.veredito.sha256}/${dados.veredito.fonte}`} download className="text-wind underline">
+                    <a href={`/ons/${dados.veredito.sha256}/${dados.veredito.fonte}`} download className="text-brand-700 underline">
                       {v.archived}
                     </a>
-                    <a href={URL_ONS(dados.veredito.fonte)} className="text-wind underline">
+                    <a href={URL_ONS(dados.veredito.fonte)} className="text-brand-700 underline">
                       {v.onsCurrent}
                     </a>
                   </div>
@@ -159,13 +157,13 @@ export function Verificacao({ nomes }: { nomes: Record<string, string> }) {
 
       {dados?.compra && (
         <Cartao>
-          <h2 className="font-semibold">{v.howTitle}</h2>
+          <h2 className="text-lg font-semibold text-ink">{v.howTitle}</h2>
           <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm">
             {v.how.map((passo) => (
               <li key={passo}>{passo}</li>
             ))}
           </ol>
-          <p className="mt-3 rounded-lg bg-wait-soft px-3 py-2 text-xs text-wait">{v.disclaimer}</p>
+          <p className="mt-3 rounded-xl bg-sim-soft px-3 py-2 text-xs text-sim">{v.disclaimer}</p>
         </Cartao>
       )}
     </div>
@@ -203,7 +201,7 @@ function CartaoExecucao({
   if (!exec) {
     return (
       <Cartao>
-        <h2 className="font-semibold">{v.execution}</h2>
+        <h2 className="text-lg font-semibold text-ink">{v.execution}</h2>
         <p className="mt-2 text-sm text-muted">{v.awaitingOperator}</p>
       </Cartao>
     );
@@ -212,11 +210,11 @@ function CartaoExecucao({
   const pt = L.startsWith("pt");
   return (
     <Cartao>
-      <h2 className="font-semibold">{v.execution}</h2>
+      <h2 className="text-lg font-semibold text-ink">{v.execution}</h2>
       {exec.modo === "replay" ? (
-        <p className="mt-1 text-sm font-medium text-wait">{v.replayRun}</p>
+        <p className="mt-1 text-sm font-medium text-sim">{v.replayRun}</p>
       ) : (
-        <p className={`mt-1 text-sm font-semibold ${exec.dentro_da_janela ? "text-ok" : "text-cut"}`}>
+        <p className={`mt-1 text-sm font-semibold ${exec.dentro_da_janela ? "text-ok" : "text-crit"}`}>
           {exec.dentro_da_janela ? `✓ ${v.inside}` : `✗ ${v.outside}`}
         </p>
       )}
@@ -229,7 +227,7 @@ function CartaoExecucao({
         {v.jobEnergy(num(exec.duracao_s, L), num(exec.energia_wh, L, 2), num(exec.watts, L))} · {num(mwh, L, 1)} MWh
       </p>
       {r && (
-        <div className="mt-3 rounded-lg bg-paper p-3 text-sm">
+        <div className="mt-3 rounded-xl bg-sunken p-3 text-sm">
           <div className="font-medium">{v.found}</div>
           <p className="mt-1 text-xs text-muted">{v.foundLead(r.periodo_dos_dados.replace(" a ", " – "))}</p>
           <ul className="mt-2 space-y-1">
@@ -251,15 +249,15 @@ function CartaoExecucao({
       </div>
       <div className="mt-2 flex flex-wrap gap-x-4 text-sm">
         {exec.inicio && (
-          <a href={exec.inicio.explorador} target="_blank" rel="noreferrer" className="font-medium underline">
+          <a href={exec.inicio.explorador} target="_blank" rel="noreferrer" className="font-semibold text-brand-700 underline underline-offset-2">
             {v.started} ↗
           </a>
         )}
-        <a href={exec.fim.explorador} target="_blank" rel="noreferrer" className="font-medium underline">
+        <a href={exec.fim.explorador} target="_blank" rel="noreferrer" className="font-semibold text-brand-700 underline underline-offset-2">
           {v.finished} ↗
         </a>
         {r && (
-          <a href={exec.arquivo} download className="font-medium underline">
+          <a href={exec.arquivo} download className="font-semibold text-brand-700 underline underline-offset-2">
             {v.resultFile}
           </a>
         )}
@@ -282,7 +280,7 @@ function Fase({ registro, lead, quando }: { registro: RegistroCadeia; lead: stri
   return (
     <div className="mt-2 text-sm">
       <p className="text-muted">{lead}</p>
-      <code className="mt-2 block break-words rounded-lg bg-paper p-2 text-[11px] leading-snug">{registro.memo}</code>
+      <code className="mt-2 block break-words rounded-xl bg-sunken p-2 text-[11px] leading-snug">{registro.memo}</code>
       <p className="mt-2 text-xs text-muted">
         {t.verify.when}: {quando(registro.horario)}
       </p>
@@ -294,7 +292,7 @@ function Fase({ registro, lead, quando }: { registro: RegistroCadeia; lead: stri
 function Explorer({ href }: { href: string }) {
   const { t } = useIdioma();
   return (
-    <a href={href} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm font-medium underline">
+    <a href={href} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm font-semibold text-brand-700 underline underline-offset-2">
       {t.buy.explorer} ↗
     </a>
   );
