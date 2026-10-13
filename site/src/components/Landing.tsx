@@ -317,7 +317,6 @@ export function Landing({ d }: { d: DadosLanding }) {
           <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
             <div className="flex flex-wrap items-center gap-3">
               <h2 className={`${titulo} text-[2rem] sm:text-5xl`}>{t.home.audienceTitle}</h2>
-              <Selo tom="simulacao">{t.home.audienceBadge}</Selo>
             </div>
             <p className="mt-4 max-w-3xl text-lg text-ink-2">{t.home.audienceLead}</p>
             <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -341,7 +340,6 @@ export function Landing({ d }: { d: DadosLanding }) {
                   </li>
                 ))}
               </ul>
-              <p className="mt-4 text-xs text-muted">{t.home.audienceNote}</p>
             </div>
           </div>
         </section>

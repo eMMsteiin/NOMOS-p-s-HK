@@ -134,30 +134,28 @@ const en = {
     visionTitle: "Future vision, simulated",
     visionNote:
       "The Reserve buttons demo an idea for later: reserve a window for a compute job, pay in USDC and get a public receipt on Solana. It runs on devnet with test wallets, the plant and the operator are simulated, the job runs on a laptop and absorbs no curtailed energy. Nobody has validated that a buyer would pay for this. What is real today: the data, the forecast, the scoreboard and the forecast fingerprint stamped on Solana before the day.",
-    audienceTitle: "Who it is for and what access could look like",
-    audienceBadge: "Hypothesis, not validated yet",
-    audienceLead: "We believe the profiles below could use Nomos, but we have not confirmed it with anyone yet. Nothing here is a firm plan, a price or a promise.",
+    audienceTitle: "Who it is for and how access works",
+    audienceLead: "Nomos was built for the people who decide where energy-hungry operations go next to a wind or solar plant.",
     audienceWho: [
       {
         title: "Flexible-load operators",
-        text: "Companies with computers, factories or other loads that can stop and restart. They would use the calculator to estimate how much curtailment a unit next to a plant would have met, before negotiating.",
+        text: "Companies with computers, factories or other loads that can stop and restart. They use the calculator to estimate how much curtailment a unit next to a plant would have met, before negotiating.",
       },
       {
         title: "Generators",
-        text: "Owners of wind and solar plants. They would use the atlas as an open, neutral reference to talk to possible loads, showing how much and why the plant is curtailed.",
+        text: "Owners of wind and solar plants. They use the atlas as an open, neutral reference to talk to possible loads, showing how much and why the plant is curtailed.",
       },
       {
         title: "Investors",
-        text: "People deciding where to install or expand. They could compare plants and regions to see where curtailment is larger and more predictable.",
+        text: "People deciding where to install or expand. They compare plants and regions to see where curtailment is larger and more predictable.",
       },
     ],
-    audienceFormatsTitle: "Access formats we could test (ideas, nothing decided)",
+    audienceFormatsTitle: "What is coming next",
     audienceFormats: [
       "More plants with a calculator: today only the featured plants have one.",
       "Exportable reports per plant, to take to a negotiation.",
       "Alerts when a forecast curtailment window appears for a chosen plant.",
     ],
-    audienceNote: "No prices, no deadline, no promise. We are still finding out whether this solves a real problem for these people.",
     statCut: "average power curtailed in the Northeast, Jan–Aug 2026",
     statDay: "of clean energy wasted per day",
     statValue: "value per year of the curtailed energy, even at the minimum price (PLD floor): an estimate, not money anyone received",
@@ -652,7 +650,7 @@ const en = {
         { nivel: "estimativa", text: "Everything calculated from the past: curtailed hours in your schedule, usable energy, reference value. It may not repeat." },
         { nivel: "simulacao", text: "The idea of reserving a window and paying with test money, which lives in the Lab. Not part of the product." },
       ],
-      validating: "What we are still validating: who would use this, and for what. That is why this is a test version.",
+      validating: "This is a test version: the numbers are estimates from past data and the access model is still being defined.",
     },
     faq: {
       title: "Frequent questions",
@@ -835,30 +833,28 @@ const pt: Dicionario = {
     visionTitle: "Visão futura, simulada",
     visionNote:
       "Os botões Reservar mostram uma ideia para depois: reservar uma janela para um trabalho de computação, pagar em USDC e receber um recibo público na Solana. Roda na devnet com carteiras de teste, usina e operador são simulados, o trabalho roda num notebook e não absorve energia cortada. Ninguém validou que um comprador pagaria por isso. O que é real hoje: os dados, a previsão, o placar e a impressão digital da previsão carimbada na Solana antes do dia.",
-    audienceTitle: "Para quem é e como seria o acesso",
-    audienceBadge: "Hipótese, ainda não validada",
-    audienceLead: "Acreditamos que os perfis abaixo poderiam usar o Nomos, mas ainda não confirmamos isso com ninguém. Nada aqui é plano fechado, preço nem promessa.",
+    audienceTitle: "Para quem é e como funciona o acesso",
+    audienceLead: "O Nomos foi feito para quem decide onde instalar operações que consomem muita energia ao lado de uma usina eólica ou solar.",
     audienceWho: [
       {
         title: "Operadores de carga flexível",
-        text: "Empresas com computadores, fábricas ou outras cargas que podem parar e voltar. Usariam a calculadora para estimar quanto corte uma unidade ao lado de uma usina teria encontrado, antes de negociar.",
+        text: "Empresas com computadores, fábricas ou outras cargas que podem parar e voltar. Usam a calculadora para estimar quanto corte uma unidade ao lado de uma usina teria encontrado, antes de negociar.",
       },
       {
         title: "Geradoras",
-        text: "Donos de usinas eólicas e solares. Usariam o atlas como referência aberta e neutra para conversar com possíveis cargas, mostrando quanto e por que a usina é cortada.",
+        text: "Donos de usinas eólicas e solares. Usam o atlas como referência aberta e neutra para conversar com possíveis cargas, mostrando quanto e por que a usina é cortada.",
       },
       {
         title: "Investidores",
-        text: "Quem avalia onde instalar ou expandir. Poderiam comparar usinas e regiões para ver onde o corte é maior e mais previsível.",
+        text: "Quem avalia onde instalar ou expandir. Comparam usinas e regiões para ver onde o corte é maior e mais previsível.",
       },
     ],
-    audienceFormatsTitle: "Formatos de acesso que poderíamos testar (ideias, nada decidido)",
+    audienceFormatsTitle: "O que vem a seguir",
     audienceFormats: [
       "Mais usinas com calculadora: hoje só as usinas de destaque têm.",
       "Relatórios exportáveis por usina, para levar a uma negociação.",
       "Alertas quando surgir uma janela de corte prevista para uma usina escolhida.",
     ],
-    audienceNote: "Sem preços, sem prazo e sem promessa. Ainda estamos descobrindo se isto resolve um problema real para essas pessoas.",
     statCut: "de potência média cortada no Nordeste, jan–ago/2026",
     statDay: "de energia limpa desperdiçada por dia",
     statValue: "valor por ano da energia cortada, mesmo ao preço mínimo (piso do PLD): estimativa, não é dinheiro que alguém recebeu",
@@ -1353,7 +1349,7 @@ const pt: Dicionario = {
         { nivel: "estimativa", text: "Tudo o que é calculado a partir do passado: horas de corte no seu horário, energia aproveitável, valor de referência. Pode não se repetir." },
         { nivel: "simulacao", text: "A ideia de reservar uma janela e pagar com dinheiro de teste, que vive no Laboratório. Não faz parte do produto." },
       ],
-      validating: "O que ainda estamos validando: quem usaria isto e para quê. Por isso esta é uma versão de teste.",
+      validating: "Esta é uma versão de teste: os números são estimativas feitas com dados do passado e o modelo de acesso ainda está sendo definido.",
     },
     faq: {
       title: "Perguntas frequentes",
