@@ -2,18 +2,31 @@
 
 import { useIdioma } from "@/i18n/idioma";
 
-/** Botões EN / PT. Usado em todos os cabeçalhos (apresentação, login e plataforma). */
-export function SeletorIdioma({ className = "" }: { className?: string }) {
+/** Botões EN / PT, em forma de pílula. Usado em todos os cabeçalhos (apresentação, login e plataforma). */
+export function SeletorIdioma({ className = "", escuro = false }: { className?: string; escuro?: boolean }) {
   const { idioma, trocar } = useIdioma();
   return (
-    <div className={`flex shrink-0 overflow-hidden rounded-md border border-line text-xs font-medium ${className}`} role="group" aria-label="Language">
-      {(["en", "pt"] as const).map((i) => (
+    <div
+      className={`inline-flex shrink-0 rounded-full p-0.5 text-xs font-semibold ${escuro ? "bg-white/10" : "bg-sunken ring-1 ring-inset ring-line"} ${className}`}
+      role="group"
+      aria-label="Language"
+    >
+      {(["pt", "en"] as const).map((i) => (
         <button
           key={i}
           type="button"
           onClick={() => trocar(i)}
           aria-pressed={idioma === i}
-          className={`px-3 py-2.5 uppercase sm:px-2 sm:py-1.5 ${idioma === i ? "bg-ink text-white" : "bg-card text-muted hover:text-ink"}`}
+          lang={i}
+          className={`min-h-9 rounded-full px-3 uppercase transition sm:min-h-8 sm:px-2.5 ${
+            idioma === i
+              ? escuro
+                ? "bg-white text-brand-900 shadow-sm"
+                : "bg-card text-ink shadow-sm ring-1 ring-line"
+              : escuro
+                ? "text-white/70 hover:text-white"
+                : "text-muted hover:text-ink"
+          }`}
         >
           {i}
         </button>

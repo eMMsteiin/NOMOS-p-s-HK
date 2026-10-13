@@ -29,4 +29,14 @@ export const dataCurta = (iso: string, locale: string, comAno = false) => {
 export const energia = (mwh: number, locale: string) =>
   mwh >= 1000 ? `${num(mwh / 1000, locale, 1)} GWh` : `${num(mwh, locale)} MWh`;
 
+/** "08:00–16:00" para um horário de `horas` horas a partir de `inicio`; "24 h" quando não para nunca. */
+export const faixaDeHorario = (inicio: number, horas: number) => {
+  if (horas >= 24) return "24 h";
+  const hh = (h: number) => `${String(((h % 24) + 24) % 24).padStart(2, "0")}:00`;
+  return `${hh(inicio)}–${hh(inicio + horas)}`;
+};
+
+/** Soma de uma série de 24 horas entre `de` e `ate` (horas inteiras, `ate` exclusivo). Útil para "x% entre 8h e 15h". */
+export const somaEntreHoras = (serie: number[], de: number, ate: number) => serie.slice(de, ate).reduce((a, b) => a + b, 0);
+
 export const cor = (tipo: "eolica" | "solar") => (tipo === "eolica" ? "var(--color-wind)" : "var(--color-sun)");

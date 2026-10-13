@@ -9,6 +9,9 @@ const HORAS_JAN_JUL = (31 + 28 + 31 + 30 + 31 + 30 + 31) * 24;
 
 export type PldRef = { medio: number; piso: number };
 
+/** O que a conta precisa de uma usina (um subconjunto de `Usina`, para mandar só isto ao navegador). */
+export type UsinaCalc = Pick<Usina, "calor" | "capacidade_mw" | "perdeu_jan_jul_2026_gwh" | "fracao_meias_horas_com_corte" | "razoes_2026">;
+
 export type EntradaCalculadora = { mw: number; horasPorDia: number; inicio: number };
 
 export type ResultadoCalculadora = {
@@ -41,13 +44,21 @@ export function horasCorteMes(u: Pick<Usina, "calor">, inicio: number, horasPorD
   return total / 12;
 }
 
+/**
+ * Chance média de corte em cada hora do dia (0–1), na média do ano (cada mês pesa pelos seus dias).
+ * Combina com `horasCorteMes`: horas por mês dentro de um horário = (365 / 12) × soma do perfil nessas horas.
+ */
+export function perfilHorario(u: Pick<Usina, "calor">): number[] {
+  return Array.from({ length: 24 }, (_, h) => u.calor.reduce((soma, linha, m) => soma + DIAS_MES[m] * (linha[h] ?? 0), 0) / 365);
+}
+
 /** Potência média cortada enquanto há corte: energia perdida ÷ horas com corte, em jan–jul de 2026. */
 export function mwMedioCortado(u: Pick<Usina, "perdeu_jan_jul_2026_gwh" | "fracao_meias_horas_com_corte">): number {
   const horasComCorte = u.fracao_meias_horas_com_corte * HORAS_JAN_JUL;
   return horasComCorte > 0 ? (u.perdeu_jan_jul_2026_gwh * 1000) / horasComCorte : 0;
 }
 
-export function calcular(u: Usina, pld: PldRef, e: EntradaCalculadora): ResultadoCalculadora {
+export function calcular(u: UsinaCalc, pld: PldRef, e: EntradaCalculadora): ResultadoCalculadora {
   const horasPorDia = Math.min(24, Math.max(1, Math.round(e.horasPorDia)));
   const inicio = ((Math.round(e.inicio) % 24) + 24) % 24;
   const mw = Math.max(0, Number.isFinite(e.mw) ? e.mw : 0);

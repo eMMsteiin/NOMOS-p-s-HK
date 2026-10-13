@@ -10,7 +10,7 @@ type VarianteBotao = "primario" | "secundario" | "fantasma" | "claro" | "contorn
 type TamanhoBotao = "sm" | "md" | "lg";
 
 const BASE_BOTAO =
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-semibold transition duration-150 active:translate-y-px disabled:pointer-events-none disabled:opacity-50";
+  "items-center justify-center gap-2 whitespace-nowrap rounded-xl font-semibold transition duration-150 active:translate-y-px disabled:pointer-events-none disabled:opacity-50";
 const VARIANTES: Record<VarianteBotao, string> = {
   primario: "bg-brand-700 text-white shadow-[0_1px_2px_rgb(3_46_36/0.35),inset_0_1px_0_rgb(255_255_255/0.14)] hover:bg-brand-800",
   secundario: "border border-line-strong bg-card text-ink shadow-card hover:bg-sunken",
@@ -25,7 +25,9 @@ const TAMANHOS: Record<TamanhoBotao, string> = {
 };
 
 export function classesBotao(variante: VarianteBotao = "primario", tamanho: TamanhoBotao = "md", extra = "") {
-  return `${BASE_BOTAO} ${VARIANTES[variante]} ${TAMANHOS[tamanho]} ${extra}`;
+  // "hidden" (esconder no celular) precisa vencer o "inline-flex" padrão: duas classes de display na mesma lista não se resolvem sozinhas
+  const exibicao = /(^|\s)hidden(\s|$)/.test(extra) ? "" : "inline-flex";
+  return `${exibicao} ${BASE_BOTAO} ${VARIANTES[variante]} ${TAMANHOS[tamanho]} ${extra}`;
 }
 
 type ComunsBotao = {
@@ -88,9 +90,12 @@ const TONS: Record<TomSelo, string> = {
   escuro: "bg-white/10 text-brand-100 ring-white/20",
 };
 
-export function Selo({ tom = "neutro", icone, children, className = "" }: { tom?: TomSelo; icone?: NomeIcone; children: ReactNode; className?: string }) {
+/** Etiqueta pequena. Por padrão não quebra linha; com `quebra` o texto pode ocupar mais de uma linha (para frases longas no celular). */
+export function Selo({ tom = "neutro", icone, children, className = "", quebra = false }: { tom?: TomSelo; icone?: NomeIcone; children: ReactNode; className?: string; quebra?: boolean }) {
   return (
-    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium leading-none ring-1 ring-inset ${TONS[tom]} ${className}`}>
+    <span
+      className={`inline-flex items-center gap-1.5 ${quebra ? "rounded-2xl py-1.5 leading-snug" : "whitespace-nowrap rounded-full py-1 leading-none"} px-2.5 text-xs font-medium ring-1 ring-inset ${TONS[tom]} ${className}`}
+    >
       {icone && <Icone nome={icone} className="size-3.5" />}
       {children}
     </span>
